@@ -18,6 +18,9 @@ public class MainJavaFX extends Application {
     public void start(Stage stage) throws IOException {
         var root = new Pane();
         Scene scene = new Scene(root, 320, 240);
+
+
+        root.getChildren().add(canva);
         stage.setTitle("Camelot à vélo");
         stage.getIcons().add(new Image("journal.png"));
         stage.setScene(scene);
