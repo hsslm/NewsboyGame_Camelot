@@ -13,7 +13,7 @@ public class MainJavaFX extends Application {
     public void start(Stage stage) throws IOException {
         var root = new Pane();
         Scene scene = new Scene(root, 320, 240);
-        stage.setTitle("Hello!");
+        stage.setTitle("Camelot à vélo");
         stage.setScene(scene);
         stage.show();
     }
