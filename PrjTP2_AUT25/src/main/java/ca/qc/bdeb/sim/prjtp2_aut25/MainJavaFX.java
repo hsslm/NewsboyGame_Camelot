@@ -18,7 +18,7 @@ public class MainJavaFX extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         var root = new Pane();
-        Scene scene = new Scene(root, 320, 240);
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
 
 
         root.getChildren().add(canva);
