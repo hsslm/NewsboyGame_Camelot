@@ -11,9 +11,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainJavaFX extends Application {
-    public final static Canvas canva = new Canvas(900,580);
+    public final static Canvas canva = new Canvas(900, 580);
     public final static double WIDTH = canva.getWidth();
     public final static double HEIGHT = canva.getHeight();
+
     @Override
     public void start(Stage stage) throws IOException {
         var root = new Pane();
