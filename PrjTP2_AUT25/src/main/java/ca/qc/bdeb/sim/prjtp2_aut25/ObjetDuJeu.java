@@ -1,4 +1,43 @@
 package ca.qc.bdeb.sim.prjtp2_aut25;
 
+import javafx.geometry.Point2D;
+
 public abstract class ObjetDuJeu {
+    protected Point2D position;
+    protected Point2D velocite;
+    protected Point2D taille;
+    protected Point2D acceleration;
+
+    public ObjetDuJeu(Point2D position, Point2D velocite, Point2D taille, Point2D acceleration) {
+        this.position = position;
+        this.velocite = velocite;
+        this.taille = taille;
+        this.acceleration = acceleration;
+    }
+
+
+    public void update(double deltaTemps){
+
+    }
+    protected void updatePhysique(double deltaTemps){
+
+    }
+    public abstract void draw();
+
+    public double getHaut() {
+        return position.getY();
+    }
+    public double getBas() {
+        return position.getY() + taille.getY();
+    }
+    public double getGauche() {
+        return position.getX();
+    }
+    public double getDroite() {
+        return position.getX() + taille.getX();
+    }
+    public Point2D getCentre() {
+        return position.add(taille.multiply(1/2.0));
+    }
+
 }
