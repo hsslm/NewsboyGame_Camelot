@@ -4,6 +4,11 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/PrjTP2_AUT25" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/PrjTP2_AUT25" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
