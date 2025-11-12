@@ -1,7 +1,9 @@
 package ca.qc.bdeb.sim.prjtp2_aut25;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
@@ -19,6 +21,8 @@ public class MainJavaFX extends Application {
     public void start(Stage stage) throws IOException {
         var root = new Pane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
+
+        Camelot camelot = new Camelot();
 
 
         root.getChildren().add(canva);
