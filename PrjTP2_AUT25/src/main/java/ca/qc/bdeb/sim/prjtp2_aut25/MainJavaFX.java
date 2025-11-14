@@ -26,6 +26,7 @@ public class MainJavaFX extends Application {
         var root = new Pane();
         var stack = new StackPane();
 
+        touchesPressees(scene);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
 
@@ -34,15 +35,12 @@ public class MainJavaFX extends Application {
         stack.setStyle("-fx-background-color: black");
 
 
-
         var context = canva.getGraphicsContext2D();
 
         var camera = new Camera();
 
         var camelot = new Camelot();
-        var decor = new Decor();
-
-
+        var maison = new Maison();
 
 
         AnimationTimer timer = new AnimationTimer() {
@@ -52,23 +50,16 @@ public class MainJavaFX extends Application {
             public void handle(long temps) {
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
 
-                decor.update(deltaTemps);
+                maison.update(deltaTemps);
                 camelot.update(deltaTemps);
                 camera.suivreCamelot(camelot);
 
-                context.clearRect(0,0,WIDTH,HEIGHT);
-                decor.draw(context,camera);
-                camelot.draw(context,camera);
-
-
-
-
-
+                context.clearRect(0, 0, WIDTH, HEIGHT);
+                maison.draw(context, camera);
+                camelot.draw(context, camera);
 
 
                 dernierTemps = temps;
-
-
 
 
             }
@@ -76,12 +67,35 @@ public class MainJavaFX extends Application {
         timer.start();
 
 
-
-
         stage.setTitle("Camelot à vélo");
         stage.getIcons().add(new Image("journal.png"));
         stage.setScene(scene);
         stage.show();
+    }
+
+    private static void touchesPresses(Scene scene) {
+        //Quitter avec le bouton ESCAPE
+        scene.setOnKeyPressed((e) -> {
+
+            switch (e.getCode()) {
+                case KeyCode.ESCAPE:
+                    //ferme programm
+                    Platform.exit();
+                    break;
+                case KeyCode.VK_RIGHT :
+                    break;
+                    case KeyCode.VK_Lef
+
+
+            }
+            if (e.getCode() == KeyCode.ESCAPE) {// Ferme JavaFXPlatform.exit();
+            } else {
+                Input.setKeyPressed(e.getCode(), true);
+            }
+        });
+        scene.setOnKeyReleased((e) -> {
+            Input.setKeyPressed(e.getCode(), false);
+        });
     }
 
     public static void main(String[] args) {
