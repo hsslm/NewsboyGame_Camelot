@@ -3,6 +3,7 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 
 public class Camelot extends ObjetDuJeu {
     public Camelot() {
@@ -12,8 +13,22 @@ public class Camelot extends ObjetDuJeu {
     @Override
     public void update(double deltaTemps) {
         super.update(deltaTemps);
+        velocite = new Point2D(Math.clamp(velocite.getX(), 200,600), velocite.getY());
+        boolean gauche = Input.isKeyPressed(KeyCode.LEFT);
+        boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
 
-        System.out.println(position.getX());
+        if(gauche){
+            acceleration = new Point2D(-300,acceleration.getY());
+        }
+        else if(droite){
+            acceleration  = new Point2D(300, acceleration.getY());
+        }
+        else if(!droite&&!gauche&& velocite.getX()!=400){
+            int signe = velocite.getX() > 0 ? -1 : +1;
+            acceleration = new Point2D(signe * 300, acceleration.getY());
+        }
+
+
     }
 
     @Override
