@@ -52,6 +52,7 @@ public class MainJavaFX extends Application {
             public void handle(long temps) {
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
 
+                maison.update(deltaTemps);
                 camelot.update(deltaTemps);
                 camera.suivreCamelot(camelot);
 
