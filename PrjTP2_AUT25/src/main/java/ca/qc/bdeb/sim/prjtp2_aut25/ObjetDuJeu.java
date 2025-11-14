@@ -18,9 +18,12 @@ public abstract class ObjetDuJeu {
 
 
     public void update(double deltaTemps){
+        updatePhysique(deltaTemps);
 
     }
     protected void updatePhysique(double deltaTemps){
+        velocite = velocite.add(acceleration.multiply(deltaTemps));
+        position = position.add(velocite.multiply(deltaTemps));
 
     }
     public abstract void draw(GraphicsContext contexte,Camera camera);
