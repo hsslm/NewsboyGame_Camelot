@@ -26,7 +26,7 @@ public class MainJavaFX extends Application {
         var root = new Pane();
         var stack = new StackPane();
 
-        touchesPressees(scene);
+        //touchesPressees(scene);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
 
@@ -40,7 +40,7 @@ public class MainJavaFX extends Application {
         var camera = new Camera();
 
         var camelot = new Camelot();
-        var maison = new Maison();
+        var decor = new Decor();
 
 
         AnimationTimer timer = new AnimationTimer() {
@@ -50,12 +50,12 @@ public class MainJavaFX extends Application {
             public void handle(long temps) {
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
 
-                maison.update(deltaTemps);
+                decor.update(deltaTemps);
                 camelot.update(deltaTemps);
                 camera.suivreCamelot(camelot);
 
                 context.clearRect(0, 0, WIDTH, HEIGHT);
-                maison.draw(context, camera);
+                decor.draw(context, camera);
                 camelot.draw(context, camera);
 
 
@@ -73,7 +73,7 @@ public class MainJavaFX extends Application {
         stage.show();
     }
 
-    private static void touchesPresses(Scene scene) {
+    /*private static void touchesPresses(Scene scene) {
         //Quitter avec le bouton ESCAPE
         scene.setOnKeyPressed((e) -> {
 
@@ -97,6 +97,8 @@ public class MainJavaFX extends Application {
             Input.setKeyPressed(e.getCode(), false);
         });
     }
+
+     */
 
     public static void main(String[] args) {
         launch();

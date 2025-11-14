@@ -12,7 +12,7 @@ public class Journal extends ObjetDuJeu{
 
     @Override
     public void draw(GraphicsContext contexte, Camera camera) {
-        
+
 
     }
 
