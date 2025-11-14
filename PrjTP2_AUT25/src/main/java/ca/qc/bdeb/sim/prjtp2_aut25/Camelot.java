@@ -7,10 +7,10 @@ import javafx.scene.input.KeyCode;
 
 public class Camelot extends ObjetDuJeu {
     private boolean toucheLeSol;
-    private static final double VITESSE_BASE = 400;
+    public static final double VITESSE_BASE = 400;
     private static final double VITESSE_MIN = 200;
     private static final double VITESSE_MAX = 600;
-    private static final double ACCELERATION_CONTROLE = 300;
+    public static final double ACCELERATION_CONTROLE = 300;
     private static final double VITESSE_SAUT = 500;
 
     public Camelot() {
@@ -89,8 +89,8 @@ public class Camelot extends ObjetDuJeu {
             acceleration = new Point2D(ACCELERATION_CONTROLE, acceleration.getY());
 
         } else if (velocite.getX() > VITESSE_BASE) {
-
             //En haut de 400 ---> ralentir vers la vitesse de base
+            acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
         }
 
         //---Gestion de saut---
@@ -103,7 +103,7 @@ public class Camelot extends ObjetDuJeu {
 
     }
 
-    private boolean toucheLeSol() {
+    private void toucheLeSol() {
 
         if (position.getY() >= MainJavaFX.HEIGHT - taille.getY()) {
             toucheLeSol = true;
@@ -112,8 +112,6 @@ public class Camelot extends ObjetDuJeu {
         } else {
             toucheLeSol = false;
         }
-
-        return toucheLeSol;
     }
 
 

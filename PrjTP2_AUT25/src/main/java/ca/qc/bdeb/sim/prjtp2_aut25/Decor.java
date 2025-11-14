@@ -25,14 +25,20 @@ public class Decor extends ObjetDuJeu {
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
 
         if (gauche) {
-            acceleration = new Point2D(300, acceleration.getY());
+            acceleration = new Point2D(Camelot.ACCELERATION_CONTROLE, acceleration.getY());
         } else if (droite) {
-            acceleration = new Point2D(-300, acceleration.getY());
-        } else if (!droite && !gauche && velocite.getX() != -400) {
-            int signe = velocite.getX() > 0 ? -1 : +1;
-            acceleration = new Point2D(signe * -300, acceleration.getY());
+            acceleration = new Point2D(-Camelot.ACCELERATION_CONTROLE, acceleration.getY());
+        } else if (velocite.getX() < -Camelot.VITESSE_BASE) {
+            acceleration = new Point2D(Camelot.ACCELERATION_CONTROLE, acceleration.getY());
+        } else if(velocite.getX() > -Camelot.VITESSE_BASE){
+            acceleration = new Point2D(-Camelot.ACCELERATION_CONTROLE, acceleration.getY());
         }
 
+        super.update(deltaTemps);
+
+        //Limite la vitesse du décor (selon le camelot)
+        double vitesseX = Math.clamp(velocite.getX(), -600,-200);
+        velocite = new Point2D(vitesseX,velocite.getY());
 
     }
 
