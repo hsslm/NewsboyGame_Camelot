@@ -19,7 +19,7 @@ public class Camera {
     }
 
     public void suivreCamelot(Camelot camelot){
-        positionCamera = new Point2D(camelot.position.getX(), 0);
+        positionCamera = new Point2D(camelot.position.getX()-180, 0);
 
     }
 }
