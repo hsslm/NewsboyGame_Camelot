@@ -7,7 +7,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,8 +24,28 @@ public class MainJavaFX extends Application {
     public void start(Stage stage) throws IOException {
         var root = new Pane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
+        var context = canva.getGraphicsContext2D();
+        root.setBackground(new Background(new BackgroundFill(Color.MIDNIGHTBLUE,null,null)));
 
-        Camelot camelot = new Camelot();
+
+
+        AnimationTimer timer= new AnimationTimer(){
+            private long dernierTemps = System.nanoTime();
+
+            @Override
+            public void handle(long l) {
+                double deltaTemps = (l-dernierTemps)*1e-9;
+
+
+
+
+
+                dernierTemps = l;
+
+
+            }
+        };
+        timer.start();
 
 
         root.getChildren().add(canva);
