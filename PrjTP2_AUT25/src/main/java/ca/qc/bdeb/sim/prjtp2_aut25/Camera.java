@@ -22,4 +22,8 @@ public class Camera {
         positionCamera = new Point2D(camelot.position.getX()-180, 0);
 
     }
+
+    public double getPositionX() {
+        return positionCamera.getX();
+    }
 }

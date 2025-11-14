@@ -17,6 +17,8 @@ public abstract class ObjetDuJeu {
         this.acceleration = new Point2D(0, 0);
     }
 
+    public ObjetDuJeu() {
+    }
 
     public void update(double deltaTemps){
         updatePhysique(deltaTemps);
