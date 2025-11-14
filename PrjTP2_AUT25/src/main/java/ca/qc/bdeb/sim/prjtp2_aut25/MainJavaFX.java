@@ -7,9 +7,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -24,12 +23,22 @@ public class MainJavaFX extends Application {
     public void start(Stage stage) throws IOException {
 
         var root = new Pane();
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
-        var context = canva.getGraphicsContext2D();
-        //root.setBackground(new Background(new BackgroundFill(Color.MIDNIGHTBLUE, null, null)));
-        var camera = new Camera();
-        var camelot = new Camelot();
+        var stack = new StackPane();
 
+
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
+
+        stack.getChildren().add(canva);
+        root.getChildren().add(stack);
+        stack.setStyle("-fx-background-color: black");
+        stack.getChildren().add(new ImageView(new Image("brique.png")));
+
+
+        var context = canva.getGraphicsContext2D();
+
+        var camera = new Camera();
+
+        var camelot = new Camelot();
 
 
 
@@ -44,6 +53,7 @@ public class MainJavaFX extends Application {
                 camelot.update(deltaTemps);
                 camera.suivreCamelot(camelot);
 
+                context.clearRect(0,0,WIDTH,HEIGHT);
                 camelot.draw(context,camera);
 
 
@@ -56,7 +66,8 @@ public class MainJavaFX extends Application {
         timer.start();
 
 
-        root.getChildren().add(canva);
+
+
         stage.setTitle("Camelot à vélo");
         stage.getIcons().add(new Image("journal.png"));
         stage.setScene(scene);
