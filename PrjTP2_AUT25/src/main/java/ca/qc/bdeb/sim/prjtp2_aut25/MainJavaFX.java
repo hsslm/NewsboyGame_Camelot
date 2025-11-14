@@ -40,7 +40,7 @@ public class MainJavaFX extends Application {
         var camera = new Camera();
 
         var camelot = new Camelot();
-        var maison = new Maison();
+        var decor = new Decor();
 
 
 
@@ -52,12 +52,12 @@ public class MainJavaFX extends Application {
             public void handle(long temps) {
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
 
-                maison.update(deltaTemps);
+                decor.update(deltaTemps);
                 camelot.update(deltaTemps);
                 camera.suivreCamelot(camelot);
 
                 context.clearRect(0,0,WIDTH,HEIGHT);
-                maison.draw(context,camera);
+                decor.draw(context,camera);
                 camelot.draw(context,camera);
 
 

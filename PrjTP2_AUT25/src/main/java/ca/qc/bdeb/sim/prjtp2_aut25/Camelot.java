@@ -6,14 +6,20 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 public class Camelot extends ObjetDuJeu {
+    private boolean toucheLeSol;
     public Camelot() {
-        super(new Point2D(180, MainJavaFX.HEIGHT - 144), new Point2D(400, 0), new Point2D(172, 144), new Point2D(0, 1500));
+        super(new Point2D(180, MainJavaFX.HEIGHT - 144),
+                new Point2D(400, 0), new Point2D(172, 144),
+                new Point2D(0, 1500));
+
+        this.toucheLeSol = true;
     }
 
     @Override
     public void update(double deltaTemps) {
         super.update(deltaTemps);
         velocite = new Point2D(Math.clamp(velocite.getX(), 200,600), velocite.getY());
+        position = new Point2D(position.getX(), Math.clamp(position.getY(), 0,MainJavaFX.HEIGHT));
         boolean gauche = Input.isKeyPressed(KeyCode.LEFT);
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
 
@@ -27,6 +33,15 @@ public class Camelot extends ObjetDuJeu {
             int signe = velocite.getX() > 0 ? -1 : +1;
             acceleration = new Point2D(signe * 300, acceleration.getY());
         }
+
+        boolean jump = Input.isKeyPressed(KeyCode.SPACE)||Input.isKeyPressed(KeyCode.UP);
+        isToucheLeSol();
+        if (toucheLeSol && jump) {
+            velocite = new Point2D(velocite.getX(), -500);
+            toucheLeSol = false;
+        }
+
+
 
 
     }
@@ -53,5 +68,14 @@ public class Camelot extends ObjetDuJeu {
             return "camelot2.png";
         }
 
+    }
+    private void isToucheLeSol() {
+        if (position.getY() > MainJavaFX.HEIGHT - taille.getY()) {
+            toucheLeSol = true;
+            velocite = new Point2D(velocite.getX(), 0);
+            position = new Point2D(position.getX(), MainJavaFX.HEIGHT - taille.getY());
+        } else {
+            toucheLeSol = false;
+        }
     }
 }
