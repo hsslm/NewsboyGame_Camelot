@@ -13,13 +13,13 @@ public class Camelot extends ObjetDuJeu {
     @Override
     public void draw(GraphicsContext context, Camera camera) {
 
-        var imgCamelot1 = new Image("camelot1.png");
-        var imgCamelot2 = new Image("camelot2.png");
+        var imgCamelot = new Image(choisirImageAAfficher());
+
         // On doit d'abord faire la transformation
         var coordoEcran = camera.coordoEcran(position);
 
         context.drawImage(
-               imgCamelot1, coordoEcran.getX(), coordoEcran.getY(),
+                imgCamelot,coordoEcran.getX(), coordoEcran.getY(),
                 taille.getX(), taille.getY()
         );
     }
