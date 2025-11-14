@@ -2,6 +2,7 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -65,6 +67,17 @@ public class MainJavaFX extends Application {
             }
         };
         timer.start();
+        scene.setOnKeyPressed((e) -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                // Ferme JavaFX
+                Platform.exit();
+            } else {
+                Input.setKeyPressed(e.getCode(), true);
+            }
+        });
+        scene.setOnKeyReleased((e) -> {
+            Input.setKeyPressed(e.getCode(), false);
+        });
 
 
         stage.setTitle("Camelot à vélo");
@@ -84,7 +97,7 @@ public class MainJavaFX extends Application {
                     break;
                 case KeyCode.VK_RIGHT :
                     break;
-                    case KeyCode.VK_Lef
+                    case KeyCode.Left
 
 
             }

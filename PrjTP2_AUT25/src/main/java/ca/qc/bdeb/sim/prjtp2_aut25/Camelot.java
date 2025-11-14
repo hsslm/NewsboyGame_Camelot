@@ -57,6 +57,8 @@ public class Camelot extends ObjetDuJeu {
                imgCamelot, coordoEcran.getX(), coordoEcran.getY(),
                 taille.getX(), taille.getY()
         );
+
+
     }
     public String choisirImageAAfficher(){
         double index;
