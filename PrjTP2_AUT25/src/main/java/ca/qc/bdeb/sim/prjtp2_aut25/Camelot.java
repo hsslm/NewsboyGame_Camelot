@@ -17,10 +17,21 @@ public class Camelot extends ObjetDuJeu {
         var imgCamelot2 = new Image("camelot2.png");
         // On doit d'abord faire la transformation
         var coordoEcran = camera.coordoEcran(position);
-        // On dessine selon l'endroit où la caméra regarde
+
         context.drawImage(
                imgCamelot1, coordoEcran.getX(), coordoEcran.getY(),
                 taille.getX(), taille.getY()
         );
+    }
+    public String choisirImageAAfficher(){
+        double index;
+        double tempsTotal = System.nanoTime()*1e-9;
+        index = Math.floor(tempsTotal * 4)%2;
+        if(index==0){
+           return "camelot1.png";
+        }else{
+            return "camelot2.png";
+        }
+
     }
 }
