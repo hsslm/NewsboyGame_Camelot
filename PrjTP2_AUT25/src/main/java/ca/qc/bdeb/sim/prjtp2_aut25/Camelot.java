@@ -8,6 +8,7 @@ public class Camelot extends ObjetDuJeu {
     public Camelot() {
         super(new Point2D(180, MainJavaFX.HEIGHT - 144), new Point2D(400, 0), new Point2D(172, 144), new Point2D(0, 1500));
     }
+    
 
 
     @Override

@@ -33,6 +33,7 @@ public class MainJavaFX extends Application {
 
 
 
+
         AnimationTimer timer = new AnimationTimer() {
             private long dernierTemps = System.nanoTime();
 
@@ -41,6 +42,7 @@ public class MainJavaFX extends Application {
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
 
                 camelot.update(deltaTemps);
+                camera.suivreCamelot(camelot);
 
                 camelot.draw(context,camera);
 
