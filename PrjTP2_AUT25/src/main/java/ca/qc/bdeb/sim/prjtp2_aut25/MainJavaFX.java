@@ -22,25 +22,31 @@ public class MainJavaFX extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
         var root = new Pane();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         var context = canva.getGraphicsContext2D();
-        root.setBackground(new Background(new BackgroundFill(Color.MIDNIGHTBLUE,null,null)));
+        //root.setBackground(new Background(new BackgroundFill(Color.MIDNIGHTBLUE, null, null)));
+        var camera = new Camera();
+        var camelot = new Camelot();
 
 
 
-        AnimationTimer timer= new AnimationTimer(){
+
+        AnimationTimer timer = new AnimationTimer() {
             private long dernierTemps = System.nanoTime();
 
             @Override
-            public void handle(long l) {
-                double deltaTemps = (l-dernierTemps)*1e-9;
+            public void handle(long temps) {
+                double deltaTemps = (temps - dernierTemps) * 1e-9;
+
+                camelot.update(deltaTemps);
+
+                camelot.draw(context,camera);
 
 
 
-
-
-                dernierTemps = l;
+                dernierTemps = temps;
 
 
             }
