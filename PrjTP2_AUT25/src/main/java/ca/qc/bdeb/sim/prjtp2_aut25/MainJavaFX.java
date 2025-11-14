@@ -31,7 +31,7 @@ public class MainJavaFX extends Application {
         stack.getChildren().add(canva);
         root.getChildren().add(stack);
         stack.setStyle("-fx-background-color: black");
-        stack.getChildren().add(new ImageView(new Image("brique.png")));
+
 
 
         var context = canva.getGraphicsContext2D();
@@ -39,6 +39,7 @@ public class MainJavaFX extends Application {
         var camera = new Camera();
 
         var camelot = new Camelot();
+        var maison = new Maison();
 
 
 
@@ -54,6 +55,7 @@ public class MainJavaFX extends Application {
                 camera.suivreCamelot(camelot);
 
                 context.clearRect(0,0,WIDTH,HEIGHT);
+                maison.draw(context,camera);
                 camelot.draw(context,camera);
 
 

@@ -8,8 +8,13 @@ public class Camelot extends ObjetDuJeu {
     public Camelot() {
         super(new Point2D(180, MainJavaFX.HEIGHT - 144), new Point2D(400, 0), new Point2D(172, 144), new Point2D(0, 1500));
     }
-    
 
+    @Override
+    public void update(double deltaTemps) {
+        super.update(deltaTemps);
+
+        System.out.println(position.getX());
+    }
 
     @Override
     public void draw(GraphicsContext context, Camera camera) {
@@ -19,7 +24,7 @@ public class Camelot extends ObjetDuJeu {
         var coordoEcran = camera.coordoEcran(position);
 
         context.drawImage(
-               imgCamelot, 180, MainJavaFX.HEIGHT-144,
+               imgCamelot, coordoEcran.getX(), coordoEcran.getY(),
                 taille.getX(), taille.getY()
         );
     }
