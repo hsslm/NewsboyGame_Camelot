@@ -14,6 +14,7 @@ public abstract class ObjetDuJeu {
         this.velocite = velocite;
         this.taille = taille;
         this.acceleration = acceleration;
+        this.acceleration = new Point2D(0, 0);
     }
 
 

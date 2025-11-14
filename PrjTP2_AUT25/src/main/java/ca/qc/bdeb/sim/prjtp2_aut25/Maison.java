@@ -11,6 +11,5 @@ public class Maison extends ObjetDuJeu{
     @Override
     public void draw(GraphicsContext contexte, Camera camera) {
 
-
     }
 }
