@@ -19,8 +19,7 @@ public class Camelot extends ObjetDuJeu {
         var coordoEcran = camera.coordoEcran(position);
 
         context.drawImage(
-               imgCamelot1, coordoEcran.getX(), coordoEcran.getY(),
-                taille.getX(), taille.getY()
+               imgCamelot1, coordoEcran.getX(), coordoEcran.getY()
         );
     }
     public String choisirImageAAfficher(){
