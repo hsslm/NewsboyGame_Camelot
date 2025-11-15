@@ -16,7 +16,6 @@ public abstract class ObjetDuJeu {
         this.acceleration = acceleration;
         this.acceleration = new Point2D(0, 0);
     }
-
     public ObjetDuJeu() {
     }
 
