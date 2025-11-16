@@ -5,7 +5,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
-import java.sql.SQLOutput;
 
 public class Camelot extends ObjetDuJeu {
     private boolean toucheLeSol;

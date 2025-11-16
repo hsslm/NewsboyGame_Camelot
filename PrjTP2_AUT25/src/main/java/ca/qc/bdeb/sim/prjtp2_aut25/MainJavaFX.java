@@ -2,20 +2,12 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 
 public class MainJavaFX extends Application {
     public final static Canvas canva = new Canvas(900, 580);
@@ -23,21 +15,20 @@ public class MainJavaFX extends Application {
     public final static double HEIGHT = canva.getHeight();
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
 
         var root = new Pane();
         var stack = new StackPane();
-
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        var scene = new Scene(root, WIDTH, HEIGHT);
         var context = canva.getGraphicsContext2D();
 
         stack.getChildren().add(canva);
         root.getChildren().add(stack);
         stack.setStyle("-fx-background-color: black");
 
-        var camera = new Camera();
-        var camelot = new Camelot();
-        var decor = new Decor();
+        //Crée partie
+        var partie = new Partie();
+        partie.creerEcranChargement(context);
 
 
         AnimationTimer timer = new AnimationTimer() {
@@ -47,17 +38,10 @@ public class MainJavaFX extends Application {
             public void handle(long temps) {
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
 
-
-                camelot.update(deltaTemps);
-                camera.suivreCamelot(camelot);
-
-                context.clearRect(0, 0, WIDTH, HEIGHT);
-                decor.draw(context, camera);
-                camelot.draw(context, camera);
-
+                partie.update(deltaTemps);
+                partie.draw(context);
 
                 dernierTemps = temps;
-
 
             }
         };
