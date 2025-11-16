@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import static javafx.scene.paint.Color.*;
+import javafx.scene.paint.Color;
 
 public class EcranDeChargement {
     private String texte;
@@ -21,11 +21,11 @@ public class EcranDeChargement {
     public void draw(GraphicsContext context) {
 
         //Fond noir
-        context.setFill(BLACK);
+        context.setFill(Color.BLACK);
         context.fillRect(0, 0, MainJavaFX.WIDTH, MainJavaFX.HEIGHT);
 
         //Texte vert affichant le niveau
-        context.setFill(HOTPINK);
+        context.setFill(Color.HOTPINK);
         context.setFont(Font.font("Comic Sans MS", 55));
         context.setTextAlign(TextAlignment.CENTER);
         context.setTextBaseline(VPos.CENTER);

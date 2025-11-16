@@ -1,0 +1,81 @@
+package ca.qc.bdeb.sim.prjtp2_aut25.Maison;
+
+import ca.qc.bdeb.sim.prjtp2_aut25.Camera;
+import ca.qc.bdeb.sim.prjtp2_aut25.MainJavaFX;
+import ca.qc.bdeb.sim.prjtp2_aut25.ObjetDuJeu;
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+
+import java.util.Random;
+
+public class Maison extends ObjetDuJeu {
+    private int adresse;
+    private boolean abonneeAuJournal;
+    private Image imagePorte;
+    //position de la porte (coordonnée x de la maison)
+    private Point2D position;
+    private BoiteAuxLettres boiteAuxLettres;
+    private Random random;
+
+    public int getAdresse() {
+        return adresse;
+    }
+
+    public boolean estAbonneeAuJournal() {
+        return abonneeAuJournal;
+    }
+
+    public BoiteAuxLettres getBoiteAuxLettres() {
+        return boiteAuxLettres;
+    }
+
+    public Maison(int adresse, double positionX) {
+        this.position = new Point2D(positionX, 0);
+        this.abonneeAuJournal = random.nextBoolean();
+        this.adresse = adresse;
+        this.imagePorte = new Image("porte.png");
+
+        //Crée la boîte à lettres de cette maison
+        creerBoiteAuxLettres();
+    }
+
+    private void creerBoiteAuxLettres() {
+        //Position en x : 200px à droite de la maison
+        double boiteX = position.getX() + 200;
+
+        //Position en y : entre 20% et 70% de la hauteur de l'écran
+        double minY = MainJavaFX.HEIGHT * 0.20;
+        double maxY = MainJavaFX.HEIGHT * 0.7;
+        double boiteY = random.nextDouble(minY, maxY);
+
+        this.boiteAuxLettres = new BoiteAuxLettres(new Point2D(boiteX, boiteY), abonneeAuJournal);
+    }
+
+
+    @Override
+    public void draw(GraphicsContext context, Camera camera) {
+
+        var coordoEcran = camera.coordoEcran(position);
+        //Dessine l'image de la porte
+        context.drawImage(imagePorte, coordoEcran.getX(), coordoEcran.getY());
+
+        //Affiche l'adresse sur la porte
+        context.setFill(Color.YELLOW);
+        context.setFont(Font.font("Comic Sans MS",24));
+        context.setTextAlign(TextAlignment.CENTER);
+
+        context.fillText(
+                String.valueOf(adresse),
+                coordoEcran.getX()+ (imagePorte.getWidth() / 2), //Centre de la porte
+                coordoEcran.getY() + 30 //Position verticale selon l'image
+        );
+
+
+        boiteAuxLettres.draw(context, camera);
+
+    }
+}

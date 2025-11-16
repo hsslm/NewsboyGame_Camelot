@@ -16,6 +16,9 @@ public abstract class ObjetDuJeu {
         this.acceleration = acceleration;
     }
 
+    protected ObjetDuJeu() {
+    }
+
     public void update(double deltaTemps){
         updatePhysique(deltaTemps);
     }
