@@ -5,6 +5,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
+import java.sql.SQLOutput;
+
 public class Camelot extends ObjetDuJeu {
     private boolean toucheLeSol;
     public static final double VITESSE_BASE = 400;
@@ -76,21 +78,30 @@ public class Camelot extends ObjetDuJeu {
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
         boolean sauter = Input.isKeyPressed(KeyCode.SPACE) || Input.isKeyPressed(KeyCode.UP);
 
+        System.out.println("Gauche :" + gauche + " Droite : " + droite + " Vitesse : " + velocite.getX());
         //---Gestion accélération horizontale---
 
         if (gauche) {
             //Flèche gauche --> ralentir
             acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
+            System.out.println("RALENTIR ! Accélération: -300 ");
         } else if (droite) {
             //Flèche gauche --> accélérer
             acceleration = new Point2D(ACCELERATION_CONTROLE, acceleration.getY());
-        } else if (velocite.getX() < VITESSE_BASE) {
-            // En bas de 400 ---> accélérer vers la vitesse de base
+            System.out.println("ACCÉLÉRATION ! : + 300");
+        } else if (velocite.getX() < VITESSE_BASE - 1) {
+            // En bas de 399 ---> accélérer vers la vitesse de base
             acceleration = new Point2D(ACCELERATION_CONTROLE, acceleration.getY());
-
-        } else if (velocite.getX() > VITESSE_BASE) {
-            //En haut de 400 ---> ralentir vers la vitesse de base
+            System.out.println("Retour à 400 (trop lent)");
+        } else if (velocite.getX() > VITESSE_BASE +1) {
+            //En haut de 401 ---> ralentir vers la vitesse de base
             acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
+            System.out.println("Retour à 400 (trop rapide)");
+        } else {
+            //Entre 399 et 401 --> Assez proche donc pas d'accélération
+            acceleration = new Point2D(0, acceleration.getY());
+            System.out.println("Stable à 400");
+
         }
 
         //---Gestion de saut---
@@ -98,6 +109,7 @@ public class Camelot extends ObjetDuJeu {
         if (toucheLeSol && sauter) {
             velocite = new Point2D(velocite.getX(), -VITESSE_SAUT);
             toucheLeSol = false;
+            System.out.println("saut!!!!");
         }
 
 
