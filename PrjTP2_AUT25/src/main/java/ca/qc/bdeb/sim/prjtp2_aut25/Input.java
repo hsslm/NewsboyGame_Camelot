@@ -9,7 +9,7 @@ public class Input {
     // Ensemble des touches sur lesquelles on appuie en ce moment
     private static Set<KeyCode> touches = new HashSet<>();
 
-    // personnage.update() va demander si certaines touches sont appuyées ou non
+    //demander si certaines touches sont appuyées ou non
     public static boolean isKeyPressed(KeyCode code) {
         return touches.contains(code);
     }

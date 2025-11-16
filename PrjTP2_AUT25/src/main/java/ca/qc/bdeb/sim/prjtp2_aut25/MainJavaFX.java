@@ -30,6 +30,8 @@ public class MainJavaFX extends Application {
         var partie = new Partie();
         partie.creerEcranChargement(context);
 
+        //Gestion des touches pressées
+        touchesPressees(scene);
 
         AnimationTimer timer = new AnimationTimer() {
             private long dernierTemps = System.nanoTime();
@@ -45,6 +47,8 @@ public class MainJavaFX extends Application {
 
             }
         };
+
+
         timer.start();
 
 
@@ -52,6 +56,16 @@ public class MainJavaFX extends Application {
         stage.getIcons().add(new Image("journal.png"));
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void touchesPressees(Scene scene) {
+        scene.setOnKeyPressed((e) -> {
+            Input.setKeyPressed(e.getCode(), true);
+        });
+
+        scene.setOnKeyReleased((e) -> {
+            Input.setKeyPressed(e.getCode(), false);
+        });
     }
 
     public static void main(String[] args) {
