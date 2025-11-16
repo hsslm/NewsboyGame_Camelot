@@ -13,7 +13,6 @@ public class EcranDeChargement {
     private boolean termine;
 
     public EcranDeChargement(String texte) {
-
         this.texte = texte;
         this.tempsDebut = System.nanoTime();
     }
@@ -30,7 +29,8 @@ public class EcranDeChargement {
         context.setTextAlign(TextAlignment.CENTER);
         context.setTextBaseline(VPos.CENTER);
 
-        context.fillText(texte,
+        context.fillText(
+                texte,
                 MainJavaFX.WIDTH / 2,
                 MainJavaFX.HEIGHT / 2
         );

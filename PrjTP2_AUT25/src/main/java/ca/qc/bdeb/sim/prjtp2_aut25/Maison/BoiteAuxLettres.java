@@ -13,7 +13,8 @@ public class BoiteAuxLettres extends ObjetDuJeu {
     private Image image;
 
     public BoiteAuxLettres(Point2D position, boolean estAbonnee) {
-        super(position,
+        super(
+                position,
                 Point2D.ZERO,
                 new Point2D(81, 76),
                 Point2D.ZERO

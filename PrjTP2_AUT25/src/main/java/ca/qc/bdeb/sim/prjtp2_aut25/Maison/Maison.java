@@ -41,7 +41,6 @@ public class Maison extends ObjetDuJeu {
         this.abonneeAuJournal = random.nextBoolean();
         this.adresse = adresse;
 
-
         //Crée la boîte à lettres de cette maison
         creerBoiteAuxLettres();
     }
@@ -66,6 +65,7 @@ public class Maison extends ObjetDuJeu {
         //Dessine l'image de la porte
         context.drawImage(imagePorte, coordoEcran.getX(), coordoEcran.getY());
 
+        //À revoir pcq les adresses semblent pas claires
         //Affiche l'adresse sur la porte
         context.setFill(Color.YELLOW);
         context.setFont(Font.font("Comic Sans MS",24));
