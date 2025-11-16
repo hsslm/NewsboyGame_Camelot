@@ -28,19 +28,14 @@ public class MainJavaFX extends Application {
         var root = new Pane();
         var stack = new StackPane();
 
-        //touchesPressees(scene);
-
         Scene scene = new Scene(root, WIDTH, HEIGHT);
+        var context = canva.getGraphicsContext2D();
 
         stack.getChildren().add(canva);
         root.getChildren().add(stack);
         stack.setStyle("-fx-background-color: black");
 
-
-        var context = canva.getGraphicsContext2D();
-
         var camera = new Camera();
-
         var camelot = new Camelot();
         var decor = new Decor();
 
@@ -67,17 +62,6 @@ public class MainJavaFX extends Application {
             }
         };
         timer.start();
-        scene.setOnKeyPressed((e) -> {
-            if (e.getCode() == KeyCode.ESCAPE) {
-                // Ferme JavaFX
-                Platform.exit();
-            } else {
-                Input.setKeyPressed(e.getCode(), true);
-            }
-        });
-        scene.setOnKeyReleased((e) -> {
-            Input.setKeyPressed(e.getCode(), false);
-        });
 
 
         stage.setTitle("Camelot à vélo");
@@ -85,33 +69,6 @@ public class MainJavaFX extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
-    /*private static void touchesPresses(Scene scene) {
-        //Quitter avec le bouton ESCAPE
-        scene.setOnKeyPressed((e) -> {
-
-            switch (e.getCode()) {
-                case KeyCode.ESCAPE:
-                    //ferme programm
-                    Platform.exit();
-                    break;
-                case KeyCode.VK_RIGHT :
-                    break;
-                    case KeyCode.Left
-
-
-            }
-            if (e.getCode() == KeyCode.ESCAPE) {// Ferme JavaFXPlatform.exit();
-            } else {
-                Input.setKeyPressed(e.getCode(), true);
-            }
-        });
-        scene.setOnKeyReleased((e) -> {
-            Input.setKeyPressed(e.getCode(), false);
-        });
-    }
-
-     */
 
     public static void main(String[] args) {
         launch();

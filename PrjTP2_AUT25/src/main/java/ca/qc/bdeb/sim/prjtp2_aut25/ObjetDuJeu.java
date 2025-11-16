@@ -15,12 +15,9 @@ public abstract class ObjetDuJeu {
         this.taille = taille;
         this.acceleration = acceleration;
     }
-    public ObjetDuJeu() {
-    }
 
     public void update(double deltaTemps){
         updatePhysique(deltaTemps);
-
     }
     protected void updatePhysique(double deltaTemps){
         velocite = velocite.add(acceleration.multiply(deltaTemps));

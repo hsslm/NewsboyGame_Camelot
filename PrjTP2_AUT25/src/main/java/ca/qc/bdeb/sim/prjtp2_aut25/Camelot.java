@@ -27,20 +27,18 @@ public class Camelot extends ObjetDuJeu {
     @Override
     public void update(double deltaTemps) {
 
-        //Gèrer les inputs (touches du clavier)
+        //Gère les inputs (touches du clavier)
         gererInput();
 
-        //Appliquer la physique (vélocité et position)
-        super.update(deltaTemps);
+        //Applique la physique (vélocité et position)
+        super.updatePhysique(deltaTemps);
 
-
-        //Limiter la vitesse horizontale
+        //Limite la vitesse horizontale
         double vitesseX = Math.clamp(velocite.getX(), VITESSE_MIN, VITESSE_MAX);
         velocite = new Point2D(vitesseX, velocite.getY());
 
-        //Vérifier si le camelot touche le sol
+        //Vérifie si le camelot touche le sol
         toucheLeSol();
-
 
     }
 
@@ -79,6 +77,7 @@ public class Camelot extends ObjetDuJeu {
         boolean sauter = Input.isKeyPressed(KeyCode.SPACE) || Input.isKeyPressed(KeyCode.UP);
 
         System.out.println("Gauche :" + gauche + " Droite : " + droite + " Vitesse : " + velocite.getX());
+
         //---Gestion accélération horizontale---
 
         if (gauche) {
@@ -86,14 +85,14 @@ public class Camelot extends ObjetDuJeu {
             acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
             System.out.println("RALENTIR ! Accélération: -300 ");
         } else if (droite) {
-            //Flèche gauche --> accélérer
+            //Flèche droite --> accélérer
             acceleration = new Point2D(ACCELERATION_CONTROLE, acceleration.getY());
             System.out.println("ACCÉLÉRATION ! : + 300");
         } else if (velocite.getX() < VITESSE_BASE - 1) {
-            // En bas de 399 ---> accélérer vers la vitesse de base
+            // En bas de 399 --> accélérer vers la vitesse de base
             acceleration = new Point2D(ACCELERATION_CONTROLE, acceleration.getY());
             System.out.println("Retour à 400 (trop lent)");
-        } else if (velocite.getX() > VITESSE_BASE +1) {
+        } else if (velocite.getX() > VITESSE_BASE + 1) {
             //En haut de 401 ---> ralentir vers la vitesse de base
             acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
             System.out.println("Retour à 400 (trop rapide)");
@@ -104,7 +103,7 @@ public class Camelot extends ObjetDuJeu {
 
         }
 
-        //---Gestion de saut---
+        //---Gestion accélération verticale (saut)---
 
         if (toucheLeSol && sauter) {
             velocite = new Point2D(velocite.getX(), -VITESSE_SAUT);
