@@ -34,10 +34,13 @@ public class Maison extends ObjetDuJeu {
     }
 
     public Maison(int adresse, double positionX) {
-        this.position = new Point2D(positionX, 0);
+        this.random = new Random();
+        this.imagePorte = new Image("porte.png");
+        double porteY = MainJavaFX.HEIGHT - imagePorte.getHeight();
+        this.position = new Point2D(positionX, porteY);
         this.abonneeAuJournal = random.nextBoolean();
         this.adresse = adresse;
-        this.imagePorte = new Image("porte.png");
+
 
         //Crée la boîte à lettres de cette maison
         creerBoiteAuxLettres();
@@ -73,7 +76,6 @@ public class Maison extends ObjetDuJeu {
                 coordoEcran.getX()+ (imagePorte.getWidth() / 2), //Centre de la porte
                 coordoEcran.getY() + 30 //Position verticale selon l'image
         );
-
 
         boiteAuxLettres.draw(context, camera);
 
