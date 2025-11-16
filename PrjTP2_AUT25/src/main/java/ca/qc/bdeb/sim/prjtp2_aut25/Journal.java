@@ -11,8 +11,18 @@ public class Journal extends ObjetDuJeu{
     }
 
     @Override
-    public void draw(GraphicsContext contexte, Camera camera) {
+    public void draw(GraphicsContext context, Camera camera) {
 
+        var imgJournal = new Image("journal.png");
+        var coordoEcran = camera.coordoEcran(position);
+
+        context.drawImage(
+                imgJournal,
+                coordoEcran.getX(),
+                coordoEcran.getY(),
+                taille.getX(),
+                taille.getY()
+        );
 
     }
 

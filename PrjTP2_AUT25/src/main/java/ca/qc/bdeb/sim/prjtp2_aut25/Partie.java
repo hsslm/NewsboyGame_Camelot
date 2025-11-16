@@ -3,9 +3,12 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.ArrayList;
+
 public class Partie {
     private Decor decor;
     private Camelot camelot;
+    private ArrayList<Journal> journaux;
     private Camera camera;
     private EcranDeChargement ecranDeChargement;
     private boolean chargementEnCours;
@@ -21,6 +24,7 @@ public class Partie {
         this.camelot = new Camelot();
         this.decor = new Decor();
         this.camera = new Camera();
+        this.journaux = new ArrayList<>(12);
         this.chargementEnCours = true;
     }
 
