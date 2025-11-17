@@ -20,6 +20,11 @@ public class Journal extends ObjetDuJeu{
     public void update(double deltaTemps) {
         super.update(deltaTemps);
 
+        if(velocite.magnitude()>=1500){
+            double max = 1500;
+            velocite = velocite.multiply(max / velocite.magnitude());
+        }
+
     }
 
     @Override
@@ -27,6 +32,7 @@ public class Journal extends ObjetDuJeu{
 
         var imgJournal = new Image("journal.png");
         var coordoEcran = camera.coordoEcran(position);
+        //est-ce que c'est le milieu du camelot? les journaux doivent partir du milieu du camelot
 
         context.drawImage(
                 imgJournal,
@@ -37,23 +43,29 @@ public class Journal extends ObjetDuJeu{
         );
 
     }
+    /*
+    Gestion des journaux qui disparaissent; je ne suis pas certaine que ça marche + je ne suis pas sure où ça va
+
+
+     if(getBas()>MainJavaFX.HEIGHT||getGauche()>MainJavaFX.WIDTH||getDroite()<0){
+            contexte.clearRect(taille.getX(),taille.getY(),position.getX(),position.getY());
+        }
+
+     */
+
+
+
+
+
     //je suis pas sure de cette méthode, je voulais juste pas effacer ce que j'ai fait
-    public void gererJournal(GraphicsContext contexte,Camelot camelot, Camera camera,double nbJournaux){
+    public void lancerJournal(GraphicsContext contexte,Camelot camelot, Camera camera){
         double now = System.nanoTime();
-        if(now-tempsAuDernierLancer>0.5&&nbJournaux>0){
+        if(now-tempsAuDernierLancer>0.5){
             velocite=calculerVitesseInitiale(camelot);
             draw(contexte,camera);
             tempsAuDernierLancer = now;
+        }
 
-        }
-        if(velocite.magnitude()>=1500){
-            double max = 1500;
-            velocite = velocite.multiply(max / velocite.magnitude());
-        }
-        if(getBas()>MainJavaFX.HEIGHT||getGauche()>MainJavaFX.WIDTH||getDroite()<0){
-            contexte.clearRect(taille.getX(),taille.getY(),position.getX(),position.getY());
-            nbJournaux = nbJournaux-1;
-        }
 
     }
     //Calcule la vitesse initiale du journal selon sa masse, les touches enfoncées et la vitesse du camelot
@@ -84,6 +96,12 @@ public class Journal extends ObjetDuJeu{
         return vitesseInitiale;
 
 
+    }
+    public boolean enCollision(ObjetDuJeu objet){
+
+
+
+        return false;
     }
 
 
