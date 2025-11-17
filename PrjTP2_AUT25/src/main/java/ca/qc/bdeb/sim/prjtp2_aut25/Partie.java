@@ -2,6 +2,7 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class Partie {
     private Decor decor;
     private Camelot camelot;
     private ArrayList<Journal> journaux;
+    private int nbJournauxRestants = 0;
     private ArrayList<Maison> maisons;
     private Camera camera;
     private EcranDeChargement ecranDeChargement;
@@ -27,10 +29,11 @@ public class Partie {
         this.camelot = new Camelot();
         this.decor = new Decor();
         this.camera = new Camera();
-        this.journaux = new ArrayList<>(12);
         this.chargementEnCours = true;
 
         genererMaisons();
+        genererJournaux();
+
     }
 
     private void genererMaisons() {
@@ -47,6 +50,15 @@ public class Partie {
             maisons.add(new Maison(adresse, positionX));
         }
     }
+    private void genererJournaux(){
+        journaux = new ArrayList<>(12+nbJournauxRestants);
+
+        Random gen = new Random();
+        double masse = gen.nextDouble(1,2);
+        for(Journal j : journaux){
+            j = new Journal(Point2D.ZERO,Point2D.ZERO,masse);
+        }
+    }
 
     public void creerEcranChargement(GraphicsContext context) {
         this.ecranDeChargement = new EcranDeChargement("Niveau " + niveauActuel);
@@ -56,6 +68,7 @@ public class Partie {
         if (!chargementEnCours) {
             camelot.update(deltaTemps);
             camera.suivreCamelot(camelot);
+
         }
     }
 
@@ -82,6 +95,8 @@ public class Partie {
 
     public void niveauSuivant(GraphicsContext context) {
         niveauActuel++;
+        //calcule le nombre de journeaux restants pour le prochain niveau
+        nbJournauxRestants = journaux.size();
         demarrerNiveau();
         creerEcranChargement(context);
     }

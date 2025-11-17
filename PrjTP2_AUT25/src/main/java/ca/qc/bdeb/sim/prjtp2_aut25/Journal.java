@@ -7,22 +7,18 @@ import javafx.scene.input.KeyCode;
 
 public class Journal extends ObjetDuJeu{
     private double masse;
-    private int nbJournaux;
+
     private final Point2D QUANTITE_HAUT = new Point2D(900,-900);
     private final Point2D QUANTITE_AVANT = new Point2D(150,-1100);
-    public Journal(Point2D position, Point2D velocite, double masse, int nbJournaux) {
+    private double tempsAuDernierLancer;
+    public Journal(Point2D position, Point2D velocite, double masse) {
         super(position, velocite,new Point2D(52,31) , new Point2D(0,1500));
         this.masse = masse;
-        this.nbJournaux = nbJournaux;
     }
 
-    @Override
+
     public void update(double deltaTemps) {
         super.update(deltaTemps);
-
-        
-
-
 
     }
 
@@ -41,28 +37,48 @@ public class Journal extends ObjetDuJeu{
         );
 
     }
-    public Point2D calculerVitesseInitiale(){
+    //je suis pas sure de cette méthode, je voulais juste pas effacer ce que j'ai fait
+    public void gererJournal(GraphicsContext contexte,Camelot camelot, Camera camera,double nbJournaux){
+        double now = System.nanoTime();
+        if(now-tempsAuDernierLancer>0.5&&nbJournaux>0){
+            velocite=calculerVitesseInitiale(camelot);
+            draw(contexte,camera);
+            tempsAuDernierLancer = now;
+
+        }
+        if(velocite.magnitude()>=1500){
+            double max = 1500;
+            velocite = velocite.multiply(max / velocite.magnitude());
+        }
+        if(getBas()>MainJavaFX.HEIGHT||getGauche()>MainJavaFX.WIDTH||getDroite()<0){
+            contexte.clearRect(taille.getX(),taille.getY(),position.getX(),position.getY());
+            nbJournaux = nbJournaux-1;
+        }
+
+    }
+    //Calcule la vitesse initiale du journal selon sa masse, les touches enfoncées et la vitesse du camelot
+    public Point2D calculerVitesseInitiale(Camelot camelot){
         boolean lancerHaut = Input.isKeyPressed(KeyCode.Z);
         boolean lancerAvant = Input.isKeyPressed(KeyCode.X);
         boolean lancerPlusFort = Input.isKeyPressed(KeyCode.SHIFT);
 
         Point2D vitesseInitiale = Point2D.ZERO;
         if(lancerHaut&&lancerPlusFort) {
-            vitesseInitiale = velocite.add(new Point2D(QUANTITE_HAUT.getX() / masse, QUANTITE_HAUT.getY() / masse));
+            vitesseInitiale = camelot.velocite.add(new Point2D(QUANTITE_HAUT.getX() / masse, QUANTITE_HAUT.getY() / masse));
             vitesseInitiale = vitesseInitiale.multiply(1.5);
 
         }
         else if(lancerAvant&&lancerPlusFort){
-            vitesseInitiale = velocite.add(new Point2D(QUANTITE_AVANT.getX() / masse, QUANTITE_AVANT.getY() / masse));
+            vitesseInitiale = camelot.velocite.add(new Point2D(QUANTITE_AVANT.getX() / masse, QUANTITE_AVANT.getY() / masse));
             vitesseInitiale = vitesseInitiale.multiply(1.5);
 
         }
         else if(lancerHaut){
-            vitesseInitiale = velocite.add(new Point2D(QUANTITE_HAUT.getX() / masse, QUANTITE_HAUT.getY() / masse));
+            vitesseInitiale = camelot.velocite.add(new Point2D(QUANTITE_HAUT.getX() / masse, QUANTITE_HAUT.getY() / masse));
 
         }
         else if(lancerAvant){
-            vitesseInitiale = velocite.add(new Point2D(QUANTITE_AVANT.getX() / masse, QUANTITE_AVANT.getY() / masse));
+            vitesseInitiale = camelot.velocite.add(new Point2D(QUANTITE_AVANT.getX() / masse, QUANTITE_AVANT.getY() / masse));
         }
 
         return vitesseInitiale;
