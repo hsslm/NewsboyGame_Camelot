@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Maison extends ObjetDuJeu {
@@ -20,6 +21,8 @@ public class Maison extends ObjetDuJeu {
     private Point2D position;
     private BoiteAuxLettres boiteAuxLettres;
     private Random random;
+    private boolean aDesFenetres;
+    private ArrayList<Fenetre> fenetres;
 
     public int getAdresse() {
         return adresse;
@@ -28,6 +31,8 @@ public class Maison extends ObjetDuJeu {
     public boolean estAbonneeAuJournal() {
         return abonneeAuJournal;
     }
+
+
 
     public BoiteAuxLettres getBoiteAuxLettres() {
         return boiteAuxLettres;
@@ -41,8 +46,34 @@ public class Maison extends ObjetDuJeu {
         this.abonneeAuJournal = random.nextBoolean();
         this.adresse = adresse;
 
+
         //Crée la boîte à lettres de cette maison
         creerBoiteAuxLettres();
+        //crée les fenetres s'il y en a
+        creerFenetres();
+    }
+    private void creerFenetres(){
+
+        int nbFenetres = random.nextInt(0,3);
+        System.out.println(nbFenetres);
+        if(nbFenetres==0){
+            this.aDesFenetres=false;
+        }else if(nbFenetres>0){
+            this.aDesFenetres = true;
+            fenetres = new ArrayList<>();
+
+
+            for(int i = 0;i<=nbFenetres;i++){
+
+                    fenetres.add(new Fenetre(new Point2D(position.getX()+ 300,50),abonneeAuJournal));
+                 if(nbFenetres==2){
+                    fenetres.add(new Fenetre(new Point2D(position.getX()+600,50),abonneeAuJournal));
+                }
+            }
+        }
+
+
+
     }
 
     private void creerBoiteAuxLettres() {
@@ -78,6 +109,12 @@ public class Maison extends ObjetDuJeu {
         );
 
         boiteAuxLettres.draw(context, camera);
+        if(aDesFenetres){
+            for(Fenetre fenetre : fenetres){
+                fenetre.draw(context, camera);
+            }
+
+        }
 
     }
 }
