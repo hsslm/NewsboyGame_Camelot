@@ -12,12 +12,12 @@ public class Journal extends ObjetDuJeu{
     private final Point2D QUANTITE_AVANT = new Point2D(150,-1100);
     private double tempsAuDernierLancer;
     public Journal(Point2D position, Point2D velocite, double masse) {
-        super(position, velocite,new Point2D(52,31) , new Point2D(0,1500));
+        super(position, Point2D.ZERO,new Point2D(52,31) , new Point2D(0,1500));
         this.masse = masse;
     }
 
 
-    public void update(double deltaTemps) {
+    public void update(double deltaTemps) {//marche
         super.update(deltaTemps);
 
         if(velocite.magnitude()>=1500){
@@ -41,6 +41,7 @@ public class Journal extends ObjetDuJeu{
                 taille.getX(),
                 taille.getY()
         );
+        System.out.println("Hello");
 
     }
     /*
@@ -59,13 +60,7 @@ public class Journal extends ObjetDuJeu{
 
     //je suis pas sure de cette méthode, je voulais juste pas effacer ce que j'ai fait
     public void lancerJournal(GraphicsContext contexte,Camelot camelot, Camera camera){
-        double now = System.nanoTime();
-        if(now-tempsAuDernierLancer>0.5){
-            velocite=calculerVitesseInitiale(camelot);
-            draw(contexte,camera);
-            tempsAuDernierLancer = now;
-        }
-
+            velocite = calculerVitesseInitiale(camelot);
 
     }
     //Calcule la vitesse initiale du journal selon sa masse, les touches enfoncées et la vitesse du camelot
@@ -75,6 +70,7 @@ public class Journal extends ObjetDuJeu{
         boolean lancerPlusFort = Input.isKeyPressed(KeyCode.SHIFT);
 
         Point2D vitesseInitiale = Point2D.ZERO;
+
         if(lancerHaut&&lancerPlusFort) {
             vitesseInitiale = camelot.velocite.add(new Point2D(QUANTITE_HAUT.getX() / masse, QUANTITE_HAUT.getY() / masse));
             vitesseInitiale = vitesseInitiale.multiply(1.5);

@@ -4,6 +4,7 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,12 +13,14 @@ public class Partie {
     private Decor decor;
     private Camelot camelot;
     private ArrayList<Journal> journaux;
+    private ArrayList<Journal> journauxLances;
     private int nbJournauxRestants = 0;
     private ArrayList<Maison> maisons;
     private Camera camera;
     private EcranDeChargement ecranDeChargement;
     private boolean chargementEnCours;
     private int niveauActuel;
+    private int i=0;
 
     public Partie() {
         this.niveauActuel = 1;
@@ -30,9 +33,11 @@ public class Partie {
         this.decor = new Decor();
         this.camera = new Camera();
         this.chargementEnCours = true;
+        this.journauxLances = new ArrayList<>();
 
         genererMaisons();
         genererJournaux();
+        System.out.println(journaux.size());
 
     }
 
@@ -51,13 +56,16 @@ public class Partie {
         }
     }
     private void genererJournaux(){
-        journaux = new ArrayList<>(12+nbJournauxRestants);
+        journaux = new ArrayList<>();
 
         Random gen = new Random();
         double masse = gen.nextDouble(1,2);
-        for(Journal j : journaux){
-            j = new Journal(Point2D.ZERO,Point2D.ZERO,masse);
+        for(int i =0;i<12+nbJournauxRestants;i++){
+            journaux.add(new Journal(camelot.getCentre(),Point2D.ZERO,masse));
+            System.out.println("bonjour");
+
         }
+
     }
 
     public void creerEcranChargement(GraphicsContext context) {
@@ -66,8 +74,12 @@ public class Partie {
 
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
+
             camelot.update(deltaTemps);
             camera.suivreCamelot(camelot);
+            for(Journal j : journauxLances) {// update les journaux qui ont été lancé seulement
+                j.update(deltaTemps);
+            }
 
         }
     }
@@ -89,9 +101,24 @@ public class Partie {
             }
             //Dessin du camelot
             camelot.draw(context, camera);
+            if(Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X)){ //keyPressed ne marche pas pour lancer l'objet
+                journaux.get(0).lancerJournal(context,camelot,camera);//cela ne marche pas
+                journauxLances.add(journaux.get(0));
+                journaux.remove(0);
+            }
+
+           if(journauxLances.size()>0) { //journaux qu'il faut continuer à draw après avoir été lancé
+               for (Journal j : journauxLances) {
+                   j.draw(context, camera);
+               }
+           }
+
+
+
         }
 
     }
+
 
     public void niveauSuivant(GraphicsContext context) {
         niveauActuel++;
