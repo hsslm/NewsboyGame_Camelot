@@ -37,9 +37,7 @@ public class Journal extends ObjetDuJeu{
         context.drawImage(
                 imgJournal,
                 coordoEcran.getX(),
-                coordoEcran.getY(),
-                taille.getX(),
-                taille.getY()
+                coordoEcran.getY()
         );
 
 

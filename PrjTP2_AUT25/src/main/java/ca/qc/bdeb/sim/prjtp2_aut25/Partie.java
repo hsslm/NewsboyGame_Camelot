@@ -2,6 +2,7 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
+import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Portefeuille;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -12,6 +13,7 @@ import java.util.Random;
 public class Partie {
     private Decor decor;
     private Camelot camelot;
+    private Portefeuille portefeuille;
     private int nbJournaux;
     private int nbJournauxRestants = 0;
     private ArrayList<Maison> maisons;
@@ -21,6 +23,7 @@ public class Partie {
     private int niveauActuel;
     private double masseJournaux;
     private static Random random = new Random();
+
 
 
     public Partie() {

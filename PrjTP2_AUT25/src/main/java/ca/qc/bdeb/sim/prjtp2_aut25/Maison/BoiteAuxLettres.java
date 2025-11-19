@@ -32,6 +32,7 @@ public class BoiteAuxLettres extends ObjetDuJeu {
             if (estAbonnee) {
                 image = ImageManager.getImage("boite-aux-lettres-vert.png");
                 //À faire : ajouter 1$ au camelot
+
             } else {
                 image = ImageManager.getImage("boite-aux-lettres-rouge.png");
             }
