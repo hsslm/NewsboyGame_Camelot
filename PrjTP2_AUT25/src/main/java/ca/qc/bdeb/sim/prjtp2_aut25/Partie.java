@@ -12,15 +12,16 @@ import java.util.Random;
 public class Partie {
     private Decor decor;
     private Camelot camelot;
-    private ArrayList<Journal> journaux;
-    private ArrayList<Journal> journauxLances;
+    private int nbJournaux;
     private int nbJournauxRestants = 0;
     private ArrayList<Maison> maisons;
     private Camera camera;
     private EcranDeChargement ecranDeChargement;
     private boolean chargementEnCours;
     private int niveauActuel;
-    private int i=0;
+    private double masseJournaux;
+    private static Random random = new Random();
+
 
     public Partie() {
         this.niveauActuel = 1;
@@ -33,19 +34,18 @@ public class Partie {
         this.decor = new Decor();
         this.camera = new Camera();
         this.chargementEnCours = true;
-        this.journauxLances = new ArrayList<>();
+        this.nbJournaux = 12+nbJournauxRestants;
+
+        this.masseJournaux = random.nextDouble(1,2);
 
         genererMaisons();
-        genererJournaux();
-        System.out.println(journaux.size());
-
     }
 
     private void genererMaisons() {
         maisons = new ArrayList<>();
 
         //Adresse de la première maison : entre 100 et 950
-        Random random = new Random();
+
         int premiereAdresse = random.nextInt(100, 950);
 
         //Écart de 2 entre les adresses des maisons et écart de 1300 entre les positions des maisons
@@ -55,18 +55,7 @@ public class Partie {
             maisons.add(new Maison(adresse, positionX));
         }
     }
-    private void genererJournaux(){
-        journaux = new ArrayList<>();
 
-        Random gen = new Random();
-        double masse = gen.nextDouble(1,2);
-        for(int i =0;i<12+nbJournauxRestants;i++){
-            journaux.add(new Journal(camelot.getCentre(),Point2D.ZERO,masse));
-            System.out.println("bonjour");
-
-        }
-
-    }
 
     public void creerEcranChargement(GraphicsContext context) {
         this.ecranDeChargement = new EcranDeChargement("Niveau " + niveauActuel);
@@ -77,9 +66,7 @@ public class Partie {
 
             camelot.update(deltaTemps);
             camera.suivreCamelot(camelot);
-            for(Journal j : journauxLances) {// update les journaux qui ont été lancé seulement
-                j.update(deltaTemps);
-            }
+
 
         }
     }
@@ -101,17 +88,13 @@ public class Partie {
             }
             //Dessin du camelot
             camelot.draw(context, camera);
-            if(Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X)){ //keyPressed ne marche pas pour lancer l'objet
-                journaux.get(0).lancerJournal(context,camelot,camera);//cela ne marche pas
-                journauxLances.add(journaux.get(0));
-                journaux.remove(0);
+            if((Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X))&&nbJournaux>0){
+                //keyPressed ne marche pas pour lancer l'objet
+                var journal = new Journal(camelot.getCentre(),Point2D.ZERO,masseJournaux);
+                journal.lancerJournal(context,camelot,camera);
             }
 
-           if(journauxLances.size()>0) { //journaux qu'il faut continuer à draw après avoir été lancé
-               for (Journal j : journauxLances) {
-                   j.draw(context, camera);
-               }
-           }
+
 
 
 
@@ -123,7 +106,8 @@ public class Partie {
     public void niveauSuivant(GraphicsContext context) {
         niveauActuel++;
         //calcule le nombre de journeaux restants pour le prochain niveau
-        nbJournauxRestants = journaux.size();
+        nbJournauxRestants = nbJournaux;
+        nbJournaux = 0;
         demarrerNiveau();
         creerEcranChargement(context);
     }

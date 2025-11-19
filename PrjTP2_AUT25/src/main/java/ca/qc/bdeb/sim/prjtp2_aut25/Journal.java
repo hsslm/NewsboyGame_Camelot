@@ -60,7 +60,8 @@ public class Journal extends ObjetDuJeu{
 
     //je suis pas sure de cette méthode, je voulais juste pas effacer ce que j'ai fait
     public void lancerJournal(GraphicsContext contexte,Camelot camelot, Camera camera){
-            velocite = calculerVitesseInitiale(camelot);
+            velocite = new Point2D(400,0);
+            draw(contexte,camera);
 
     }
     //Calcule la vitesse initiale du journal selon sa masse, les touches enfoncées et la vitesse du camelot
