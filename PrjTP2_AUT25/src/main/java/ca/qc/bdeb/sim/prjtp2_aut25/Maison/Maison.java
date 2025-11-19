@@ -31,9 +31,6 @@ public class Maison extends ObjetDuJeu {
     public boolean estAbonneeAuJournal() {
         return abonneeAuJournal;
     }
-
-
-
     public BoiteAuxLettres getBoiteAuxLettres() {
         return boiteAuxLettres;
     }
