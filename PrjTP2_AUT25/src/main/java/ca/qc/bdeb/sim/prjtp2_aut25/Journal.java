@@ -70,7 +70,7 @@ public class Journal extends ObjetDuJeu{
         if((Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X))&&nbJournaux>0){
             //keyPressed ne marche pas pour lancer l'objet
 
-            velocite = calculerVitesseInitiale(camelot);
+           // velocite = calculerVitesseInitiale(camelot);
             draw(context,camera);
 
             System.out.println(nbJournaux);
@@ -80,7 +80,7 @@ public class Journal extends ObjetDuJeu{
 
 
     //Calcule la vitesse initiale du journal selon sa masse, les touches enfoncées et la vitesse du camelot
-    public Point2D calculerVitesseInitiale(Camelot camelot){
+    public void calculerVitesseInitiale(Camelot camelot){
         boolean lancerHaut = Input.isKeyPressed(KeyCode.Z);
         boolean lancerAvant = Input.isKeyPressed(KeyCode.X);
         boolean lancerPlusFort = Input.isKeyPressed(KeyCode.SHIFT);
@@ -105,7 +105,7 @@ public class Journal extends ObjetDuJeu{
             vitesseInitiale = camelot.velocite.add(new Point2D(QUANTITE_AVANT.getX() / masse, QUANTITE_AVANT.getY() / masse));
         }
 
-        return vitesseInitiale;
+        velocite = vitesseInitiale;
 
 
     }
