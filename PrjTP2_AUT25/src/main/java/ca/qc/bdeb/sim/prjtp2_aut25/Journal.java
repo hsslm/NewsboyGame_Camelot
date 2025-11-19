@@ -10,10 +10,12 @@ public class Journal extends ObjetDuJeu{
 
     private final Point2D QUANTITE_HAUT = new Point2D(900,-900);
     private final Point2D QUANTITE_AVANT = new Point2D(150,-1100);
+    private long tempsDebut;
     private double tempsAuDernierLancer;
     public Journal(Point2D position, Point2D velocite, double masse) {
         super(position, Point2D.ZERO,new Point2D(52,31) , new Point2D(0,1500));
         this.masse = masse;
+        this.tempsDebut = System.nanoTime();
     }
 
 
@@ -42,6 +44,13 @@ public class Journal extends ObjetDuJeu{
 
 
     }
+    public boolean estTermine() {
+        //Vérifie si 0.5 seconde se sont écoulées
+        long tempsActuel = System.nanoTime();
+
+        double tempsEcoule = (tempsActuel - tempsDebut) * 1e-9;
+        return tempsEcoule >= 0.5;
+    }
     /*
     Gestion des journaux qui disparaissent; je ne suis pas certaine que ça marche + je ne suis pas sure où ça va
 
@@ -57,9 +66,15 @@ public class Journal extends ObjetDuJeu{
 
 
     //je suis pas sure de cette méthode, je voulais juste pas effacer ce que j'ai fait
-    public void lancerJournal(GraphicsContext contexte,Camelot camelot, Camera camera){
-            velocite = new Point2D(400,0);
-            draw(contexte,camera);
+    public void lancerJournal(GraphicsContext context,Camelot camelot, Camera camera, int nbJournaux){
+        if((Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X))&&nbJournaux>0){
+            //keyPressed ne marche pas pour lancer l'objet
+
+            velocite = calculerVitesseInitiale(camelot);
+            draw(context,camera);
+
+            System.out.println(nbJournaux);
+        }
 
     }
     //Calcule la vitesse initiale du journal selon sa masse, les touches enfoncées et la vitesse du camelot
