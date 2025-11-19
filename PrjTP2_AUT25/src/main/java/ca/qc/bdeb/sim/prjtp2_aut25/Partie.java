@@ -22,8 +22,7 @@ public class Partie {
     private int niveauActuel;
     private double masseJournaux;
     private static final Random RANDOM = new Random();
-
-
+    private long tempsApresLancer = 0;
 
 
     public Partie() {
@@ -38,9 +37,9 @@ public class Partie {
         this.camera = new Camera();
         this.chargementEnCours = true;
         this.journalPeutEtreLance = true;
-        this.nbJournaux = 12+nbJournauxRestants;
+        this.nbJournaux = 12 + nbJournauxRestants;
 
-        this.masseJournaux = RANDOM.nextDouble(1,2);
+        this.masseJournaux = RANDOM.nextDouble(1, 2);
 
         genererMaisons();
     }
@@ -67,6 +66,7 @@ public class Partie {
 
 
     private ArrayList<Journal> testDuProf = new ArrayList<>();
+
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
 
@@ -82,21 +82,25 @@ public class Partie {
              */
 
 
-            if(Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X)) {
-                //keyPressed ne marche pas pour lancer l'objet
+            if (Input.isKeyPressed(KeyCode.Z) || Input.isKeyPressed(KeyCode.X)) {//marche pas
+                if (isJournalPeutEtreLance() && nbJournaux > 0) {
 
-                var journal = new Journal(camelot.getCentre(), Point2D.ZERO, masseJournaux);
 
-                journal.calculerVitesseInitiale(camelot);
-                testDuProf.add(journal);
+                    //keyPressed ne marche pas pour lancer l'objet
 
+                    var journal = new Journal(camelot.getCentre(), Point2D.ZERO, masseJournaux);
+
+                    journal.calculerVitesseInitiale(camelot);
+                    testDuProf.add(journal);
+                    nbJournaux--;
+                    tempsApresLancer = System.nanoTime();
+                }
 
 
             }
 
 
-
-            for(var journal : testDuProf) {
+            for (var journal : testDuProf) {
                 journal.update(deltaTemps);
             }
         }
@@ -120,7 +124,7 @@ public class Partie {
             //Dessin du camelot
             camelot.draw(context, camera);
 
-            for(var journal : testDuProf){
+            for (var journal : testDuProf) {
                 journal.draw(context, camera);
             }
 
@@ -138,5 +142,17 @@ public class Partie {
         demarrerNiveau();
         creerEcranChargement(context);
     }
+
+    public boolean isJournalPeutEtreLance() {
+        if(System.nanoTime()-tempsApresLancer>=0.5){
+            journalPeutEtreLance = true;
+        }else{
+            journalPeutEtreLance= false;
+        }
+
+
+        return journalPeutEtreLance;
+    }
+
 
 }
