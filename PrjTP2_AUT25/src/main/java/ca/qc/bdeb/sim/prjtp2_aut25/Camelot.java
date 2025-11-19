@@ -13,6 +13,7 @@ public class Camelot extends ObjetDuJeu {
     private static final double VITESSE_MAX = 600;
     public static final double ACCELERATION_CONTROLE = 300;
     private static final double VITESSE_SAUT = 500;
+    private static int soldePortefeuille;
 
     public Camelot() {
         super(new Point2D(180, MainJavaFX.HEIGHT - 144),
@@ -58,7 +59,7 @@ public class Camelot extends ObjetDuJeu {
 
     }
 
-    public String choisirImageAAfficher() {
+    private String choisirImageAAfficher() {
         double index;
         double tempsTotal = System.nanoTime() * 1e-9;
         index = Math.floor(tempsTotal * 4) % 2;
@@ -81,6 +82,7 @@ public class Camelot extends ObjetDuJeu {
 
         if (gauche) {
             //Flèche gauche --> ralentir
+
             acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
             System.out.println("RALENTIR ! Accélération: -300 ");
         } else if (droite) {
@@ -123,6 +125,14 @@ public class Camelot extends ObjetDuJeu {
             toucheLeSol = false;
         }
     }
+
+    private void augmenterSoldePortfeuille(int montant){
+        soldePortefeuille += montant;
+    }
+    private void diminuerSoldePortfeuille(int montant){
+        soldePortefeuille -= montant;
+    }
+
 
 
 }
