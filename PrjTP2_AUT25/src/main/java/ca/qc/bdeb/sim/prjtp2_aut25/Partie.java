@@ -22,7 +22,8 @@ public class Partie {
     private boolean chargementEnCours;
     private int niveauActuel;
     private double masseJournaux;
-    private static Random random = new Random();
+    private static final Random RANDOM = new Random();
+
 
 
 
@@ -39,7 +40,7 @@ public class Partie {
         this.chargementEnCours = true;
         this.nbJournaux = 12+nbJournauxRestants;
 
-        this.masseJournaux = random.nextDouble(1,2);
+        this.masseJournaux = RANDOM.nextDouble(1,2);
 
         genererMaisons();
     }
@@ -49,7 +50,7 @@ public class Partie {
 
         //Adresse de la première maison : entre 100 et 950
 
-        int premiereAdresse = random.nextInt(100, 950);
+        int premiereAdresse = RANDOM.nextInt(100, 950);
 
         //Écart de 2 entre les adresses des maisons et écart de 1300 entre les positions des maisons
         for (int i = 0; i < 12; i++) {
@@ -64,6 +65,8 @@ public class Partie {
         this.ecranDeChargement = new EcranDeChargement("Niveau " + niveauActuel);
     }
 
+
+    private ArrayList<Journal> testDuProf = new ArrayList<>();
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
 
@@ -71,6 +74,23 @@ public class Partie {
             camera.suivreCamelot(camelot);
 
 
+
+
+            if(Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X)) {
+                //keyPressed ne marche pas pour lancer l'objet
+
+                var journal = new Journal(camelot.getCentre(), Point2D.ZERO, masseJournaux);
+                if(journal.estTermine()) {
+                    testDuProf.add(journal);
+                }
+
+            }
+
+
+
+            for(var journal : testDuProf) {
+                journal.update(deltaTemps);
+            }
         }
     }
 
@@ -92,19 +112,9 @@ public class Partie {
             //Dessin du camelot
             camelot.draw(context, camera);
 
-            if((Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X))&&nbJournaux>0){
-                //keyPressed ne marche pas pour lancer l'objet
-                var journal = new Journal(camelot.getCentre(),Point2D.ZERO,masseJournaux);
-                journal.lancerJournal(context,camelot,camera);
-                System.out.println(nbJournaux);
-                nbJournaux--;
-                System.out.println(nbJournaux);
+            for(var journal : testDuProf){
+                journal.draw(context, camera);
             }
-
-
-
-
-
 
 
         }
