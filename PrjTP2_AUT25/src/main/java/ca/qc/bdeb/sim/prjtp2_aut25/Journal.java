@@ -77,6 +77,8 @@ public class Journal extends ObjetDuJeu{
         }
 
     }
+
+
     //Calcule la vitesse initiale du journal selon sa masse, les touches enfoncées et la vitesse du camelot
     public Point2D calculerVitesseInitiale(Camelot camelot){
         boolean lancerHaut = Input.isKeyPressed(KeyCode.Z);

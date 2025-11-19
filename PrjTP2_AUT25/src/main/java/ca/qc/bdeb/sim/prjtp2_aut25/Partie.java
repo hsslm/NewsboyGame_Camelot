@@ -18,6 +18,7 @@ public class Partie {
     private Camera camera;
     private EcranDeChargement ecranDeChargement;
     private boolean chargementEnCours;
+    private boolean journalPeutEtreLance;
     private int niveauActuel;
     private double masseJournaux;
     private static final Random RANDOM = new Random();
@@ -36,6 +37,7 @@ public class Partie {
         this.decor = new Decor();
         this.camera = new Camera();
         this.chargementEnCours = true;
+        this.journalPeutEtreLance = true;
         this.nbJournaux = 12+nbJournauxRestants;
 
         this.masseJournaux = RANDOM.nextDouble(1,2);
@@ -72,6 +74,12 @@ public class Partie {
             camera.suivreCamelot(camelot);
 
 
+            /*
+            if(journalPeutEtreLance) {
+
+            }
+
+             */
 
 
             if(Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X)) {
