@@ -1,6 +1,7 @@
 package ca.qc.bdeb.sim.prjtp2_aut25.Maison;
 
 import ca.qc.bdeb.sim.prjtp2_aut25.Camera;
+import ca.qc.bdeb.sim.prjtp2_aut25.ImageManager;
 import ca.qc.bdeb.sim.prjtp2_aut25.MainJavaFX;
 import ca.qc.bdeb.sim.prjtp2_aut25.ObjetDuJeu;
 import javafx.geometry.Point2D;
@@ -37,7 +38,7 @@ public class Maison extends ObjetDuJeu {
 
     public Maison(int adresse, double positionX) {
         this.random = new Random();
-        this.imagePorte = new Image("porte.png");
+        this.imagePorte = ImageManager.getImage("porte.png");
         double porteY = MainJavaFX.HEIGHT - imagePorte.getHeight();
         this.position = new Point2D(positionX, porteY);
         this.abonneeAuJournal = random.nextBoolean();

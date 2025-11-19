@@ -44,7 +44,7 @@ public class Camelot extends ObjetDuJeu {
     @Override
     public void draw(GraphicsContext context, Camera camera) {
 
-        var imgCamelot = new Image(choisirImageAAfficher());
+        var imgCamelot = ImageManager.getImage(choisirImageAAfficher());
         var coordoEcran = camera.coordoEcran(position);
 
         context.drawImage(
