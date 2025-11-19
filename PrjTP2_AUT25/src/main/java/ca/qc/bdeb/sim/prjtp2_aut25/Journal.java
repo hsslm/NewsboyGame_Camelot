@@ -41,7 +41,7 @@ public class Journal extends ObjetDuJeu{
                 taille.getX(),
                 taille.getY()
         );
-        System.out.println("Hello");
+
 
     }
     /*

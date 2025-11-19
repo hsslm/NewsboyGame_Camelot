@@ -88,11 +88,17 @@ public class Partie {
             }
             //Dessin du camelot
             camelot.draw(context, camera);
+
             if((Input.isKeyPressed(KeyCode.Z)||Input.isKeyPressed(KeyCode.X))&&nbJournaux>0){
                 //keyPressed ne marche pas pour lancer l'objet
                 var journal = new Journal(camelot.getCentre(),Point2D.ZERO,masseJournaux);
                 journal.lancerJournal(context,camelot,camera);
+                System.out.println(nbJournaux);
+                nbJournaux--;
+                System.out.println(nbJournaux);
             }
+
+
 
 
 
