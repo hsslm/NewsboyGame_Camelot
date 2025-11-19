@@ -30,9 +30,9 @@ public class Journal extends ObjetDuJeu{
     @Override
     public void draw(GraphicsContext context, Camera camera) {
 
-        var imgJournal = new Image("journal.png");
+        var imgJournal = ImageManager.getImage("journal.png");
         var coordoEcran = camera.coordoEcran(position);
-        //est-ce que c'est le milieu du camelot? les journaux doivent partir du milieu du camelot
+        //est-ce que c'est le milieu du camelot ? les journaux doivent partir du milieu du camelot
 
         context.drawImage(
                 imgJournal,
@@ -60,7 +60,8 @@ public class Journal extends ObjetDuJeu{
 
     //je suis pas sure de cette méthode, je voulais juste pas effacer ce que j'ai fait
     public void lancerJournal(GraphicsContext contexte,Camelot camelot, Camera camera){
-            velocite = calculerVitesseInitiale(camelot);
+            velocite = new Point2D(400,0);
+            draw(contexte,camera);
 
     }
     //Calcule la vitesse initiale du journal selon sa masse, les touches enfoncées et la vitesse du camelot

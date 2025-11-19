@@ -1,6 +1,7 @@
 package ca.qc.bdeb.sim.prjtp2_aut25.Maison;
 
 import ca.qc.bdeb.sim.prjtp2_aut25.Camera;
+import ca.qc.bdeb.sim.prjtp2_aut25.ImageManager;
 import ca.qc.bdeb.sim.prjtp2_aut25.ObjetDuJeu;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,7 +22,7 @@ public class BoiteAuxLettres extends ObjetDuJeu {
         );
         this.estAbonnee = estAbonnee;
         this.aRecuJournal = false;
-        this.image = new Image("boite-aux-lettres.png");
+        this.image = ImageManager.getImage("boite-aux-lettres.png");
     }
 
     public void toucheeParJournal() {
@@ -29,10 +30,10 @@ public class BoiteAuxLettres extends ObjetDuJeu {
             aRecuJournal = true;
             //Change l'image selon si abonnée ou non
             if (estAbonnee) {
-                image = new Image("boite-aux-lettres-vert.png");
+                image = ImageManager.getImage("boite-aux-lettres-vert.png");
                 //À faire : ajouter 1$ au camelot
             } else {
-                image = new Image("boite-aux-lettres-rouge.png");
+                image = ImageManager.getImage("boite-aux-lettres-rouge.png");
             }
         }
     }
