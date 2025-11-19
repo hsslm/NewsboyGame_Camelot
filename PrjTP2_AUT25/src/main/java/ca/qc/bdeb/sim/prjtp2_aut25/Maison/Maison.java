@@ -55,7 +55,7 @@ public class Maison extends ObjetDuJeu {
     private void creerFenetres(){
 
         int nbFenetres = random.nextInt(0,3);
-        System.out.println(nbFenetres);
+
         if(nbFenetres==0){
             this.aDesFenetres=false;
         }else if(nbFenetres>0){
