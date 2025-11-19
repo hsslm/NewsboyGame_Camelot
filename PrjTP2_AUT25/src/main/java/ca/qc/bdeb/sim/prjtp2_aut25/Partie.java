@@ -78,9 +78,11 @@ public class Partie {
                 //keyPressed ne marche pas pour lancer l'objet
 
                 var journal = new Journal(camelot.getCentre(), Point2D.ZERO, masseJournaux);
-                if(journal.estTermine()) {
-                    testDuProf.add(journal);
-                }
+
+                journal.calculerVitesseInitiale(camelot);
+                testDuProf.add(journal);
+
+
 
             }
 
