@@ -46,4 +46,6 @@ public class BoiteAuxLettres extends ObjetDuJeu {
         );
 
     }
+
+
 }
