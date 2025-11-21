@@ -149,8 +149,6 @@ public class Partie {
         }else{
             journalPeutEtreLance= false;
         }
-
-
         return journalPeutEtreLance;
     }
 
