@@ -2,7 +2,6 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 
@@ -126,14 +125,23 @@ public class Camelot extends ObjetDuJeu {
         }
     }
 
+    public Point2D getVelocite(){
+        return velocite;
+    }
+
+    public Point2D getCentre(){
+        return new Point2D(
+                position.getX()+ taille.getX() / 2,
+                position.getY() + taille.getY() / 2
+        );
+    }
+
     private void augmenterSoldePortfeuille(int montant){
         soldePortefeuille += montant;
     }
     private void diminuerSoldePortfeuille(int montant){
         soldePortefeuille -= montant;
     }
-
-
 
 }
 

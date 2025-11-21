@@ -44,6 +44,6 @@ public abstract class ObjetDuJeu {
     public Point2D getCentre() {
         return position.add(taille.multiply(1/2.0));
     }
-
+    public Point2D getVelocite(){ return getVelocite();}
 
 }

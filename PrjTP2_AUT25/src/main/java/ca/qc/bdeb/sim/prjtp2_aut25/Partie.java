@@ -2,43 +2,55 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Partie {
+
+    //Constantes :
+    private static final Random RANDOM = new Random();
+    private final int NB_MAISONS = 12;
+    private final int JOURNAUX_PAR_NIVEAUX = 12;
+    private final double DELAI_ENTRE_LANCERS = 0.5;
+
+    //Objets du jeu :
     private Decor decor;
     private Camelot camelot;
-    private int nbJournaux;
-    private int nbJournauxRestants = 0;
-    private ArrayList<Maison> maisons;
     private Camera camera;
-    private EcranDeChargement ecranDeChargement;
-    private boolean chargementEnCours;
-    private boolean journalPeutEtreLance;
-    private int niveauActuel;
-    private double masseJournaux;
-    private static final Random RANDOM = new Random();
-    private long tempsApresLancer = 0;
+    private ArrayList<Maison> maisons;
+    private ArrayList<Journal> journaux;
 
+    //État du jeu :
+    private int niveauActuel;
+    private int nbJournaux;
+    private int nbJournauxRestants;
+    private double masseJournaux;
+    private boolean chargementEnCours;
+    private EcranDeChargement ecranDeChargement;
+    private long tempsApresLancer;
 
     public Partie() {
         this.niveauActuel = 1;
+        this.journaux = new ArrayList<>();
+        this.nbJournauxRestants = 0;
+        this.tempsApresLancer = 0;
         //Création des objets nécéssaires pour le début d'une partie
         demarrerNiveau();
     }
 
     public void demarrerNiveau() {
+
+        //Objets
         this.camelot = new Camelot();
         this.decor = new Decor();
         this.camera = new Camera();
-        this.chargementEnCours = true;
-        this.journalPeutEtreLance = true;
-        this.nbJournaux = 12 + nbJournauxRestants;
 
+        //État du niveau
+        this.chargementEnCours = true;
+        this.nbJournaux = JOURNAUX_PAR_NIVEAUX + nbJournauxRestants;
         this.masseJournaux = RANDOM.nextDouble(1, 2);
 
         genererMaisons();
@@ -48,11 +60,10 @@ public class Partie {
         maisons = new ArrayList<>();
 
         //Adresse de la première maison : entre 100 et 950
-
         int premiereAdresse = RANDOM.nextInt(100, 950);
 
         //Écart de 2 entre les adresses des maisons et écart de 1300 entre les positions des maisons
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < NB_MAISONS; i++) {
             int adresse = premiereAdresse + (i * 2);
             double positionX = 1300 + (i * 1300);
             maisons.add(new Maison(adresse, positionX));
@@ -60,49 +71,36 @@ public class Partie {
     }
 
 
-    public void creerEcranChargement(GraphicsContext context) {
+    public void creerEcranChargement() {
         this.ecranDeChargement = new EcranDeChargement("Niveau " + niveauActuel);
     }
 
-
-    private ArrayList<Journal> testDuProf = new ArrayList<>();
 
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
 
             camelot.update(deltaTemps);
             camera.suivreCamelot(camelot);
-
-
-            /*
-            if(journalPeutEtreLance) {
-
-            }
-
-             */
-
-
-            if (Input.isKeyPressed(KeyCode.Z) || Input.isKeyPressed(KeyCode.X)) {//marche pas
-                if (JournalPeutEtreLance() && nbJournaux > 0) {
-
-
-                    //keyPressed ne marche pas pour lancer l'objet
-
-                    var journal = new Journal(camelot.getCentre(), Point2D.ZERO, masseJournaux);
-
-                    journal.calculerVitesseInitiale(camelot);
-                    testDuProf.add(journal);
-                    nbJournaux--;
-                    tempsApresLancer = System.nanoTime();
-                }
-
-
-            }
-
-
-            for (var journal : testDuProf) {
+            gererLancementJournaux();
+            for (var journal : journaux) {
                 journal.update(deltaTemps);
             }
+
+
+        }
+    }
+
+    public void gererLancementJournaux() {
+        if (journalPeutEtreLance() && nbJournaux > 0) {
+            if (Input.isKeyPressed(KeyCode.Z) || Input.isKeyPressed(KeyCode.X)) {
+
+                var journal = new Journal(camelot.getCentre(), masseJournaux);
+                journal.calculerVitesseInitiale(camelot);
+                journaux.add(journal);
+                nbJournaux--;
+                tempsApresLancer = System.nanoTime();
+            }
+
         }
     }
 
@@ -124,7 +122,8 @@ public class Partie {
             //Dessin du camelot
             camelot.draw(context, camera);
 
-            for (var journal : testDuProf) {
+            //Dessin des journaux
+            for (var journal : journaux) {
                 journal.draw(context, camera);
             }
 
@@ -133,20 +132,22 @@ public class Partie {
 
     }
 
-
-    public void niveauSuivant(GraphicsContext context) {
+    public void niveauSuivant() {
         niveauActuel++;
-        //calcule le nombre de journeaux restants pour le prochain niveau
+        //Calcule le nombre de journeaux restants pour le prochain niveau
         nbJournauxRestants = nbJournaux;
         nbJournaux = 0;
+        journaux.clear();
         demarrerNiveau();
-        creerEcranChargement(context);
+        creerEcranChargement();
     }
 
-    public boolean JournalPeutEtreLance() {
+    public boolean journalPeutEtreLance() {
         double tempsEcoule = (System.nanoTime() - tempsApresLancer) * 1e-9;
-        return tempsEcoule >= 0.5;
+        return tempsEcoule >= DELAI_ENTRE_LANCERS;
     }
-
-
 }
+
+
+
+
