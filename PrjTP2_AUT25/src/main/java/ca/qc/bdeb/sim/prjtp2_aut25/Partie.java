@@ -83,7 +83,7 @@ public class Partie {
 
 
             if (Input.isKeyPressed(KeyCode.Z) || Input.isKeyPressed(KeyCode.X)) {//marche pas
-                if (isJournalPeutEtreLance() && nbJournaux > 0) {
+                if (JournalPeutEtreLance() && nbJournaux > 0) {
 
 
                     //keyPressed ne marche pas pour lancer l'objet
@@ -143,13 +143,9 @@ public class Partie {
         creerEcranChargement(context);
     }
 
-    public boolean isJournalPeutEtreLance() {
-        if(System.nanoTime()-tempsApresLancer>=0.5){
-            journalPeutEtreLance = true;
-        }else{
-            journalPeutEtreLance= false;
-        }
-        return journalPeutEtreLance;
+    public boolean JournalPeutEtreLance() {
+        double tempsEcoule = (System.nanoTime() - tempsApresLancer) * 1e-9;
+        return tempsEcoule >= 0.5;
     }
 
 
