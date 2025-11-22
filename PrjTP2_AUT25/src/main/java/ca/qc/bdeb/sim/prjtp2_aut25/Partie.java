@@ -22,7 +22,9 @@ public class Partie {
     private Camelot camelot;
     private Camera camera;
     private ArrayList<Maison> maisons;
+    private ArrayList<Integer> adresses;
     private ArrayList<Journal> journaux;
+    private BarreAffichage barreAffichage;
 
     //État du jeu :
     private int niveauActuel;
@@ -39,6 +41,7 @@ public class Partie {
         this.journaux = new ArrayList<>();
         this.nbJournauxRestants = 0;
         this.tempsApresLancer = 0;
+        this.barreAffichage = new BarreAffichage(nbJournaux,new ArrayList<>(),0);
         //Création des objets nécéssaires pour le début d'une partie
         demarrerNiveau();
     }
@@ -54,12 +57,14 @@ public class Partie {
         this.chargementEnCours = true;
         this.nbJournaux = JOURNAUX_PAR_NIVEAUX + nbJournauxRestants;
         this.masseJournaux = RANDOM.nextDouble(1, 2);
-
         genererMaisons();
+        barreAffichage.setAdresses(adresses);
+        barreAffichage.setNbJournaux(nbJournaux);
     }
 
     private void genererMaisons() {
         maisons = new ArrayList<>();
+        adresses = new ArrayList<>();
 
         //Adresse de la première maison : entre 100 et 950
         int premiereAdresse = RANDOM.nextInt(100, 950);
@@ -67,8 +72,15 @@ public class Partie {
         //Écart de 2 entre les adresses des maisons et écart de 1300 entre les positions des maisons
         for (int i = 0; i < NB_MAISONS; i++) {
             int adresse = premiereAdresse + (i * 2);
+
             double positionX = 1300 + (i * 1300);
             maisons.add(new Maison(adresse, positionX));
+        }
+        //ajoute les adresses des maisons abonnées à la liste
+        for(Maison maison : maisons){
+            if(maison.estAbonneeAuJournal()){
+                adresses.add(maison.getAdresse());
+            }
         }
     }
 
@@ -104,6 +116,7 @@ public class Partie {
                 journal.calculerVitesseInitiale(camelot);
                 journaux.add(journal);
                 nbJournaux--;
+                barreAffichage.setNbJournaux(nbJournaux);
                 tempsApresLancer = System.nanoTime();
             }
 
@@ -132,6 +145,9 @@ public class Partie {
             for (var journal : journaux) {
                 journal.draw(context, camera);
             }
+            //DEssin barre d'affichage
+            barreAffichage.draw(context,camera);
+
 
 
         }
@@ -148,7 +164,7 @@ public class Partie {
 
                if(maison.isaDesFenetres()){
                    for(Fenetre fenetre : maison.getFenetres()){
-                       fenetre.enCollisionJournal(journal);
+                       fenetre.enCollisionJournal(journal,barreAffichage);
                        if(!objetTouche){
                            if(fenetre.testCollision(journal)){
                                objetTouche = true;
@@ -157,7 +173,7 @@ public class Partie {
 
                    }
                }
-               maison.getBoiteAuxLettres().enCollisionJournal(journal);
+               maison.getBoiteAuxLettres().enCollisionJournal(journal,barreAffichage);
                if(!objetTouche){
                    if(maison.getBoiteAuxLettres().testCollision(journal)){
                        objetTouche = true;
