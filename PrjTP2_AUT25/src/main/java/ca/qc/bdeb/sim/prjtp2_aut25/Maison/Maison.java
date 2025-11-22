@@ -29,6 +29,14 @@ public class Maison extends ObjetDuJeu {
         return adresse;
     }
 
+    public boolean isaDesFenetres() {
+        return aDesFenetres;
+    }
+
+    public ArrayList<Fenetre> getFenetres() {
+        return fenetres;
+    }
+
     public boolean estAbonneeAuJournal() {
         return abonneeAuJournal;
     }

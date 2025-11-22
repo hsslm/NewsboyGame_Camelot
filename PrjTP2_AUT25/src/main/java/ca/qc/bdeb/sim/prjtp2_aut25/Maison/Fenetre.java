@@ -2,6 +2,7 @@ package ca.qc.bdeb.sim.prjtp2_aut25.Maison;
 
 import ca.qc.bdeb.sim.prjtp2_aut25.Camera;
 import ca.qc.bdeb.sim.prjtp2_aut25.ImageManager;
+import ca.qc.bdeb.sim.prjtp2_aut25.Journal;
 import ca.qc.bdeb.sim.prjtp2_aut25.ObjetDuJeu;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -18,18 +19,26 @@ public class Fenetre extends ObjetDuJeu {
         this.estBrisee = false;
     }
 
+    public boolean isEstBrisee() {
+        return estBrisee;
+    }
 
-    private void enCollisionJournal(){
-        if(estBrisee){
+    public void enCollisionJournal(Journal journal){
+        if(testCollision(journal)&&!estBrisee){
             if(estAbonnee){
                 image = ImageManager.getImage( "fenetre-brisee-rouge.png");
             }
             else{
                 image = ImageManager.getImage("fenetre-brisee-vert.png");
             }
+            estBrisee = true;
+
+
         }
 
+
     }
+
 
     @Override
     public void draw(GraphicsContext contexte, Camera camera) {

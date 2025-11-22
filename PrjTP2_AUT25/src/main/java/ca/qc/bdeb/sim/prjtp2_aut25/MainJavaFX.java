@@ -41,7 +41,9 @@ public class MainJavaFX extends Application {
                 double deltaTemps = (temps - dernierTemps) * 1e-9;
 
                 partie.update(deltaTemps);
+                partie.enCollisionJournal();
                 partie.draw(context);
+
 
                 dernierTemps = temps;
 

@@ -2,6 +2,7 @@ package ca.qc.bdeb.sim.prjtp2_aut25.Maison;
 
 import ca.qc.bdeb.sim.prjtp2_aut25.Camera;
 import ca.qc.bdeb.sim.prjtp2_aut25.ImageManager;
+import ca.qc.bdeb.sim.prjtp2_aut25.Journal;
 import ca.qc.bdeb.sim.prjtp2_aut25.ObjetDuJeu;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,9 +26,13 @@ public class BoiteAuxLettres extends ObjetDuJeu {
         this.image = ImageManager.getImage("boite-aux-lettres.png");
     }
 
-    public void toucheeParJournal() {
-        if (!aRecuJournal) {
-            aRecuJournal = true;
+    public boolean isaRecuJournal() {
+        return aRecuJournal;
+    }
+
+    public void enCollisionJournal(Journal journal) {
+        if (!aRecuJournal&&testCollision(journal)) {
+
             //Change l'image selon si abonnée ou non
             if (estAbonnee) {
                 image = ImageManager.getImage("boite-aux-lettres-vert.png");
@@ -36,6 +41,7 @@ public class BoiteAuxLettres extends ObjetDuJeu {
             } else {
                 image = ImageManager.getImage("boite-aux-lettres-rouge.png");
             }
+            aRecuJournal = true;
         }
     }
 

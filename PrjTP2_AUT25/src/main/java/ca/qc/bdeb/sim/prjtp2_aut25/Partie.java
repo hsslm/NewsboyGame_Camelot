@@ -1,6 +1,7 @@
 package ca.qc.bdeb.sim.prjtp2_aut25;
 
 
+import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Fenetre;
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -31,6 +32,7 @@ public class Partie {
     private boolean chargementEnCours;
     private EcranDeChargement ecranDeChargement;
     private long tempsApresLancer;
+
 
     public Partie() {
         this.niveauActuel = 1;
@@ -84,7 +86,11 @@ public class Partie {
             gererLancementJournaux();
             for (var journal : journaux) {
                 journal.update(deltaTemps);
+                if(journal.getBas()>MainJavaFX.HEIGHT||journal.getHaut()<0 ||journal.getGauche()<0){
+                   journaux.remove(journal);
+                }
             }
+
 
 
         }
@@ -130,6 +136,42 @@ public class Partie {
 
         }
 
+    }
+    public void enCollisionJournal(){
+
+        for(Maison maison : maisons){
+            var objetTouche = false;
+
+
+           for(Journal journal : journaux){
+
+
+               if(maison.isaDesFenetres()){
+                   for(Fenetre fenetre : maison.getFenetres()){
+                       fenetre.enCollisionJournal(journal);
+                       if(!objetTouche){
+                           if(fenetre.testCollision(journal)){
+                               objetTouche = true;
+                           }
+                       }
+
+                   }
+               }
+               maison.getBoiteAuxLettres().enCollisionJournal(journal);
+               if(!objetTouche){
+                   if(maison.getBoiteAuxLettres().testCollision(journal)){
+                       objetTouche = true;
+                   }
+               }
+               if(objetTouche){
+                   journaux.remove(journal);
+               }
+
+           }
+
+
+
+        }
     }
 
     public void niveauSuivant() {

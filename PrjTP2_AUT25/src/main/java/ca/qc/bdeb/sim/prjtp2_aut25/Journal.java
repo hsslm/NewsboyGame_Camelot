@@ -9,7 +9,7 @@ public class Journal extends ObjetDuJeu {
 
     private final Point2D QUANTITE_MOUVEMENT_HAUT = new Point2D(900, -900);
     private final Point2D QUANTITE_MOUVEMENT_AVANT = new Point2D(150, -1100);
-    private final double MULTIPLICATEUR_SHIFT = 1.5;
+    private final double MULTIPLICATEUR_SHIFT = 3.5;
     private final double VITESSE_MAX = 1500;
     private double masse;
 
@@ -77,6 +77,10 @@ public class Journal extends ObjetDuJeu {
 
 
     }
+    public void retirerJournal(GraphicsContext context){
+        context.clearRect(position.getX(),position.getY(),taille.getX(),taille.getY());
+    }
+
 
     public boolean enCollision(ObjetDuJeu objet) {
 
