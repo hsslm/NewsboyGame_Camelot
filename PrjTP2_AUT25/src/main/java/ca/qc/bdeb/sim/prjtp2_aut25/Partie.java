@@ -97,12 +97,15 @@ public class Partie {
             camelot.update(deltaTemps);
             camera.suivreCamelot(camelot);
             gererLancementJournaux();
+
             for (var journal : journaux) {
                 journal.update(deltaTemps);
                 if (journal.getBas() > MainJavaFX.HEIGHT || journal.getHaut() < 0 || journal.getGauche() < 0) {
                     journaux.remove(journal);
                 }
             }
+
+            debogage.update(deltaTemps);
 
 
         }
