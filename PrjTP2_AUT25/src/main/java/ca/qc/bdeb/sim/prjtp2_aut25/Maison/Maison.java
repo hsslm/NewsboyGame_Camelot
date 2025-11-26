@@ -23,7 +23,7 @@ public class Maison extends ObjetDuJeu {
     private BoiteAuxLettres boiteAuxLettres;
     private Random random;
     private boolean aDesFenetres;
-    private ArrayList<Fenetre> fenetres;
+    private ArrayList<Fenetre> fenetres
 
     public int getAdresse() {
         return adresse;
