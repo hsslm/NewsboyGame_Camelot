@@ -12,7 +12,6 @@ public class Camelot extends ObjetDuJeu {
     private static final double VITESSE_MAX = 600;
     public static final double ACCELERATION_CONTROLE = 300;
     private static final double VITESSE_SAUT = 500;
-    private static int soldePortefeuille;
 
     public Camelot() {
         super(new Point2D(180, MainJavaFX.HEIGHT - 144),
@@ -136,12 +135,6 @@ public class Camelot extends ObjetDuJeu {
         );
     }
 
-    private void augmenterSoldePortfeuille(int montant){
-        soldePortefeuille += montant;
-    }
-    private void diminuerSoldePortfeuille(int montant){
-        soldePortefeuille -= montant;
-    }
 
 }
 
