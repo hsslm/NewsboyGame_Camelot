@@ -22,6 +22,7 @@ public class Debogage {
 
     public void draw(GraphicsContext context, Camera camera, ArrayList<Maison> maisons, ArrayList<Journal> journaux) {
 
+
         if (modeDebug) {
             context.setStroke(Color.YELLOW);
 
@@ -49,15 +50,17 @@ public class Debogage {
 
     }
 
-    public void update() {
+    public void update(double deltaTemps) {
 
-            boolean dPresse = Input.isKeyPressed(KeyCode.D);
+        boolean dPresse = Input.isKeyPressed(KeyCode.D);
 
-            //desactivation
-            if (dPresse && dEtaitPresse) {
-                modeDebug = !modeDebug;
-            }
-            dEtaitPresse = dPresse;
+       if(deltaTemps>=0.004) { //desactivation
+           if (dPresse && dEtaitPresse) {
+               modeDebug = !modeDebug;
+           }
+           dEtaitPresse = dPresse;
+       }
+
 
     }
 }
