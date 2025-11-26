@@ -21,6 +21,7 @@ public class Debogage {
 
 
     public void draw(GraphicsContext context, Camera camera, ArrayList<Maison> maisons, ArrayList<Journal> journaux) {
+        update();
 
         if (modeDebug) {
             context.setStroke(Color.YELLOW);
