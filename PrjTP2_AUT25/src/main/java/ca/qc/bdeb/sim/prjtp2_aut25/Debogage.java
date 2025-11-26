@@ -49,6 +49,10 @@ public class Debogage {
         }
 
     }
+    private void drawStroke(ObjetDuJeu objet, GraphicsContext context,Camera camera){
+
+       
+    }
 
     public void update(double deltaTemps) {
 
