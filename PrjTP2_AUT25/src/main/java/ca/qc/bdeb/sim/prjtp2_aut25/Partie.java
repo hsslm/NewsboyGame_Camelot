@@ -5,7 +5,8 @@ import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Fenetre;
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import java.awt.*;
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -25,6 +26,7 @@ public class Partie {
     private ArrayList<Integer> adresses;
     private ArrayList<Journal> journaux;
     private BarreAffichage barreAffichage;
+    private Debogage debogage;
 
     //État du jeu :
     private int niveauActuel;
@@ -42,6 +44,7 @@ public class Partie {
         this.nbJournauxRestants = 0;
         this.tempsApresLancer = 0;
         this.barreAffichage = new BarreAffichage(nbJournaux,new ArrayList<>(),0);
+        this.debogage = new Debogage();
         //Création des objets nécéssaires pour le début d'une partie
         demarrerNiveau();
     }
@@ -145,8 +148,11 @@ public class Partie {
             for (var journal : journaux) {
                 journal.draw(context, camera);
             }
+            //test dessin debog
+            debogage.draw(context,camera,maisons,journaux);
             //DEssin barre d'affichage
             barreAffichage.draw(context,camera);
+
 
 
 
