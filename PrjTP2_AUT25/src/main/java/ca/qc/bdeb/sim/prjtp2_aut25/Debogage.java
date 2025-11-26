@@ -49,9 +49,8 @@ public class Debogage {
 
     }
 
-    public void update(double deltaTemps) {
+    public void update() {
 
-        if(deltaTemps >= 0.1) {
             boolean dPresse = Input.isKeyPressed(KeyCode.D);
 
             //desactivation
@@ -59,6 +58,6 @@ public class Debogage {
                 modeDebug = !modeDebug;
             }
             dEtaitPresse = dPresse;
-        }
+
     }
 }

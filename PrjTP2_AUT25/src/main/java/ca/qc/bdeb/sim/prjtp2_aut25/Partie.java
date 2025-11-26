@@ -105,8 +105,9 @@ public class Partie {
                 }
             }
 
-            debogage.update(deltaTemps);
-
+            if(deltaTemps >= 0.1) {
+                debogage.update();
+            }
 
         }
     }
