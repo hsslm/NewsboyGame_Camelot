@@ -46,7 +46,7 @@ public class Partie {
         this.debogage = new Debogage();
         //Création des objets nécéssaires pour le début d'une partie
         demarrerNiveau();
-        
+
     }
 
     public void demarrerNiveau() {
@@ -105,6 +105,7 @@ public class Partie {
                     journaux.remove(journal);
                 }
             }
+            debogage.update(deltaTemps);
 
 
 
@@ -149,6 +150,7 @@ public class Partie {
                 journal.draw(context, camera);
             }
             //Activation du mode debogage selon la touche D
+
 
             debogage.draw(context, camera, maisons, journaux);
 
