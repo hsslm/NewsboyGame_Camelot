@@ -5,7 +5,6 @@ import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Fenetre;
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -43,7 +42,7 @@ public class Partie {
         this.journaux = new ArrayList<>();
         this.nbJournauxRestants = 0;
         this.tempsApresLancer = 0;
-        this.barreAffichage = new BarreAffichage(nbJournaux,new ArrayList<>(),0);
+        this.barreAffichage = new BarreAffichage(nbJournaux, new ArrayList<>(), 0);
         this.debogage = new Debogage();
         //Création des objets nécéssaires pour le début d'une partie
         demarrerNiveau();
@@ -80,8 +79,8 @@ public class Partie {
             maisons.add(new Maison(adresse, positionX));
         }
         //ajoute les adresses des maisons abonnées à la liste
-        for(Maison maison : maisons){
-            if(maison.estAbonneeAuJournal()){
+        for (Maison maison : maisons) {
+            if (maison.estAbonneeAuJournal()) {
                 adresses.add(maison.getAdresse());
             }
         }
@@ -92,7 +91,6 @@ public class Partie {
         this.ecranDeChargement = new EcranDeChargement("Niveau " + niveauActuel);
     }
 
-
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
 
@@ -101,11 +99,10 @@ public class Partie {
             gererLancementJournaux();
             for (var journal : journaux) {
                 journal.update(deltaTemps);
-                if(journal.getBas()>MainJavaFX.HEIGHT||journal.getHaut()<0 ||journal.getGauche()<0){
-                   journaux.remove(journal);
+                if (journal.getBas() > MainJavaFX.HEIGHT || journal.getHaut() < 0 || journal.getGauche() < 0) {
+                    journaux.remove(journal);
                 }
             }
-
 
 
         }
@@ -148,49 +145,48 @@ public class Partie {
             for (var journal : journaux) {
                 journal.draw(context, camera);
             }
-            //test dessin debog
-            debogage.draw(context,camera,maisons,journaux);
-            //DEssin barre d'affichage
-            barreAffichage.draw(context,camera);
+            //Activation du mode debogage selon la touche D
+            debogage.draw(context, camera, maisons, journaux);
 
-
+            //Dessin barre d'affichage
+            barreAffichage.draw(context, camera);
 
 
         }
 
     }
-    public void enCollisionJournal(){
 
-        for(Maison maison : maisons){
+    public void enCollisionJournal() {
+
+        for (Maison maison : maisons) {
             var objetTouche = false;
 
 
-           for(Journal journal : journaux){
+            for (Journal journal : journaux) {
 
 
-               if(maison.isaDesFenetres()){
-                   for(Fenetre fenetre : maison.getFenetres()){
-                       fenetre.enCollisionJournal(journal,barreAffichage);
-                       if(!objetTouche){
-                           if(fenetre.testCollision(journal)){
-                               objetTouche = true;
-                           }
-                       }
+                if (maison.isaDesFenetres()) {
+                    for (Fenetre fenetre : maison.getFenetres()) {
+                        fenetre.enCollisionJournal(journal, barreAffichage);
+                        if (!objetTouche) {
+                            if (fenetre.testCollision(journal)) {
+                                objetTouche = true;
+                            }
+                        }
 
-                   }
-               }
-               maison.getBoiteAuxLettres().enCollisionJournal(journal,barreAffichage);
-               if(!objetTouche){
-                   if(maison.getBoiteAuxLettres().testCollision(journal)){
-                       objetTouche = true;
-                   }
-               }
-               if(objetTouche){
-                   journaux.remove(journal);
-               }
+                    }
+                }
+                maison.getBoiteAuxLettres().enCollisionJournal(journal, barreAffichage);
+                if (!objetTouche) {
+                    if (maison.getBoiteAuxLettres().testCollision(journal)) {
+                        objetTouche = true;
+                    }
+                }
+                if (objetTouche) {
+                    journaux.remove(journal);
+                }
 
-           }
-
+            }
 
 
         }
