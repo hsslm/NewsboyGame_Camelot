@@ -22,48 +22,54 @@ public class Debogage {
 
     public void draw(GraphicsContext context, Camera camera, ArrayList<Maison> maisons, ArrayList<Journal> journaux) {
 
-
         if (modeDebug) {
-            context.setStroke(Color.YELLOW);
 
+            context.setStroke(Color.YELLOW);
             context.strokeLine(0.2 * MainJavaFX.WIDTH, MainJavaFX.HEIGHT, 0.2 * MainJavaFX.WIDTH, 0);
 
             for (Maison maison : maisons) {
-                context.strokeRect(camera.coordoEcran(maison.getBoiteAuxLettres().position).getX(), camera.coordoEcran(maison.getBoiteAuxLettres().position).getY(),
-                        maison.getBoiteAuxLettres().taille.getX(), maison.getBoiteAuxLettres().taille.getY());
+                drawStroke(maison.getBoiteAuxLettres(), context, camera);
 
                 if (maison.isaDesFenetres()) {
                     for (Fenetre fenetre : maison.getFenetres()) {
-                        context.strokeRect(camera.coordoEcran(fenetre.position).getX(), camera.coordoEcran(fenetre.position).getY(),
-                                fenetre.taille.getX(), fenetre.taille.getY());
+
+                        drawStroke(fenetre, context, camera);
 
                     }
                 }
             }
             if (!journaux.isEmpty()) {
                 for (Journal journal : journaux) {
-                    context.strokeRect(camera.coordoEcran(journal.position).getX(), camera.coordoEcran(journal.position).getY(),
-                            journal.taille.getX(), journal.taille.getY());
+                    drawStroke(journal, context, camera);
+
                 }
             }
         }
 
     }
-    private void drawStroke(ObjetDuJeu objet, GraphicsContext context,Camera camera){
 
-       
+    private void drawStroke(ObjetDuJeu objet, GraphicsContext context, Camera camera) {
+
+        var positionEcran = camera.coordoEcran(objet.position);
+
+        context.strokeRect(positionEcran.getX(), positionEcran.getY(),
+                objet.taille.getX(), objet.taille.getY()
+        );
+
     }
 
     public void update(double deltaTemps) {
 
         boolean dPresse = Input.isKeyPressed(KeyCode.D);
 
-       if(deltaTemps>=0.004) { //desactivation
-           if (dPresse && dEtaitPresse) {
-               modeDebug = !modeDebug;
-           }
-           dEtaitPresse = dPresse;
-       }
+        if (deltaTemps >= 0.004) {
+
+            //desactivation
+            if (dPresse && dEtaitPresse) {
+                modeDebug = !modeDebug;
+            }
+            dEtaitPresse = dPresse;
+        }
 
 
     }
