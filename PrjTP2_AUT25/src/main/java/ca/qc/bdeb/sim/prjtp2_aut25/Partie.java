@@ -35,9 +35,14 @@ public class Partie {
     private boolean chargementEnCours;
     private EcranDeChargement ecranDeChargement;
     private long tempsApresLancer;
+    private boolean recommencer;
 
 
     public Partie() {
+        this.recommencer = false;
+        var differencePosCamelot = 16000;
+        var positionDebutNiveauCamelot = 0.0;
+
         this.niveauActuel = 1;
         this.journaux = new ArrayList<>();
         this.nbJournauxRestants = 0;
@@ -46,6 +51,21 @@ public class Partie {
         this.debogage = new Debogage();
         //Création des objets nécéssaires pour le début d'une partie
         demarrerNiveau();
+        do{
+            if(camelot.position.getX()-positionDebutNiveauCamelot >= 16000){
+                niveauSuivant();
+                positionDebutNiveauCamelot+=16000;
+            }
+            if(nbJournaux==0){
+                recommencer = true;
+            }
+            if(niveauActuel==12){
+
+            }
+
+
+        }while(!recommencer);
+
 
     }
 
@@ -150,8 +170,6 @@ public class Partie {
                 journal.draw(context, camera);
             }
             //Activation du mode debogage selon la touche D
-
-
             debogage.draw(context, camera, maisons, journaux);
 
             //Dessin barre d'affichage
@@ -197,6 +215,7 @@ public class Partie {
 
         }
     }
+
 
     public void niveauSuivant() {
         niveauActuel++;
