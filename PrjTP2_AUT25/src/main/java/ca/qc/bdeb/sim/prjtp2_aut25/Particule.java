@@ -39,6 +39,9 @@ public class Particule extends ObjetDuJeu {
 
     public Point2D calculerChampElectrique(Point2D point) { //point correspond au centre de la position du journal
         var distancePoint = position.distance(point);
+        if(distancePoint<1){
+            distancePoint=1;
+        }
         var moduleChampElectrique = CONSTANTE_COULOMB * CHARGE / ((distancePoint * distancePoint));
         var directionChampElectrique = position.subtract(point).normalize();
         return directionChampElectrique.multiply(moduleChampElectrique);
