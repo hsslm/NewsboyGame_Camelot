@@ -87,7 +87,7 @@ public class Journal extends ObjetDuJeu {
         /*var champElectriqueTotal = ;
         var forceElectrique = charge* champElectriqueTotal;
         var accelerationParticules = forceElectrique/masse;
-        
+
          */
 
 

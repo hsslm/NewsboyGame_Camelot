@@ -15,8 +15,10 @@ public class Particule extends ObjetDuJeu {
     private final Random RANDOM = new Random();
 
 
-    public Particule(Point2D position) {
-        super(position, Point2D.ZERO, new Point2D(20, 20), Point2D.ZERO);
+    public Particule() {
+
+        super( Point2D.ZERO,Point2D.ZERO, new Point2D(20, 20), Point2D.ZERO);
+        this.position = new Point2D(RANDOM.nextDouble(0,16000),RANDOM.nextDouble(0,MainJavaFX.HEIGHT));
 
         this.teinte = RANDOM.nextDouble(0, 360);
     }
