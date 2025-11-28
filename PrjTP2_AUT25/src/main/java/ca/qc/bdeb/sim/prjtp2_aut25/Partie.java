@@ -9,14 +9,16 @@ import javafx.scene.input.KeyCode;
 import java.util.ArrayList;
 import java.util.Random;
 //est ce que cest correct tt sois en rose
-//Revoir la logique des niveaux
+//changer de partie quand on a plus de journaux
+//changer de niveau quand on est a une certaine position
+//revoir organisation copier-coller
 public class Partie {
 
     //Constantes :
     private static final Random RANDOM = new Random();
-    private final int NB_MAISONS = 12;
-    private final int JOURNAUX_PAR_NIVEAUX = 12;
-    private final double DELAI_ENTRE_LANCERS = 0.5;
+    private static final int NB_MAISONS = 12;
+    private static final int JOURNAUX_PAR_NIVEAUX = 12;
+    private static final double DELAI_ENTRE_LANCERS = 0.5;
 
     //Objets du jeu :
     private Decor decor;
@@ -41,19 +43,24 @@ public class Partie {
 
     public Partie() {
 
-        this.niveauActuel = 1;
+        initialiserNiveau1();
         this.journaux = new ArrayList<>();
-        this.nbJournauxRestants = 0;
-        this.tempsApresLancer = 0;
-        this.barreAffichage = new BarreAffichage(nbJournaux, new ArrayList<>(), 0);
         this.debogage = new Debogage();
         this.finDePartie = false;
         this.chargementEnCours = true;
-        //Création des objets nécéssaires pour le début d'une partie
-        demarrerNiveau();
+        ecranChargementNiveau();
+        //Création des objets nécéssaires pour le début d'un niveau
+        demarrerNouveauNiveau();
     }
 
-    public void demarrerNiveau() {
+    private void initialiserNiveau1() {
+        this.niveauActuel = 1;
+        this.nbJournauxRestants = 0;
+        this.tempsApresLancer = 0;
+        this.barreAffichage = new BarreAffichage(nbJournaux, new ArrayList<>(), 0);
+    }
+
+    private void demarrerNouveauNiveau() {
 
         //Objets
         this.camelot = new Camelot();
@@ -74,7 +81,7 @@ public class Partie {
         adresses = new ArrayList<>();
 
         //Adresse de la première maison : entre 100 et 950
-        int premiereAdresse = RANDOM.nextInt(100, 950);
+        int premiereAdresse = RANDOM.nextInt(100, 951);
 
         //Écart de 2 entre les adresses des maisons et écart de 1300 entre les positions des maisons
         for (int i = 0; i < NB_MAISONS; i++) {
@@ -92,9 +99,10 @@ public class Partie {
     }
 
 
-    public void creerEcranChargement() {
+    public void ecranChargementNiveau() {
         this.ecranDeChargement = new EcranDeChargement("Niveau " + niveauActuel);
     }
+
 
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
@@ -117,16 +125,14 @@ public class Partie {
 
             //Vérifie si le camelot a depassé la limite de position de fin de niveau
             niveauEstTermine();
+            //Vérifie si le camelot a toujours des journaux sinon c'est la fin de partie
+            finDePartie();
 
-            //Vérifie la fin de la partie  (le camelot n'a plus de journaux dans le niveau 2)
-            if (niveauActuel >= 2 && nbJournaux == 0 && journaux.isEmpty()) {
-               finDePartie();
-            }
 
         }
     }
 
-    public void niveauEstTermine() {
+    private void niveauEstTermine() {
 
         //Ce qui est demandé dans le doc : Le niveau est considéré comme complété à partir du moment où le camelot dépasse la coordonnée x
         //de la dernière maison, plus 1.5x la largeur de l’écran.
@@ -135,27 +141,25 @@ public class Partie {
         var limiteFinNiveau = positionDerniereMaison + 1.5 * MainJavaFX.WIDTH;
 
         if (camelot.getPositionX() > limiteFinNiveau) {
-            if (niveauActuel == 1) {
-                niveauSuivant();
-            } else if (niveauActuel == 2) {
-                finDePartie();
-            }
-
+            niveauSuivant();
         }
 
 
     }
 
     private void finDePartie() {
-        ecranDeChargement = new EcranDeChargement(
-                "Rupture de stocks \nArgent collecté : " + barreAffichage.getArgentTotal() + "$"
-        );
-        chargementEnCours = true;
-        finDePartie = true;
+
+        if (nbJournaux == 0 && journaux.isEmpty()) {
+            ecranDeChargement = new EcranDeChargement(
+                    "Rupture de stocks \nArgent collecté : " + barreAffichage.getArgentTotal() + "$"
+            );
+            chargementEnCours = true;
+            finDePartie = true;
+        }
 
     }
 
-    public void gererLancementJournaux() {
+    private void gererLancementJournaux() {
         if (journalPeutEtreLance() && nbJournaux > 0) {
             if (Input.isKeyPressed(KeyCode.Z) || Input.isKeyPressed(KeyCode.X)) {
 
@@ -176,7 +180,7 @@ public class Partie {
             if (ecranDeChargement.estTermine()) {
                 chargementEnCours = false;
 
-                if(finDePartie){
+                if (finDePartie) {
                     recommencerPartie();
                     finDePartie = false;
                 }
@@ -245,30 +249,25 @@ public class Partie {
     }
 
 
-    public void niveauSuivant() {
+    private void niveauSuivant() {
         niveauActuel++;
         //Calcule le nombre de journeaux restants pour le prochain niveau
         nbJournauxRestants = nbJournaux;
         nbJournaux = 0;
         journaux.clear();
-        demarrerNiveau();
-        creerEcranChargement();
+        demarrerNouveauNiveau();
+        ecranChargementNiveau();
     }
 
-    public boolean journalPeutEtreLance() {
+    private boolean journalPeutEtreLance() {
         double tempsEcoule = (System.nanoTime() - tempsApresLancer) * 1e-9;
         return tempsEcoule >= DELAI_ENTRE_LANCERS;
     }
 
-    public void recommencerPartie() {
-        niveauActuel = 1;
-        nbJournauxRestants = 0;
-        tempsApresLancer = 0;
-        barreAffichage = new BarreAffichage(nbJournaux, new ArrayList<>(), 0);
-
-        demarrerNiveau();
-        creerEcranChargement();
-
+    private void recommencerPartie() {
+        initialiserNiveau1();
+        demarrerNouveauNiveau();
+        ecranChargementNiveau();
 
     }
 

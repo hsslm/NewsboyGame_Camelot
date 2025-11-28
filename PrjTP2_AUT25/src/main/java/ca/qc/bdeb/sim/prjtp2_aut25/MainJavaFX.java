@@ -28,7 +28,7 @@ public class MainJavaFX extends Application {
 
         //Crée partie
         var partie = new Partie();
-        partie.creerEcranChargement();
+//        partie.ecranChargementNiveau();
 
         //Gestion des touches pressées
         touchesPressees(scene);
