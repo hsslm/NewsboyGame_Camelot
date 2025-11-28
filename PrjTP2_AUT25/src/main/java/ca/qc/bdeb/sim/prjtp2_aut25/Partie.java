@@ -35,13 +35,9 @@ public class Partie {
     private boolean chargementEnCours;
     private EcranDeChargement ecranDeChargement;
     private long tempsApresLancer;
-    private boolean recommencer;
 
 
     public Partie() {
-        this.recommencer = false;
-        var differencePosCamelot = 16000;
-        var positionDebutNiveauCamelot = 0.0;
 
         this.niveauActuel = 1;
         this.journaux = new ArrayList<>();
@@ -51,22 +47,6 @@ public class Partie {
         this.debogage = new Debogage();
         //Création des objets nécéssaires pour le début d'une partie
         demarrerNiveau();
-        do{
-            if(camelot.position.getX()-positionDebutNiveauCamelot >= 16000){
-                niveauSuivant();
-                positionDebutNiveauCamelot+=16000;
-            }
-            if(nbJournaux==0){
-                recommencer = true;
-            }
-            if(niveauActuel==12){
-
-            }
-
-
-        }while(!recommencer);
-
-
     }
 
     public void demarrerNiveau() {
@@ -115,10 +95,12 @@ public class Partie {
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
 
+
             camelot.update(deltaTemps);
             camera.suivreCamelot(camelot);
             gererLancementJournaux();
 
+            //Supprime les journaux sortis de l'écran
             for (var journal : journaux) {
                 journal.update(deltaTemps);
                 if (journal.getBas() > MainJavaFX.HEIGHT || journal.getHaut() < 0 || journal.getGauche() < 0) {
@@ -127,9 +109,25 @@ public class Partie {
             }
             debogage.update(deltaTemps);
 
+            //Vérifie si le camelot a depassé la limite de position de fin de niveau
+            niveauEstTermine();
 
 
         }
+    }
+
+    public void niveauEstTermine() {
+
+        //Ce qui est demandé dans le doc : Le niveau est considéré comme complété à partir du moment où le camelot dépasse la coordonnée x
+        //de la dernière maison, plus 1.5x la largeur de l’écran.
+
+        var positionDerniereMaison = (maisons.get(maisons.size() - 1)).getPositionX();
+        var limiteFinNiveau = positionDerniereMaison + 1.5 * MainJavaFX.WIDTH;
+
+        if (camelot.getPositionX() > limiteFinNiveau) {
+            niveauSuivant();
+        }
+
     }
 
     public void gererLancementJournaux() {

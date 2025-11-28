@@ -15,8 +15,11 @@ public abstract class ObjetDuJeu {
         this.taille = taille;
         this.acceleration = acceleration;
     }
-
-    protected ObjetDuJeu() {
+    public ObjetDuJeu() {
+        this.position = new Point2D(0,0);
+        this.velocite = new Point2D(0,0);
+        this.taille = new Point2D(0,0);
+        this.acceleration = new Point2D(0,0);
     }
 
     public void update(double deltaTemps){
@@ -59,5 +62,8 @@ public abstract class ObjetDuJeu {
         return position.add(taille.multiply(1/2.0));
     }
     public Point2D getVelocite(){ return getVelocite();}
+    public double getPositionX(){
+        return position.getX();
+    }
 
 }

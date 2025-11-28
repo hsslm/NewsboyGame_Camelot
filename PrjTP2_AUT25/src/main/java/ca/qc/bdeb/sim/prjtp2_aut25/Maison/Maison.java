@@ -18,11 +18,11 @@ public class Maison extends ObjetDuJeu {
     private boolean abonneeAuJournal;
     private Image imagePorte;
     //position de la porte (coordonnée x de la maison)
-    private Point2D position;
     private BoiteAuxLettres boiteAuxLettres;
     private Random random;
     private boolean aDesFenetres;
     private ArrayList<Fenetre> fenetres;
+
 
     public int getAdresse() {
         return adresse;

@@ -10,12 +10,14 @@ import javafx.scene.paint.Color;
 public class EcranDeChargement {
     private String texte;
     private long tempsDebut;
-    private boolean termine;
 
     public EcranDeChargement(String texte) {
         this.texte = texte;
         this.tempsDebut = System.nanoTime();
+
     }
+
+
 
     public void draw(GraphicsContext context) {
 
@@ -41,7 +43,7 @@ public class EcranDeChargement {
     public boolean estTermine() {
         //Vérifie si 3 secondes se sont écoulées
         long tempsActuel = System.nanoTime();
-        double tempsEcoule = (tempsActuel - tempsDebut) * 1e-9;
+        double tempsEcoule = (tempsActuel - this.tempsDebut) * 1e-9;
         return tempsEcoule >= 3;
     }
 }
