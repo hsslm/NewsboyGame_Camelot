@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+//est ce que cest correct tt sois en rose
 public class Partie {
 
     //Constantes :
