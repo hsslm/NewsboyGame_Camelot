@@ -4,6 +4,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 
+import java.util.ArrayList;
+
 public class Journal extends ObjetDuJeu {
 
 
@@ -12,14 +14,17 @@ public class Journal extends ObjetDuJeu {
     private final double MULTIPLICATEUR_SHIFT = 1.5;
     private final double VITESSE_MAX = 1500;
     private double masse;
+    private double charge;
 
     public Journal(Point2D position, double masse) {
         super(position, Point2D.ZERO, new Point2D(52, 31), new Point2D(0, 1500));
         this.masse = masse;
+        this.charge = 900;
     }
 
 
     public void update(double deltaTemps) {
+        acceleration =
         super.update(deltaTemps);
 
         //Limite la vitesse
@@ -77,16 +82,20 @@ public class Journal extends ObjetDuJeu {
 
 
     }
-    public void retirerJournal(GraphicsContext context){
-        context.clearRect(position.getX(),position.getY(),taille.getX(),taille.getY());
+
+    public void calculeraccelerationTotale(){
+        /*var champElectriqueTotal = ;
+        var forceElectrique = charge* champElectriqueTotal;
+        var accelerationParticules = forceElectrique/masse;
+        
+         */
+
+
     }
 
 
-    public boolean enCollision(ObjetDuJeu objet) {
 
 
-        return false;
-    }
 
 
 }
