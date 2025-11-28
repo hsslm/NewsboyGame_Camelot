@@ -118,6 +118,7 @@ public class Partie {
 
             //Supprime les journaux sortis de l'écran
             for (var journal : journaux) {
+                journal.calculeraccelerationTotale(particules);
                 journal.update(deltaTemps);
                 if (journal.getBas() > MainJavaFX.HEIGHT || journal.getHaut() < 0 || journal.getGauche() < 0) {
                     journaux.remove(journal);
@@ -129,6 +130,7 @@ public class Partie {
             niveauEstTermine();
             //Vérifie si le camelot a toujours des journaux sinon c'est la fin de partie
             finDePartie();
+
 
 
         }

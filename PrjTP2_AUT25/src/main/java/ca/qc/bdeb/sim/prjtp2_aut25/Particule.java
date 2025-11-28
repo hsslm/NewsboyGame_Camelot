@@ -39,9 +39,15 @@ public class Particule extends ObjetDuJeu {
         var distancePoint = position.distance(point);
         var moduleChampElectrique = CONSTANTE_COULOMB * CHARGE / ((distancePoint * distancePoint));
         var directionChampElectrique = position.subtract(point).normalize();
-
-
         return directionChampElectrique.multiply(moduleChampElectrique);
+    }
+
+    public static Point2D champElectriqueTotal(ArrayList<Particule> particules,Point2D point) {
+        Point2D champElectriqueTotal = Point2D.ZERO;
+        for (Particule particule : particules) {
+            champElectriqueTotal.add(particule.calculerChampElectrique(point));
+        }
+        return champElectriqueTotal;
     }
 
 
