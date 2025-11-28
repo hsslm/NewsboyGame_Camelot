@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Particule extends ObjetDuJeu {
@@ -15,7 +16,7 @@ public class Particule extends ObjetDuJeu {
 
 
     public Particule(Point2D position) {
-        super(position, Point2D.ZERO, new Point2D(20,20), Point2D.ZERO);
+        super(position, Point2D.ZERO, new Point2D(20, 20), Point2D.ZERO);
 
         this.teinte = RANDOM.nextDouble(0, 360);
     }
@@ -25,21 +26,23 @@ public class Particule extends ObjetDuJeu {
         var positionEcran = camera.coordoEcran(position);
         context.setFill(Color.hsb(teinte, 1, 1));
         context.fillOval(
-                positionEcran.getX()- (taille.getX()/2),
-                positionEcran.getY()-(taille.getY()/2),
+                positionEcran.getX() - (taille.getX() / 2),
+                positionEcran.getY() - (taille.getY() / 2),
                 taille.getX(),
                 taille.getY()
         );
 
 
-
     }
 
-    public Point2D calculerChampElectrique(Point2D point) {
+    public Point2D calculerChampElectrique(Point2D point) { //point correspond au centre de la position du journal
         var distancePoint = position.distance(point);
-        var moduleChampElectrique = CONSTANTE_COULOMB*CHARGE/((distancePoint*distancePoint));
-        var directionChampElectrique =   ;
+        var moduleChampElectrique = CONSTANTE_COULOMB * CHARGE / ((distancePoint * distancePoint));
+        var directionChampElectrique = position.subtract(point).normalize();
 
 
+        return directionChampElectrique.multiply(moduleChampElectrique);
     }
+
+
 }

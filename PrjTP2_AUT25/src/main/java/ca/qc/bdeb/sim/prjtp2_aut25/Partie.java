@@ -3,6 +3,7 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Fenetre;
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 
@@ -27,6 +28,7 @@ public class Partie {
     private ArrayList<Maison> maisons;
     private ArrayList<Integer> adresses;
     private ArrayList<Journal> journaux;
+    private ArrayList<Particule> particules;
     private BarreAffichage barreAffichage;
     private Debogage debogage;
 
@@ -247,6 +249,16 @@ public class Partie {
 
         }
     }
+
+    public Point2D champElectrique(Point2D point) {
+        Point2D champElectriqueTotal = Point2D.ZERO;
+        for (Particule particule : particules) {
+            champElectriqueTotal.add(particule.calculerChampElectrique(point));
+        }
+        return champElectriqueTotal;
+    }
+
+
 
 
     private void niveauSuivant() {
