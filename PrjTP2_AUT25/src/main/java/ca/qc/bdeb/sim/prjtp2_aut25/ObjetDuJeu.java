@@ -35,8 +35,6 @@ public abstract class ObjetDuJeu {
     public boolean testCollision(Journal journal){
         if(journal.getDroite()>getGauche()&&journal.getDroite()<getDroite()
                 &&journal.getHaut()<getBas()&&journal.getHaut()>getHaut()){
-
-
             return true;
 
         }else {
