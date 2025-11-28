@@ -35,6 +35,7 @@ public class Partie {
     private boolean chargementEnCours;
     private EcranDeChargement ecranDeChargement;
     private long tempsApresLancer;
+    private boolean finDePartie;
 
 
     public Partie() {
@@ -45,6 +46,8 @@ public class Partie {
         this.tempsApresLancer = 0;
         this.barreAffichage = new BarreAffichage(nbJournaux, new ArrayList<>(), 0);
         this.debogage = new Debogage();
+        this.finDePartie = false;
+        this.chargementEnCours = true;
         //Création des objets nécéssaires pour le début d'une partie
         demarrerNiveau();
     }
@@ -98,6 +101,8 @@ public class Partie {
 
             camelot.update(deltaTemps);
             camera.suivreCamelot(camelot);
+
+            //Interactions de l'utilisateur avec le clavier
             gererLancementJournaux();
 
             //Supprime les journaux sortis de l'écran
@@ -112,6 +117,11 @@ public class Partie {
             //Vérifie si le camelot a depassé la limite de position de fin de niveau
             niveauEstTermine();
 
+            //Vérifie la fin de la partie  (le camelot n'a plus de journaux dans le niveau 2)
+            if (niveauActuel == 2 && nbJournaux == 0 && journaux.isEmpty()) {
+               finDePartie();
+            }
+
 
         }
     }
@@ -125,8 +135,23 @@ public class Partie {
         var limiteFinNiveau = positionDerniereMaison + 1.5 * MainJavaFX.WIDTH;
 
         if (camelot.getPositionX() > limiteFinNiveau) {
-            niveauSuivant();
+            if (niveauActuel == 1) {
+                niveauSuivant();
+            } else if (niveauActuel == 2) {
+                finDePartie();
+            }
+
         }
+
+
+    }
+
+    private void finDePartie() {
+        ecranDeChargement = new EcranDeChargement(
+                "Rupture de stocks \nArgent collecté : " + barreAffichage.getArgentTotal() + "$"
+        );
+        chargementEnCours = true;
+        finDePartie = true;
 
     }
 
@@ -150,6 +175,11 @@ public class Partie {
             ecranDeChargement.draw(context);
             if (ecranDeChargement.estTermine()) {
                 chargementEnCours = false;
+
+                if(finDePartie){
+                    recommencerPartie();
+                    finDePartie = false;
+                }
             }
         } else {
             context.clearRect(0, 0, MainJavaFX.WIDTH, MainJavaFX.HEIGHT);
@@ -229,6 +259,20 @@ public class Partie {
         double tempsEcoule = (System.nanoTime() - tempsApresLancer) * 1e-9;
         return tempsEcoule >= DELAI_ENTRE_LANCERS;
     }
+
+    public void recommencerPartie() {
+        niveauActuel = 1;
+        nbJournauxRestants = 0;
+        tempsApresLancer = 0;
+        barreAffichage = new BarreAffichage(nbJournaux, new ArrayList<>(), 0);
+
+        demarrerNiveau();
+        creerEcranChargement();
+
+
+    }
+
+
 }
 
 

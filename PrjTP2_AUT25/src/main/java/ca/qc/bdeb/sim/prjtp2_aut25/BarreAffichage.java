@@ -40,19 +40,20 @@ public class BarreAffichage {
     public void retirerArgent(int sommeARetirer){
         argent-=sommeARetirer;
     }
+    public int getArgentTotal(){
+        return argent;
+    }
 
 
     public void draw(GraphicsContext context, Camera camera){
 
-         //Icone de journal et quantité de journaux
-
+        //Icone de journal et quantité de journaux
         context.drawImage(imgJournal,5,8);
         context.setFill(Color.WHITE);
         context.setFont(new Font("Comic sans MS",25));
         context.fillText(String.valueOf(nbJournaux),60,25);
 
         //Icone d'argent et quantité
-
         context.drawImage(imgArgent,80,10);
         context.fillText(String.valueOf(argent),140,25);
 
@@ -66,7 +67,6 @@ public class BarreAffichage {
         }
 
         //Fond gris et opacité
-
         Color grisTransparent = Color.gray(0.2,0.5);
         context.setFill(grisTransparent);
         context.fillRect(0, 0,MainJavaFX.WIDTH,50);

@@ -16,16 +16,13 @@ public class EcranDeChargement {
         this.tempsDebut = System.nanoTime();
 
     }
-
-
-
     public void draw(GraphicsContext context) {
 
         //Fond noir
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, MainJavaFX.WIDTH, MainJavaFX.HEIGHT);
 
-        //Texte vert affichant le niveau
+        //Texte rose affichant le niveau
         context.setFill(Color.HOTPINK);
         context.setFont(Font.font("Comic Sans MS", 55));
         context.setTextAlign(TextAlignment.CENTER);
