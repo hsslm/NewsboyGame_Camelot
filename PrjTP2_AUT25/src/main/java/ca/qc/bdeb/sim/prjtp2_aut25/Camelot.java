@@ -6,18 +6,22 @@ import javafx.scene.input.KeyCode;
 
 
 public class Camelot extends ObjetDuJeu {
-    private boolean toucheLeSol;
-    public static final double VITESSE_BASE = 400;
+
+    //Constantes
+    public static final double VITESSE_DEBASE = 400;
     private static final double VITESSE_MIN = 200;
     private static final double VITESSE_MAX = 600;
     public static final double ACCELERATION_CONTROLE = 300;
     private static final double VITESSE_SAUT = 500;
 
+    private boolean toucheLeSol;
+
     public Camelot() {
         super(new Point2D(180, MainJavaFX.HEIGHT - 144),
-                new Point2D(VITESSE_BASE, 0),
+                new Point2D(VITESSE_DEBASE, 0),
                 new Point2D(172, 144),
-                new Point2D(0, 1500));
+                new Point2D(0, 1500)
+        );
 
         this.toucheLeSol = true;
     }
@@ -57,6 +61,7 @@ public class Camelot extends ObjetDuJeu {
 
     }
 
+
     private String choisirImageAAfficher() {
         double index;
         double tempsTotal = System.nanoTime() * 1e-9;
@@ -66,7 +71,6 @@ public class Camelot extends ObjetDuJeu {
         } else {
             return "camelot2.png";
         }
-
     }
 
     private void gererInput() {
@@ -87,11 +91,11 @@ public class Camelot extends ObjetDuJeu {
             //Flèche droite --> accélérer
             acceleration = new Point2D(ACCELERATION_CONTROLE, acceleration.getY());
 //            System.out.println("ACCÉLÉRATION ! : + 300");
-        } else if (velocite.getX() < VITESSE_BASE - 1) {
+        } else if (velocite.getX() < VITESSE_DEBASE - 1) {
             // En bas de 399 --> accélérer vers la vitesse de base
             acceleration = new Point2D(ACCELERATION_CONTROLE, acceleration.getY());
 //            System.out.println("Retour à 400 (trop lent)");
-        } else if (velocite.getX() > VITESSE_BASE + 1) {
+        } else if (velocite.getX() > VITESSE_DEBASE + 1) {
             //En haut de 401 ---> ralentir vers la vitesse de base
             acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
 //            System.out.println("Retour à 400 (trop rapide)");
