@@ -17,7 +17,7 @@ public class Journal extends ObjetDuJeu {
     private double charge;
 
     public Journal(Point2D position, double masse) {
-        super(position, Point2D.ZERO, new Point2D(52, 31), new Point2D(0, 1500));
+        super(position, Point2D.ZERO, new Point2D(52, 31), Point2D.ZERO);
         this.masse = masse;
         this.charge = 900;
     }
@@ -26,9 +26,8 @@ public class Journal extends ObjetDuJeu {
     public void update(double deltaTemps) {
         super.update(deltaTemps);
         //Limite la vitesse
-        if (velocite.magnitude() >= VITESSE_MAX) {
-            double max = VITESSE_MAX;
-            velocite = velocite.multiply(max / velocite.magnitude());
+        if (velocite.magnitude() > VITESSE_MAX) {
+            velocite = velocite.multiply(VITESSE_MAX / velocite.magnitude());
         }
 
     }
@@ -53,8 +52,6 @@ public class Journal extends ObjetDuJeu {
         boolean lancerAvant = Input.isKeyPressed(KeyCode.X);
         boolean lancerPlusFort = Input.isKeyPressed(KeyCode.SHIFT);
 
-        System.out.println("Shift enfoncé : " + lancerPlusFort);
-        //Détermine quelle quantité de mouvement utiliser
         Point2D quantiteMouvement = null;
 
         if (lancerHaut) {
@@ -81,16 +78,16 @@ public class Journal extends ObjetDuJeu {
 
     }
 
-    public void calculeraccelerationTotale(ArrayList<Particule> particules){
-        var champElectriqueTotal = Particule.champElectriqueTotal(particules,getCentre()) ;
+    public void calculeraccelerationTotale(ArrayList<Particule> particules) {
+        var accelerationTotale = new Point2D(0, 1500);
+
+        var champElectriqueTotal = Particule.champElectriqueTotal(particules, getCentre());
+
         var forceElectrique = champElectriqueTotal.multiply(charge);
-        var accelerationParticules = forceElectrique.multiply(1/masse);
-        acceleration.add(accelerationParticules);
+        var accelerationParticules = forceElectrique.multiply(1 / masse);
+
+        this.acceleration = accelerationTotale.add(accelerationParticules);
     }
-
-
-
-
 
 
 }

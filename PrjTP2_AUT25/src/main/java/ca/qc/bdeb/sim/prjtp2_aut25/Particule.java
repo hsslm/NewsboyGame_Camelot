@@ -8,25 +8,23 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Particule extends ObjetDuJeu {
-    private final double CHARGE = 900;
+    private static final double CHARGE = 900;
     private final double CONSTANTE_COULOMB = 90;
-    private Point2D champElectrique;
-    private double teinte;
-    private final Random RANDOM = new Random();
+    private Color teinte;
 
 
-    public Particule() {
 
-        super( Point2D.ZERO,Point2D.ZERO, new Point2D(20, 20), Point2D.ZERO);
-        this.position = new Point2D(RANDOM.nextDouble(0,16000),RANDOM.nextDouble(0,MainJavaFX.HEIGHT));
+    public Particule(double positionX, double positionY,Color teinte) {
 
-        this.teinte = RANDOM.nextDouble(0, 360);
+        super(new Point2D(positionX,positionY),Point2D.ZERO, new Point2D(20, 20), Point2D.ZERO);
+        this.teinte = teinte;
     }
 
     @Override
     public void draw(GraphicsContext context, Camera camera) {
         var positionEcran = camera.coordoEcran(position);
-        context.setFill(Color.hsb(teinte, 1, 1));
+
+        context.setFill(teinte);
         context.fillOval(
                 positionEcran.getX() - (taille.getX() / 2),
                 positionEcran.getY() - (taille.getY() / 2),
@@ -40,7 +38,7 @@ public class Particule extends ObjetDuJeu {
     public Point2D calculerChampElectrique(Point2D point) { //point correspond au centre de la position du journal
         var distancePoint = position.distance(point);
         var moduleChampElectrique = CONSTANTE_COULOMB * CHARGE / ((distancePoint * distancePoint));
-        var directionChampElectrique = position.subtract(point).normalize();
+        var directionChampElectrique = point.subtract(position).normalize();
         return directionChampElectrique.multiply(moduleChampElectrique);
     }
 

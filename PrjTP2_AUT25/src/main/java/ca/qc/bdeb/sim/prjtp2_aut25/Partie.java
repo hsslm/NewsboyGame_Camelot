@@ -6,15 +6,13 @@ import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Random;
-//est ce que cest correct tt sois en rose
-//changer de partie quand on a plus de journaux
-//changer de niveau quand on est a une certaine position
-//revoir organisation copier-coller
-public class Partie {
 
+//est ce que cest correct tt sois en rose
+public class Partie {
     //Constantes :
     private static final Random RANDOM = new Random();
     private static final int NB_MAISONS = 12;
@@ -32,6 +30,7 @@ public class Partie {
     private BarreAffichage barreAffichage;
     private Debogage debogage;
 
+
     //État du jeu :
     private int niveauActuel;
     private int nbJournaux;
@@ -44,38 +43,32 @@ public class Partie {
 
 
     public Partie() {
-
-        initialiserNiveau1();
         this.journaux = new ArrayList<>();
+        this.particules = new ArrayList<>();
         this.debogage = new Debogage();
         this.finDePartie = false;
         this.chargementEnCours = true;
-        ecranChargementNiveau();
-        //Création des objets nécéssaires pour le début d'un niveau
-        demarrerNouveauNiveau();
+
+        initialiserNiveau(1, 0);
     }
 
-    private void initialiserNiveau1() {
-        this.niveauActuel = 1;
+    public void initialiserNiveau(int niveauActuel, int nbJournauxRestants) {
+
+        this.niveauActuel = niveauActuel;
+        this.nbJournaux = JOURNAUX_PAR_NIVEAUX + nbJournauxRestants;
         this.nbJournauxRestants = 0;
         this.tempsApresLancer = 0;
-        this.barreAffichage = new BarreAffichage(nbJournaux, new ArrayList<>(), 0);
-    }
+        this.masseJournaux = RANDOM.nextDouble(1, 2);
 
-    private void demarrerNouveauNiveau() {
-
-        //Objets
         this.camelot = new Camelot();
         this.decor = new Decor();
         this.camera = new Camera();
-
-        //État du niveau
-        this.chargementEnCours = true;
-        this.nbJournaux = JOURNAUX_PAR_NIVEAUX + nbJournauxRestants;
-        this.masseJournaux = RANDOM.nextDouble(1, 2);
         genererMaisons();
-        barreAffichage.setAdresses(adresses);
-        barreAffichage.setNbJournaux(nbJournaux);
+        this.barreAffichage = new BarreAffichage(nbJournaux, adresses, 0);
+        this.ecranDeChargement = new EcranDeChargement("Niveau " + this.niveauActuel);
+        if(niveauActuel>=2){
+            genererParticules();
+        }
     }
 
     private void genererMaisons() {
@@ -100,12 +93,6 @@ public class Partie {
         }
     }
 
-
-    public void ecranChargementNiveau() {
-        this.ecranDeChargement = new EcranDeChargement("Niveau " + niveauActuel);
-    }
-
-
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
 
@@ -120,9 +107,12 @@ public class Partie {
             for (var journal : journaux) {
                 journal.calculeraccelerationTotale(particules);
                 journal.update(deltaTemps);
-                if (journal.getBas() > MainJavaFX.HEIGHT || journal.getHaut() < 0 || journal.getGauche() < 0) {
-                    journaux.remove(journal);
-                }
+                journaux.removeIf(journal1 ->
+                        journal.getBas() > MainJavaFX.HEIGHT
+                                || journal.getHaut() < 0
+                                || journal.getGauche() < 0
+                );
+
             }
             debogage.update(deltaTemps);
 
@@ -132,14 +122,10 @@ public class Partie {
             finDePartie();
 
 
-
         }
     }
 
     private void niveauEstTermine() {
-
-        //Ce qui est demandé dans le doc : Le niveau est considéré comme complété à partir du moment où le camelot dépasse la coordonnée x
-        //de la dernière maison, plus 1.5x la largeur de l’écran.
 
         var positionDerniereMaison = (maisons.get(maisons.size() - 1)).getPositionX();
         var limiteFinNiveau = positionDerniereMaison + 1.5 * MainJavaFX.WIDTH;
@@ -260,17 +246,30 @@ public class Partie {
         return champElectriqueTotal;
     }
 
+    private void genererParticules() {
+        particules = new ArrayList<>();
+        int nbParticules = Math.min((niveauActuel - 1)* 30, 400);
 
+        for(int i = 0; i < nbParticules; i++){
+
+            // * Nb maisons
+            double positionX = RANDOM.nextDouble(0,MainJavaFX.WIDTH);
+            double positionY = RANDOM.nextDouble(0, MainJavaFX.HEIGHT);
+            double teinte = RANDOM.nextDouble(0,360);
+            Color couleur =Color.hsb(teinte,1,1);
+
+            particules.add(new Particule(positionX,positionY,couleur));
+
+        }
+
+    }
 
 
     private void niveauSuivant() {
         niveauActuel++;
-        //Calcule le nombre de journeaux restants pour le prochain niveau
-        nbJournauxRestants = nbJournaux;
-        nbJournaux = 0;
+        initialiserNiveau(niveauActuel, nbJournaux);
         journaux.clear();
-        demarrerNouveauNiveau();
-        ecranChargementNiveau();
+        chargementEnCours = true;
     }
 
     private boolean journalPeutEtreLance() {
@@ -279,11 +278,12 @@ public class Partie {
     }
 
     private void recommencerPartie() {
-        initialiserNiveau1();
-        demarrerNouveauNiveau();
-        ecranChargementNiveau();
-
+        journaux.clear();
+        initialiserNiveau(1, 0);
+        finDePartie = false;
+        chargementEnCours = true;
     }
+
 
 
 }
