@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import java.util.ArrayList;
 import java.util.Random;
 //est ce que cest correct tt sois en rose
+//Revoir la logique des niveaux
 public class Partie {
 
     //Constantes :
@@ -118,10 +119,9 @@ public class Partie {
             niveauEstTermine();
 
             //Vérifie la fin de la partie  (le camelot n'a plus de journaux dans le niveau 2)
-            if (niveauActuel == 2 && nbJournaux == 0 && journaux.isEmpty()) {
+            if (niveauActuel >= 2 && nbJournaux == 0 && journaux.isEmpty()) {
                finDePartie();
             }
-
 
         }
     }
