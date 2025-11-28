@@ -77,16 +77,10 @@ public class Journal extends ObjetDuJeu {
 
 
     }
-    public void retirerJournal(GraphicsContext context){
-        context.clearRect(position.getX(),position.getY(),taille.getX(),taille.getY());
-    }
 
 
-    public boolean enCollision(ObjetDuJeu objet) {
 
 
-        return false;
-    }
 
 
 }
