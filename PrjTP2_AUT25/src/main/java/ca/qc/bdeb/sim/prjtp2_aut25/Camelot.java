@@ -57,8 +57,6 @@ public class Camelot extends ObjetDuJeu {
                 taille.getX(),
                 taille.getY()
         );
-
-
     }
 
 
@@ -78,7 +76,6 @@ public class Camelot extends ObjetDuJeu {
         boolean droite = Input.isKeyPressed(KeyCode.RIGHT);
         boolean sauter = Input.isKeyPressed(KeyCode.SPACE) || Input.isKeyPressed(KeyCode.UP);
 
-        System.out.println("Gauche :" + gauche + " Droite : " + droite + " Vitesse : " + velocite.getX());
 
         //---Gestion accélération horizontale---
 
@@ -86,24 +83,22 @@ public class Camelot extends ObjetDuJeu {
             //Flèche gauche --> ralentir
 
             acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
-//            System.out.println("RALENTIR ! Accélération: -300 ");
+
         } else if (droite) {
             //Flèche droite --> accélérer
             acceleration = new Point2D(ACCELERATION_CONTROLE, acceleration.getY());
-//            System.out.println("ACCÉLÉRATION ! : + 300");
+
         } else if (velocite.getX() < VITESSE_DEBASE - 1) {
             // En bas de 399 --> accélérer vers la vitesse de base
             acceleration = new Point2D(ACCELERATION_CONTROLE, acceleration.getY());
-//            System.out.println("Retour à 400 (trop lent)");
+
         } else if (velocite.getX() > VITESSE_DEBASE + 1) {
             //En haut de 401 ---> ralentir vers la vitesse de base
             acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
-//            System.out.println("Retour à 400 (trop rapide)");
+
         } else {
             //Entre 399 et 401 --> Assez proche donc pas d'accélération
             acceleration = new Point2D(0, acceleration.getY());
-//            System.out.println("Stable à 400");
-
         }
 
         //---Gestion accélération verticale (saut)---
@@ -111,7 +106,7 @@ public class Camelot extends ObjetDuJeu {
         if (toucheLeSol && sauter) {
             velocite = new Point2D(velocite.getX(), -VITESSE_SAUT);
             toucheLeSol = false;
-            System.out.println("saut!!!!");
+
         }
 
 

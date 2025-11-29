@@ -23,9 +23,6 @@ public class BoiteAuxLettres extends ObjetDuJeu {
         this.image = ImageManager.getImage("boite-aux-lettres.png");
     }
 
-    public boolean isaRecuJournal() {
-        return aRecuJournal;
-    }
 
     public void enCollisionJournal(Journal journal, BarreAffichage barreAffichage) {
         if (!aRecuJournal&&testCollision(journal)) {
@@ -41,6 +38,8 @@ public class BoiteAuxLettres extends ObjetDuJeu {
             }
             aRecuJournal = true;
         }
+
+
     }
 
     @Override

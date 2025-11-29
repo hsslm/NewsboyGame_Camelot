@@ -23,7 +23,6 @@ public class Debogage {
     private double limiteNiveau;
 
 
-
     public Debogage() {
         this.modeDebug = false;
         this.modeDebugChamp = false;
@@ -36,14 +35,14 @@ public class Debogage {
 
 
     }
-    public void setLimiteNiveau(ArrayList<Maison>maisons){
-        var positionDerniereMaison = maisons.get(maisons.size()-1).getPositionX();
-        this.limiteNiveau = positionDerniereMaison + 1.5* MainJavaFX.WIDTH;
 
+    public void setLimiteNiveau(ArrayList<Maison> maisons) {
+        var positionDerniereMaison = maisons.get(maisons.size() - 1).getPositionX();
+        this.limiteNiveau = positionDerniereMaison + 1.5 * MainJavaFX.WIDTH;
     }
 
 
-    public void draw(GraphicsContext context, Camera camera, ArrayList<Maison> maisons, ArrayList<Journal> journaux,ArrayList<Particule>particules) {
+    public void draw(GraphicsContext context, Camera camera, ArrayList<Maison> maisons, ArrayList<Journal> journaux, ArrayList<Particule> particules) {
 
         if (modeDebug) {
 
@@ -70,17 +69,17 @@ public class Debogage {
             }
 
         }
-        if(modeDebugChamp){
+        if (modeDebugChamp) {
             setLimiteNiveau(maisons);
 
 
-            for (double x = 0; x <limiteNiveau; x += 50) {
+            for (double x = 0; x < limiteNiveau; x += 50) {
                 for (double y = 0; y < MainJavaFX.HEIGHT; y += 50) {
                     var positionMonde = new Point2D(x, y);
                     var positionEcran = camera.coordoEcran(positionMonde);
                     // TODO: Seulement faire ça si la position (x, y) est visible dans l'écran
-                    if(positionEcran.getX()>0&&positionEcran.getX()< MainJavaFX.WIDTH&&
-                            positionEcran.getY()>0&&positionEcran.getY()<MainJavaFX.HEIGHT) {
+                    if (positionEcran.getX() > 0 && positionEcran.getX() < MainJavaFX.WIDTH &&
+                            positionEcran.getY() > 0 && positionEcran.getY() < MainJavaFX.HEIGHT) {
                         Point2D force = Particule.champElectriqueTotal(particules, positionMonde);
                         UtilitairesDessins.dessinerVecteurForce(
                                 positionEcran,
@@ -148,30 +147,30 @@ public class Debogage {
             lDejaAppuyee = false;
         }
         //Gestion touche F : flèche du champ électrique
-        if(Input.isKeyPressed(KeyCode.F)){
-            if(!fDejaAppuyee){
+        if (Input.isKeyPressed(KeyCode.F)) {
+            if (!fDejaAppuyee) {
                 modeDebugChamp = !modeDebugChamp;
                 fDejaAppuyee = true;
             }
 
-        }else{
+        } else {
             fDejaAppuyee = false;
         }
         //Gestion touche I : test lignes de particules
-        if(Input.isKeyPressed(KeyCode.I)){
-            if(!iDejaAppuyee){
+        if (Input.isKeyPressed(KeyCode.I)) {
+            if (!iDejaAppuyee) {
                 //code ligne particule
                 var particules = partie.getParticules();
                 particules.clear();
-                for(int x = 0;x<limiteNiveau;x+=50){
-                    particules.add(new Particule(x,10));
-                    particules.add(new Particule(x,MainJavaFX.HEIGHT-10));
+                for (int x = 0; x < limiteNiveau; x += 50) {
+                    particules.add(new Particule(x, 10));
+                    particules.add(new Particule(x, MainJavaFX.HEIGHT - 10));
 
                 }
                 partie.setParticules(particules);
                 iDejaAppuyee = true;
             }
-        }else{
+        } else {
             iDejaAppuyee = false;
         }
 

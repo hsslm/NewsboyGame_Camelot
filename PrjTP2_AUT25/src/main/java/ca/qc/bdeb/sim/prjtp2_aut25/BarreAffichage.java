@@ -40,7 +40,7 @@ public class BarreAffichage {
     public void retirerArgent(int sommeARetirer){
         argent-=sommeARetirer;
     }
-    public double getArgentTotal(){
+    public int getArgentTotal(){
         return argent;
     }
 

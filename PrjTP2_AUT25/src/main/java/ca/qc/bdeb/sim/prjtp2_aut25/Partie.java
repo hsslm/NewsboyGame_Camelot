@@ -3,10 +3,8 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Fenetre;
 import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -115,16 +113,18 @@ public class Partie {
             //Interactions de l'utilisateur avec le clavier
             gererLancementJournaux();
 
-            //Supprime les journaux sortis de l'écran
+            // Met à jour tous les journaux
             for (var journal : journaux) {
                 journal.update(deltaTemps, particules);
-                journaux.removeIf(journal1 ->
-                        journal.getBas() > MainJavaFX.HEIGHT
-                                || journal.getHaut() < 0
-                                || journal.getGauche() < 0
-                );
-
             }
+
+            // Supprime les journaux sortis de l'écran
+            journaux.removeIf(journal1 ->
+                    journal1.getBas() > MainJavaFX.HEIGHT
+                            || journal1.getHaut() < 0
+                            || journal1.getGauche() < 0
+            );
+
 
             //Pour que debogage puisse agir sur partie on transmet l'instance
             debogage.update(this);
@@ -132,7 +132,7 @@ public class Partie {
             //Vérifie si le camelot a depassé la limite de position de fin de niveau
             niveauEstTermine();
             //Vérifie si le camelot a toujours des journaux sinon c'est la fin de partie
-            finDePartie();
+            ecranDeChargementFinDePartie();
 
 
         }
@@ -150,7 +150,7 @@ public class Partie {
 
     }
 
-    private void finDePartie() {
+    public void ecranDeChargementFinDePartie() {
 
         if (nbJournaux == 0 && journaux.isEmpty()) {
             ecranDeChargement = new EcranDeChargement(
@@ -184,7 +184,7 @@ public class Partie {
                 chargementEnCours = false;
 
                 if (finDePartie) {
-                    recommencerPartie();
+                    redemarrage();
                     finDePartie = false;
                 }
             }
@@ -205,10 +205,12 @@ public class Partie {
                 journal.draw(context, camera);
             }
             //Activation du mode debogage selon la touche D
-            debogage.draw(context, camera, maisons, journaux,particules);
+            debogage.draw(context, camera, maisons, journaux, particules);
 
-            for (var particule : particules) {
-                particule.draw(context, camera);
+            if (niveauActuel >= 2) {
+                for (var particule : particules) {
+                    particule.draw(context, camera);
+                }
             }
             //Dessin barre d'affichage
             barreAffichage.draw(context, camera);
@@ -220,38 +222,41 @@ public class Partie {
 
     public void enCollisionJournal() {
 
-        for (Maison maison : maisons) {
-            var objetTouche = false;
+        var journauxASupprimer = new ArrayList<Journal>();
 
+        for (var maison : maisons) {
+            for (var journal : journaux) {
 
-            for (Journal journal : journaux) {
-
+                var objetTouche = false;
 
                 if (maison.isaDesFenetres()) {
-                    for (Fenetre fenetre : maison.getFenetres()) {
+                    for (var fenetre : maison.getFenetres()) {
+
                         fenetre.enCollisionJournal(journal, barreAffichage);
-                        if (!objetTouche) {
-                            if (fenetre.testCollision(journal)) {
-                                objetTouche = true;
-                            }
+
+                        if (!objetTouche && fenetre.testCollision(journal)) {
+                            objetTouche = true;
                         }
+                    }
+                }
 
-                    }
+                var boite = maison.getBoiteAuxLettres();
+                boite.enCollisionJournal(journal, barreAffichage);
+
+                if (!objetTouche && boite.testCollision(journal)) {
+                    objetTouche = true;
                 }
-                maison.getBoiteAuxLettres().enCollisionJournal(journal, barreAffichage);
-                if (!objetTouche) {
-                    if (maison.getBoiteAuxLettres().testCollision(journal)) {
-                        objetTouche = true;
-                    }
-                }
+
                 if (objetTouche) {
-                    journaux.remove(journal);
+                    if (!journauxASupprimer.contains(journal)) {
+                        journauxASupprimer.add(journal);
+                    }
                 }
-
             }
-
-
         }
+
+        journaux.removeAll(journauxASupprimer);
+
     }
 
     private void genererParticules() {
@@ -286,8 +291,9 @@ public class Partie {
         return tempsEcoule >= DELAI_ENTRE_LANCERS;
     }
 
-    private void recommencerPartie() {
+    public void redemarrage() {
         journaux.clear();
+        particules.clear();
         initialiserNiveau(1, 0);
         finDePartie = false;
         chargementEnCours = true;
@@ -298,9 +304,12 @@ public class Partie {
         barreAffichage.setNbJournaux(nbJournaux);
     }
 
-    public  void mettreStockJournauxAZero(){
+    public void mettreStockJournauxAZero() {
         nbJournaux = 0;
+        journaux.clear();
+        particules.clear();
         barreAffichage.setNbJournaux(nbJournaux);
+        ecranDeChargementFinDePartie();
     }
 
 

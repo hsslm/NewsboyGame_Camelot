@@ -58,24 +58,25 @@ public class Maison extends ObjetDuJeu {
         creerFenetres();
     }
     private void creerFenetres(){
+        int nbFenetres = random.nextInt(0, 3); // 0, 1 ou 2
 
-        int nbFenetres = random.nextInt(0,3);
-
-        if(nbFenetres==0){
-            this.aDesFenetres=false;
-        }else if(nbFenetres>0){
-            this.aDesFenetres = true;
-            fenetres = new ArrayList<>();
-
-
-            for(int i = 0;i<=nbFenetres;i++){
-
-                    fenetres.add(new Fenetre(new Point2D(position.getX()+ 300,50),abonneeAuJournal));
-                 if(nbFenetres==2){
-                    fenetres.add(new Fenetre(new Point2D(position.getX()+600,50),abonneeAuJournal));
-                }
-            }
+        if (nbFenetres == 0) {
+            this.aDesFenetres = false;
+            this.fenetres = new ArrayList<>();
+            return;
         }
+
+        this.aDesFenetres = true;
+        this.fenetres = new ArrayList<>();
+
+        //première fenêtre à +300
+        fenetres.add(new Fenetre(new Point2D(position.getX() + 300, 50), abonneeAuJournal));
+
+        //deuxième fenêtre à +600 si besoin
+        if (nbFenetres == 2) {
+            fenetres.add(new Fenetre(new Point2D(position.getX() + 600, 50), abonneeAuJournal));
+        }
+
 
 
 
