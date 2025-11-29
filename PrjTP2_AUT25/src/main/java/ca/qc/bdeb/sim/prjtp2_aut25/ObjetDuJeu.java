@@ -63,5 +63,14 @@ public abstract class ObjetDuJeu {
     public double getPositionX(){
         return position.getX();
     }
+    public Point2D getPosition(){
+        return position;
+    }
+    public double getTailleX(){
+        return taille.getX();
+    }
+    public double getTailleY(){
+        return taille.getY();
+    }
 
 }

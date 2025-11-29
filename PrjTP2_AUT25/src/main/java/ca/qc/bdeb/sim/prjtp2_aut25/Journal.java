@@ -23,7 +23,9 @@ public class Journal extends ObjetDuJeu {
     }
 
 
-    public void update(double deltaTemps) {
+    public void update(double deltaTemps,ArrayList<Particule> particules) {
+        //Recalcule l'accélération totale incluant les particules
+        calculeraccelerationTotale(particules);
         super.update(deltaTemps);
         //Limite la vitesse
         if (velocite.magnitude() > VITESSE_MAX) {
@@ -80,12 +82,9 @@ public class Journal extends ObjetDuJeu {
 
     public void calculeraccelerationTotale(ArrayList<Particule> particules) {
         var accelerationTotale = new Point2D(0, 1500);
-
         var champElectriqueTotal = Particule.champElectriqueTotal(particules, getCentre());
-
         var forceElectrique = champElectriqueTotal.multiply(charge);
         var accelerationParticules = forceElectrique.multiply(1 / masse);
-
         this.acceleration = accelerationTotale.add(accelerationParticules);
     }
 

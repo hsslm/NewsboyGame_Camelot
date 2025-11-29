@@ -104,8 +104,7 @@ public class Partie {
 
             //Supprime les journaux sortis de l'écran
             for (var journal : journaux) {
-                journal.calculeraccelerationTotale(particules);
-                journal.update(deltaTemps);
+                journal.update(deltaTemps,particules);
                 journaux.removeIf(journal1 ->
                         journal.getBas() > MainJavaFX.HEIGHT
                                 || journal.getHaut() < 0
@@ -113,7 +112,7 @@ public class Partie {
                 );
 
             }
-            debogage.update(deltaTemps);
+            debogage.update();
 
             //Vérifie si le camelot a depassé la limite de position de fin de niveau
             niveauEstTermine();
@@ -238,14 +237,6 @@ public class Partie {
 
 
         }
-    }
-
-    public Point2D champElectrique(Point2D point) {
-        Point2D champElectriqueTotal = Point2D.ZERO;
-        for (Particule particule : particules) {
-            champElectriqueTotal.add(particule.calculerChampElectrique(point));
-        }
-        return champElectriqueTotal;
     }
 
     private void genererParticules() {

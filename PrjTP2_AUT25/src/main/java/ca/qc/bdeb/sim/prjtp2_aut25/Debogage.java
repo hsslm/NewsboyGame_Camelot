@@ -11,11 +11,10 @@ import java.util.ArrayList;
 public class Debogage {
 
     private boolean modeDebug;
-    private boolean dEtaitPresse;
+
 
 
     public Debogage() {
-        this.dEtaitPresse = false;
         this.modeDebug = false;
     }
 
@@ -25,7 +24,9 @@ public class Debogage {
         if (modeDebug) {
 
             context.setStroke(Color.YELLOW);
+            //Ligne verticale jaune à 20% de l'écran
             context.strokeLine(0.2 * MainJavaFX.WIDTH, MainJavaFX.HEIGHT, 0.2 * MainJavaFX.WIDTH, 0);
+            context.setLineWidth(2);
 
             for (Maison maison : maisons) {
                 drawStroke(maison.getBoiteAuxLettres(), context, camera);
@@ -41,9 +42,9 @@ public class Debogage {
             if (!journaux.isEmpty()) {
                 for (Journal journal : journaux) {
                     drawStroke(journal, context, camera);
-
                 }
             }
+
         }
 
     }
@@ -58,17 +59,9 @@ public class Debogage {
 
     }
 
-    public void update(double deltaTemps) {
-
-        boolean dPresse = Input.isKeyPressed(KeyCode.D);
-
-        if (deltaTemps >= 0.004) {
-
-            //desactivation
-            if (dPresse && dEtaitPresse) {
-                modeDebug = !modeDebug;
-            }
-            dEtaitPresse = dPresse;
+    public void update() {
+        if(Input.isKeyPressed(KeyCode.D)){
+            modeDebug = !modeDebug;
         }
 
 

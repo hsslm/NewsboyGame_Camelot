@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Input {
-
     // Ensemble des touches sur lesquelles on appuie en ce moment
     private static Set<KeyCode> touches = new HashSet<>();
 
@@ -15,7 +14,7 @@ public class Input {
     }
 
     // Dans le Main, on va écouter les événements sur la scène
-    // et modifier l'état quand les touches changent
+// et modifier l'état quand les touches changent
     public static void setKeyPressed(KeyCode code, boolean appuie) {
         if (appuie)
             touches.add(code);
