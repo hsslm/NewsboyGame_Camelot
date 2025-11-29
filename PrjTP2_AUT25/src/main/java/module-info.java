@@ -4,6 +4,7 @@ module ca.qc.bdeb.sim.prjtp2_aut25 {
     requires javafx.graphics;
     requires java.sql;
     requires java.desktop;
+    requires jdk.compiler;
 
 
     opens ca.qc.bdeb.sim.prjtp2_aut25 to javafx.fxml;

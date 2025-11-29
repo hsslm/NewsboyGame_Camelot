@@ -9,11 +9,15 @@ public class Fenetre extends ObjetDuJeu {
     private boolean estAbonnee;
     private boolean estBrisee;
     private Image image;
+    private boolean verifArgent;
+
     public Fenetre(Point2D position, boolean estAbonnee) {
         super(position, Point2D.ZERO, new Point2D(159,130), Point2D.ZERO);
         this.estAbonnee = estAbonnee;
         this.image = ImageManager.getImage("fenetre.png");
         this.estBrisee = false;
+        this.verifArgent = false;
+
     }
 
     public boolean isEstBrisee() {
@@ -21,19 +25,39 @@ public class Fenetre extends ObjetDuJeu {
     }
 
     public void enCollisionJournal(Journal journal, BarreAffichage barreAffichage){
+
+
         if(testCollision(journal)&&!estBrisee){
             if(estAbonnee){
+
                 image = ImageManager.getImage( "fenetre-brisee-rouge.png");
-                barreAffichage.retirerArgent(2);
+                if(!verifArgent) {
+                    verifArgent = true;
+                    barreAffichage.retirerArgent(2);
+                    System.out.println("ajout");
+
+                }
+
+
             }
             else{
+
                 image = ImageManager.getImage("fenetre-brisee-vert.png");
-                barreAffichage.ajouterArgent(2);
+                if(!verifArgent) {
+                    verifArgent = true;
+                    barreAffichage.ajouterArgent(2);
+                    System.out.println("retrait");
+
+                }
+
+
             }
-            estBrisee = true;
+
 
 
         }
+
+
 
 
     }

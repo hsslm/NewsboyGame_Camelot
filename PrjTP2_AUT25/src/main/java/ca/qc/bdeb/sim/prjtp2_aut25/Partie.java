@@ -52,6 +52,19 @@ public class Partie {
         initialiserNiveau(1, 0);
     }
 
+    public void setParticules(ArrayList<Particule> particules) {
+        this.particules = particules;
+    }
+
+    public ArrayList<Maison> getMaisons() {
+        return maisons;
+    }
+
+    public ArrayList<Particule> getParticules() {
+
+        return particules;
+    }
+
     public void initialiserNiveau(int niveauActuel, int nbJournauxRestants) {
 
         this.niveauActuel = niveauActuel;
@@ -192,7 +205,7 @@ public class Partie {
                 journal.draw(context, camera);
             }
             //Activation du mode debogage selon la touche D
-            debogage.draw(context, camera, maisons, journaux);
+            debogage.draw(context, camera, maisons, journaux,particules);
 
             for (var particule : particules) {
                 particule.draw(context, camera);
@@ -252,10 +265,9 @@ public class Partie {
             //Toute la largeur du niveau inclu la largeur de l'écran mais aussi le nombre de maisons
             double positionX = RANDOM.nextDouble(0, MainJavaFX.WIDTH * NB_MAISONS);
             double positionY = RANDOM.nextDouble(0, MainJavaFX.HEIGHT);
-            double teinte = RANDOM.nextDouble(0, 360);
-            Color couleur = Color.hsb(teinte, 1, 1);
 
-            particules.add(new Particule(positionX, positionY, couleur));
+
+            particules.add(new Particule(positionX, positionY));
 
         }
 

@@ -7,16 +7,21 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+
 public class Particule extends ObjetDuJeu {
     private static final double CHARGE = 900;
+    private static final Random RANDOM = new Random() ;
     private final double CONSTANTE_COULOMB = 90;
     private Color teinte;
 
 
-    public Particule(double positionX, double positionY, Color teinte) {
+    public Particule(double positionX, double positionY) {
 
         super(new Point2D(positionX, positionY), Point2D.ZERO, new Point2D(20, 20), Point2D.ZERO);
-        this.teinte = teinte;
+        double randomTeinte = RANDOM.nextDouble(0, 360);
+        Color couleur = Color.hsb(randomTeinte, 1, 1);
+        this.teinte = couleur;
     }
 
     @Override
