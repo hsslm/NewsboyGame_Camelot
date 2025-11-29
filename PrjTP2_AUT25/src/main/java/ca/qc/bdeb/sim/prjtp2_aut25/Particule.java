@@ -13,10 +13,9 @@ public class Particule extends ObjetDuJeu {
     private Color teinte;
 
 
+    public Particule(double positionX, double positionY, Color teinte) {
 
-    public Particule(double positionX, double positionY,Color teinte) {
-
-        super(new Point2D(positionX,positionY),Point2D.ZERO, new Point2D(20, 20), Point2D.ZERO);
+        super(new Point2D(positionX, positionY), Point2D.ZERO, new Point2D(20, 20), Point2D.ZERO);
         this.teinte = teinte;
     }
 
@@ -37,18 +36,19 @@ public class Particule extends ObjetDuJeu {
 
     public Point2D calculerChampElectrique(Point2D point) { //point correspond au centre de la position du journal
         var distancePoint = position.distance(point);
-        if(distancePoint<1){
-            distancePoint=1;
+        if (distancePoint < 1) {
+            //évite division par 0
+            distancePoint = 1;
         }
-        var moduleChampElectrique = CONSTANTE_COULOMB * CHARGE / ((distancePoint * distancePoint));
+        var moduleChampElectrique = CONSTANTE_COULOMB * CHARGE / (distancePoint * distancePoint);
         var directionChampElectrique = point.subtract(position).normalize();
         return directionChampElectrique.multiply(moduleChampElectrique);
     }
 
-    public static Point2D champElectriqueTotal(ArrayList<Particule> particules,Point2D point) {
+    public static Point2D champElectriqueTotal(ArrayList<Particule> particules, Point2D point) {
         Point2D champElectriqueTotal = Point2D.ZERO;
         for (Particule particule : particules) {
-            champElectriqueTotal.add(particule.calculerChampElectrique(point));
+           champElectriqueTotal = champElectriqueTotal.add(particule.calculerChampElectrique(point));
         }
         return champElectriqueTotal;
     }

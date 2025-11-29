@@ -66,7 +66,7 @@ public class Partie {
         genererMaisons();
         this.barreAffichage = new BarreAffichage(nbJournaux, adresses, 0);
         this.ecranDeChargement = new EcranDeChargement("Niveau " + this.niveauActuel);
-        if(niveauActuel>=2){
+        if (niveauActuel >= 2) {
             genererParticules();
         }
     }
@@ -95,7 +95,6 @@ public class Partie {
 
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
-
 
             camelot.update(deltaTemps);
             camera.suivreCamelot(camelot);
@@ -194,6 +193,9 @@ public class Partie {
             //Activation du mode debogage selon la touche D
             debogage.draw(context, camera, maisons, journaux);
 
+            for(var particule : particules){
+                particule.draw(context,camera);
+            }
             //Dessin barre d'affichage
             barreAffichage.draw(context, camera);
 
@@ -248,17 +250,19 @@ public class Partie {
 
     private void genererParticules() {
         particules = new ArrayList<>();
-        int nbParticules = Math.min((niveauActuel - 1)* 30, 400);
+        int nbParticules = Math.min((niveauActuel - 1) * 30, 400);
 
-        for(int i = 0; i < nbParticules; i++){
+        for (int i = 0; i < nbParticules; i++) {
 
             // * Nb maisons
-            double positionX = RANDOM.nextDouble(0,MainJavaFX.WIDTH);
-            double positionY = RANDOM.nextDouble(0, MainJavaFX.HEIGHT);
-            double teinte = RANDOM.nextDouble(0,360);
-            Color couleur =Color.hsb(teinte,1,1);
 
-            particules.add(new Particule(positionX,positionY,couleur));
+            //Toute la largeur du niveau inclu la largeur de l'écran mais aussi le nombre de maisons
+            double positionX = RANDOM.nextDouble(0, MainJavaFX.WIDTH *NB_MAISONS);
+            double positionY = RANDOM.nextDouble(0, MainJavaFX.HEIGHT);
+            double teinte = RANDOM.nextDouble(0, 360);
+            Color couleur = Color.hsb(teinte, 1, 1);
+
+            particules.add(new Particule(positionX, positionY, couleur));
 
         }
 
@@ -283,7 +287,6 @@ public class Partie {
         finDePartie = false;
         chargementEnCours = true;
     }
-
 
 
 }
