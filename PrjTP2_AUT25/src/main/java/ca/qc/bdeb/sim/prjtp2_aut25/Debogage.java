@@ -11,11 +11,18 @@ import java.util.ArrayList;
 public class Debogage {
 
     private boolean modeDebug;
-
+    private boolean dDejaAppuyee;
+    private boolean qDejaAppuyee;
+    private boolean kDejaAppuyee;
+    private boolean lDejaAppuyee;
 
 
     public Debogage() {
         this.modeDebug = false;
+        this.dDejaAppuyee = false;
+        this.qDejaAppuyee = false;
+        this.kDejaAppuyee = false;
+        this.lDejaAppuyee = false;
     }
 
 
@@ -59,11 +66,48 @@ public class Debogage {
 
     }
 
-    public void update() {
-        if(Input.isKeyPressed(KeyCode.D)){
-            modeDebug = !modeDebug;
+    public void update(Partie partie) {
+
+        //Gestion touche D : contour des objets en jaune
+        if (Input.isKeyPressed(KeyCode.D)) {
+            if (!dDejaAppuyee) {
+                modeDebug = !modeDebug;
+                dDejaAppuyee = true;
+            }
+        } else {
+            dDejaAppuyee = false;
         }
 
+
+        //Gestion touche Q : ajout de 10 journaux
+        if (Input.isKeyPressed(KeyCode.Q)) {
+            if (!qDejaAppuyee) {
+                partie.ajouterJournaux(10);
+                qDejaAppuyee = true;
+            }
+        } else {
+            qDejaAppuyee = false;
+        }
+
+        //Gestion touche K : met la quantité de journaux à 0 (fin de la partie)
+        if (Input.isKeyPressed(KeyCode.K)) {
+            if (!kDejaAppuyee) {
+                partie.mettreStockJournauxAZero();
+                kDejaAppuyee = true;
+            }
+        } else {
+            kDejaAppuyee = false;
+        }
+
+        //Gestion touche L : prochain niveau ( écran de chargement du prochain niveau)
+        if (Input.isKeyPressed(KeyCode.L)) {
+            if (!lDejaAppuyee) {
+                partie.niveauSuivant();
+                lDejaAppuyee = true;
+            }
+        } else {
+            lDejaAppuyee = false;
+        }
 
     }
 }

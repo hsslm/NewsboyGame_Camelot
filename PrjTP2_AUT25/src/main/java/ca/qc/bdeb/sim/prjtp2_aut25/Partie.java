@@ -104,7 +104,7 @@ public class Partie {
 
             //Supprime les journaux sortis de l'écran
             for (var journal : journaux) {
-                journal.update(deltaTemps,particules);
+                journal.update(deltaTemps, particules);
                 journaux.removeIf(journal1 ->
                         journal.getBas() > MainJavaFX.HEIGHT
                                 || journal.getHaut() < 0
@@ -112,7 +112,9 @@ public class Partie {
                 );
 
             }
-            debogage.update();
+
+            //Pour que debogage puisse agir sur partie on transmet l'instance
+            debogage.update(this);
 
             //Vérifie si le camelot a depassé la limite de position de fin de niveau
             niveauEstTermine();
@@ -192,8 +194,8 @@ public class Partie {
             //Activation du mode debogage selon la touche D
             debogage.draw(context, camera, maisons, journaux);
 
-            for(var particule : particules){
-                particule.draw(context,camera);
+            for (var particule : particules) {
+                particule.draw(context, camera);
             }
             //Dessin barre d'affichage
             barreAffichage.draw(context, camera);
@@ -248,7 +250,7 @@ public class Partie {
             // * Nb maisons
 
             //Toute la largeur du niveau inclu la largeur de l'écran mais aussi le nombre de maisons
-            double positionX = RANDOM.nextDouble(0, MainJavaFX.WIDTH *NB_MAISONS);
+            double positionX = RANDOM.nextDouble(0, MainJavaFX.WIDTH * NB_MAISONS);
             double positionY = RANDOM.nextDouble(0, MainJavaFX.HEIGHT);
             double teinte = RANDOM.nextDouble(0, 360);
             Color couleur = Color.hsb(teinte, 1, 1);
@@ -260,7 +262,7 @@ public class Partie {
     }
 
 
-    private void niveauSuivant() {
+    public void niveauSuivant() {
         niveauActuel++;
         initialiserNiveau(niveauActuel, nbJournaux);
         journaux.clear();
@@ -277,6 +279,16 @@ public class Partie {
         initialiserNiveau(1, 0);
         finDePartie = false;
         chargementEnCours = true;
+    }
+
+    public void ajouterJournaux(int ajout) {
+        nbJournaux += ajout;
+        barreAffichage.setNbJournaux(nbJournaux);
+    }
+
+    public  void mettreStockJournauxAZero(){
+        nbJournaux = 0;
+        barreAffichage.setNbJournaux(nbJournaux);
     }
 
 
