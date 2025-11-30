@@ -133,8 +133,15 @@ public class Partie {
             niveauEstTermine();
             //Vérifie si le camelot a toujours des journaux sinon c'est la fin de partie
             ecranDeChargementFinDePartie();
+            quitterProgrammeTouche();
 
 
+        }
+    }
+
+    private void quitterProgrammeTouche() {
+        if(Input.isKeyPressed(KeyCode.ESCAPE)){
+            System.exit(0);
         }
     }
 
