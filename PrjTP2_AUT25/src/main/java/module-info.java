@@ -9,6 +9,4 @@ module ca.qc.bdeb.sim.prjtp2_aut25 {
 
     opens ca.qc.bdeb.sim.prjtp2_aut25 to javafx.fxml;
     exports ca.qc.bdeb.sim.prjtp2_aut25;
-    exports ca.qc.bdeb.sim.prjtp2_aut25.Maison;
-    opens ca.qc.bdeb.sim.prjtp2_aut25.Maison to javafx.fxml;
 }

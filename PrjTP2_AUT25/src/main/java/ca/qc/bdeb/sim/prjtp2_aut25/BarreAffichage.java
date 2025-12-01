@@ -7,11 +7,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
-
+/**
+ * Classe BarreAffichage : gère l'affichage de la barre d'état
+ */
 public class BarreAffichage {
     private int nbJournaux;
     private int argent;
     private ArrayList<Integer> adresses;
+
     private Image imgJournal;
     private Image imgArgent;
     private Image imgMaison;
@@ -25,15 +28,9 @@ public class BarreAffichage {
         this.imgArgent = ImageManager.getImage("icone-dollar.png");
         this.imgMaison = ImageManager.getImage("icone-maison.png");
     }
-
-    public void setAdresses(ArrayList<Integer> adresses) {
-        this.adresses = adresses;
-    }
-
     public void setNbJournaux(int nbJournaux) {
         this.nbJournaux = nbJournaux;
     }
-
     public void ajouterArgent(int sommeAAjouter){
         argent+=sommeAAjouter;
     }
@@ -47,17 +44,21 @@ public class BarreAffichage {
 
     public void draw(GraphicsContext context, Camera camera){
 
-        //Icone de journal et quantité de journaux
-        context.drawImage(imgJournal,5,8);
-        context.setFill(Color.WHITE);
-        context.setFont(new Font("Comic sans MS",25));
-        context.fillText(String.valueOf(nbJournaux),60,25);
+        //Fond gris semi-transparent
+        Color grisTransparent = Color.gray(0.2,0.5);
+        context.setFill(grisTransparent);
+        context.fillRect(0, 0,MainJavaFX.WIDTH,50);
 
-        //Icone d'argent et quantité
-        context.drawImage(imgArgent,80,10);
-        context.fillText(String.valueOf(argent),140,25);
+        journalIcone(context);
+        argentIcone(context);
+        maisonsIcone(context);
 
-        //Icone de maison et adresses de livraison
+    }
+
+    /**
+     * Dessine l'icône de maison et les adresses abonnées
+     */
+    private void maisonsIcone(GraphicsContext context) {
         context.drawImage(imgMaison,155,8);
         context.setFont(new Font("Comic sans MS",20));
         var index = 0;
@@ -65,12 +66,23 @@ public class BarreAffichage {
             context.fillText(String.valueOf(i),215+index,25);
             index+=45;
         }
+    }
+    /**
+     * Dessine l'icône d'argent et le montant accumulé
+     */
+    private void argentIcone(GraphicsContext context) {
+        context.drawImage(imgArgent,80,10);
+        context.fillText(String.valueOf(argent),140,25);
+    }
 
-        //Fond gris et opacité
-        Color grisTransparent = Color.gray(0.2,0.5);
-        context.setFill(grisTransparent);
-        context.fillRect(0, 0,MainJavaFX.WIDTH,50);
-
+    /**
+     * Dessine l'icône de journal et le nombre de journaux restants
+     */
+    private void journalIcone(GraphicsContext context) {
+        context.drawImage(imgJournal,5,8);
+        context.setFill(Color.WHITE);
+        context.setFont(new Font("Comic sans MS",25));
+        context.fillText(String.valueOf(nbJournaux),60,25);
     }
 
 }

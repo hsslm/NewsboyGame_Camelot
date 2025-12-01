@@ -1,8 +1,5 @@
 package ca.qc.bdeb.sim.prjtp2_aut25;
 
-import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Fenetre;
-import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
-import com.sun.tools.javac.Main;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -33,16 +30,14 @@ public class Debogage {
         this.fDejaAppuyee = false;
         this.iDejaAppuyee = false;
 
-
     }
 
-    public void setLimiteNiveau(ArrayList<Maison> maisons) {
-        var positionDerniereMaison = maisons.get(maisons.size() - 1).getPositionX();
-        this.limiteNiveau = positionDerniereMaison + 1.5 * MainJavaFX.WIDTH;
+    public void setLimiteNiveau(Partie partie) {
+        this.limiteNiveau = partie.calculerLimiteNiveau();
     }
 
 
-    public void draw(GraphicsContext context, Camera camera, ArrayList<Maison> maisons, ArrayList<Journal> journaux, ArrayList<Particule> particules) {
+    public void draw(GraphicsContext context, Camera camera, ArrayList<Maison> maisons, ArrayList<Journal> journaux, ArrayList<Particule> particules,Partie partie) {
 
         if (modeDebug) {
 
@@ -70,7 +65,7 @@ public class Debogage {
 
         }
         if (modeDebugChamp) {
-            setLimiteNiveau(maisons);
+            setLimiteNiveau(partie);
 
 
             for (double x = 0; x < limiteNiveau; x += 50) {
@@ -104,7 +99,7 @@ public class Debogage {
     }
 
     public void update(Partie partie) {
-        setLimiteNiveau(partie.getMaisons());
+        setLimiteNiveau(partie);
 
         //Gestion touche D : contour des objets en jaune
         if (Input.isKeyPressed(KeyCode.D)) {

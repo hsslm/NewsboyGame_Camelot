@@ -1,23 +1,25 @@
 package ca.qc.bdeb.sim.prjtp2_aut25;
 
 
-import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Fenetre;
-import ca.qc.bdeb.sim.prjtp2_aut25.Maison.Maison;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-//est ce que cest correct tt sois en rose
+//est ce que cest correct que tt sois en rose
+
+/**
+ * Classe Partie : gère l'état global du jeu
+ */
 public class Partie {
-    //Constantes :
+    //Constantes
     private static final Random RANDOM = new Random();
     private static final int NB_MAISONS = 12;
     private static final int JOURNAUX_PAR_NIVEAUX = 12;
     private static final double DELAI_ENTRE_LANCERS = 0.5;
 
-    //Objets du jeu :
+    //Objets du jeu
     private Decor decor;
     private Camelot camelot;
     private Camera camera;
@@ -29,10 +31,9 @@ public class Partie {
     private Debogage debogage;
 
 
-    //État du jeu :
+    //État du jeu
     private int niveauActuel;
     private int nbJournaux;
-    private int nbJournauxRestants;
     private double masseJournaux;
     private boolean chargementEnCours;
     private EcranDeChargement ecranDeChargement;
@@ -50,6 +51,7 @@ public class Partie {
         initialiserNiveau(1, 0);
     }
 
+    // Getters et setters
     public void setParticules(ArrayList<Particule> particules) {
         this.particules = particules;
     }
@@ -59,106 +61,150 @@ public class Partie {
     }
 
     public ArrayList<Particule> getParticules() {
-
         return particules;
     }
 
-    public void initialiserNiveau(int niveauActuel, int nbJournauxRestants) {
+    /**
+     * Initialise un niveau avec les paramètres de base du jeu
+     *
+     * @param niveauActuel       numéro du niveau en cours
+     * @param nbJournauxRestants journaux restants du niveau précédent
+     */
+    private void initialiserNiveau(int niveauActuel, int nbJournauxRestants) {
 
         this.niveauActuel = niveauActuel;
-        this.nbJournaux = JOURNAUX_PAR_NIVEAUX + nbJournauxRestants;
-        this.nbJournauxRestants = 0;
-        this.tempsApresLancer = 0;
-        this.masseJournaux = RANDOM.nextDouble(1, 2);
+        masseJournaux = RANDOM.nextDouble(1, 2);
 
-        this.camelot = new Camelot();
-        this.decor = new Decor();
-        this.camera = new Camera();
-        genererMaisons();
-        this.barreAffichage = new BarreAffichage(nbJournaux, adresses, 0);
-        this.ecranDeChargement = new EcranDeChargement("Niveau " + this.niveauActuel);
+        nbJournaux = JOURNAUX_PAR_NIVEAUX + nbJournauxRestants;
+        tempsApresLancer = 0;
+
+        initialiserObjetsJeu();
+        initialiserAffichage();
+
+        //Génère des particules uniquement à partir du niveau 2
         if (niveauActuel >= 2) {
             genererParticules();
         }
     }
 
+    /**
+     * Initialise les éléments d'affichage (barre et écran de chargement)
+     */
+    private void initialiserAffichage() {
+        barreAffichage = new BarreAffichage(nbJournaux, adresses, 0);
+        ecranDeChargement = new EcranDeChargement("Niveau " + niveauActuel);
+    }
+
+    /**
+     * Initialise les objets principaux du jeux
+     */
+    private void initialiserObjetsJeu() {
+        this.camelot = new Camelot();
+        this.decor = new Decor();
+        this.camera = new Camera();
+        genererMaisons();
+    }
+
+    /**
+     * Génère les maisons du niveau avec leurs adresses et positions
+     */
     private void genererMaisons() {
         maisons = new ArrayList<>();
         adresses = new ArrayList<>();
 
-        //Adresse de la première maison : entre 100 et 950
-        int premiereAdresse = RANDOM.nextInt(100, 951);
+        var premiereAdresse = RANDOM.nextInt(100, 951);
 
-        //Écart de 2 entre les adresses des maisons et écart de 1300 entre les positions des maisons
         for (int i = 0; i < NB_MAISONS; i++) {
-            int adresse = premiereAdresse + (i * 2);
+            var adresse = premiereAdresse + (i * 2);
+            var positionX = 1300 + (i * 1300);
 
-            double positionX = 1300 + (i * 1300);
-            maisons.add(new Maison(adresse, positionX));
-        }
-        //ajoute les adresses des maisons abonnées à la liste
-        for (Maison maison : maisons) {
+            var maison = new Maison(adresse, positionX);
+            maisons.add(maison);
+
+
             if (maison.estAbonneeAuJournal()) {
                 adresses.add(maison.getAdresse());
             }
         }
     }
 
+    /**
+     * Met à jour l'état du jeu à chaque frame
+     *
+     * @param deltaTemps temps écoulé depuis la dernière mise à jour
+     */
     public void update(double deltaTemps) {
         if (!chargementEnCours) {
-
             camelot.update(deltaTemps);
             camera.suivreCamelot(camelot);
 
-            //Interactions de l'utilisateur avec le clavier
             gererLancementJournaux();
-
-            // Met à jour tous les journaux
-            for (var journal : journaux) {
-                journal.update(deltaTemps, particules);
-            }
-
-            // Supprime les journaux sortis de l'écran
-            journaux.removeIf(journal1 ->
-                    journal1.getBas() > MainJavaFX.HEIGHT
-                            || journal1.getHaut() < 0
-                            || journal1.getGauche() < 0
-            );
-
+            updateJournaux(deltaTemps);
 
             //Pour que debogage puisse agir sur partie on transmet l'instance
             debogage.update(this);
 
-            //Vérifie si le camelot a depassé la limite de position de fin de niveau
             niveauEstTermine();
-            //Vérifie si le camelot a toujours des journaux sinon c'est la fin de partie
             ecranDeChargementFinDePartie();
-            quitterProgrammeTouche();
 
+            quitterProgrammeTouche();
 
         }
     }
 
+    /**
+     * Met à jour les journaux et supprime ceux sortis de l'écran
+     */
+    private void updateJournaux(double deltaTemps) {
+        for (var journal : journaux) {
+            journal.update(deltaTemps, particules);
+        }
+        supprimerJournauxHorsEcran();
+    }
+
+    /**
+     * Supprime les journaux sortis de l'écran
+     */
+    private void supprimerJournauxHorsEcran() {
+        journaux.removeIf(journal1 ->
+                journal1.getBas() > MainJavaFX.HEIGHT ||
+                        journal1.getHaut() < 0 ||
+                        journal1.getGauche() < 0
+        );
+    }
+
+    /**
+     * Vérifie si la touche Échap est préssées --> quitte le programme
+     */
     private void quitterProgrammeTouche() {
-        if(Input.isKeyPressed(KeyCode.ESCAPE)){
+        if (Input.isKeyPressed(KeyCode.ESCAPE)) {
             System.exit(0);
         }
     }
 
+    /**
+     * Vérifie si le camelot a dépassée la dernière maison --> passe au niveau suivant
+     */
     private void niveauEstTermine() {
-
-        var positionDerniereMaison = (maisons.get(maisons.size() - 1)).getPositionX();
-        var limiteFinNiveau = positionDerniereMaison + 1.5 * MainJavaFX.WIDTH;
+        var limiteFinNiveau = calculerLimiteNiveau();
 
         if (camelot.getPositionX() > limiteFinNiveau) {
             niveauSuivant();
         }
-
-
     }
 
-    public void ecranDeChargementFinDePartie() {
+    /**
+     * @return la limite de fin de niveau
+     */
+    public double calculerLimiteNiveau() {
+        var positionDerniereMaison = (maisons.get(maisons.size() - 1)).getPositionX();
+        return positionDerniereMaison + 1.5 * MainJavaFX.WIDTH;
+    }
 
+    /**
+     * Affiche l'écran de fin de partie si plus de journaux
+     */
+    private void ecranDeChargementFinDePartie() {
         if (nbJournaux == 0 && journaux.isEmpty()) {
             ecranDeChargement = new EcranDeChargement(
                     "Rupture de stocks \nArgent collecté : " + barreAffichage.getArgentTotal() + "$"
@@ -166,36 +212,64 @@ public class Partie {
             chargementEnCours = true;
             finDePartie = true;
         }
-
     }
 
+    /**
+     * Gère l'entrée utilisateur pour lancer un journal
+     */
     private void gererLancementJournaux() {
-        if (journalPeutEtreLance() && nbJournaux > 0) {
-            if (Input.isKeyPressed(KeyCode.Z) || Input.isKeyPressed(KeyCode.X)) {
-
-                var journal = new Journal(camelot.getCentre(), masseJournaux);
-                journal.calculerVitesseInitiale(camelot);
-                journaux.add(journal);
-                nbJournaux--;
-                barreAffichage.setNbJournaux(nbJournaux);
-                tempsApresLancer = System.nanoTime();
-            }
-
+        if (journalPeutEtreLance() && nbJournaux > 0 && toucheDeLancementActive()) {
+            lancerJournal();
         }
     }
 
+    /**
+     * Crée et lance un journal, ensuite met à jour le stock et l'affichage
+     */
+    private void lancerJournal() {
+        var journal = new Journal(camelot.getCentre(), masseJournaux);
+        journal.calculerVitesseInitiale(camelot);
+        journaux.add(journal);
+
+        nbJournaux--;
+        barreAffichage.setNbJournaux(nbJournaux);
+        //Reset du timer
+        tempsApresLancer = System.nanoTime();
+    }
+
+    /**
+     * Vérifie si une touche de lancement est active (Z ou X)
+     */
+    private boolean toucheDeLancementActive() {
+        return Input.isKeyPressed(KeyCode.Z) || Input.isKeyPressed(KeyCode.X);
+    }
+
+    /**
+     * Valide le délai entre deux lancers
+     */
+    private boolean journalPeutEtreLance() {
+        double tempsEcoule = (System.nanoTime() - tempsApresLancer) * 1e-9;
+        return tempsEcoule >= DELAI_ENTRE_LANCERS;
+    }
+
+    /**
+     * Dessine tous les éléments du jeu
+     */
     public void draw(GraphicsContext context) {
         if (chargementEnCours) {
+            //Affiche l'écran de chargement tant qu'il n'est pas terminé
             ecranDeChargement.draw(context);
             if (ecranDeChargement.estTermine()) {
                 chargementEnCours = false;
 
+                //Si on était en fin de partie, on redémarre au niveau 1
                 if (finDePartie) {
                     redemarrage();
                     finDePartie = false;
                 }
             }
         } else {
+
             context.clearRect(0, 0, MainJavaFX.WIDTH, MainJavaFX.HEIGHT);
 
             //Dessin du décor
@@ -212,41 +286,48 @@ public class Partie {
                 journal.draw(context, camera);
             }
             //Activation du mode debogage selon la touche D
-            debogage.draw(context, camera, maisons, journaux, particules);
+            debogage.draw(context, camera, maisons, journaux, particules,this);
 
+            //Dessin des particules (niveau 2+)
             if (niveauActuel >= 2) {
                 for (var particule : particules) {
                     particule.draw(context, camera);
                 }
             }
+
             //Dessin barre d'affichage
             barreAffichage.draw(context, camera);
-
 
         }
 
     }
 
+    /**
+     * Gère les collisions entre journaux et objets des maisons (fenêtres + boîtes aux lettres)
+     */
     public void enCollisionJournal() {
 
         var journauxASupprimer = new ArrayList<Journal>();
 
         for (var maison : maisons) {
             for (var journal : journaux) {
-
                 var objetTouche = false;
 
+
+                // Collisions avec les fenêtres
                 if (maison.isaDesFenetres()) {
                     for (var fenetre : maison.getFenetres()) {
-
+                        // Applique l'effet (couleur + argent)
                         fenetre.enCollisionJournal(journal, barreAffichage);
 
+                        // Détecte la collision pour marquer le journal à supprimer
                         if (!objetTouche && fenetre.testCollision(journal)) {
                             objetTouche = true;
                         }
                     }
                 }
 
+                // Collision avec la boîte aux lettres
                 var boite = maison.getBoiteAuxLettres();
                 boite.enCollisionJournal(journal, barreAffichage);
 
@@ -254,6 +335,7 @@ public class Partie {
                     objetTouche = true;
                 }
 
+                // Si un objet a été touché,il est marqué pour supression
                 if (objetTouche) {
                     if (!journauxASupprimer.contains(journal)) {
                         journauxASupprimer.add(journal);
@@ -262,30 +344,31 @@ public class Partie {
             }
         }
 
+        // Retire tous les journaux marqués
         journaux.removeAll(journauxASupprimer);
 
     }
 
+    /**
+     * Génère des particules selon le niveau
+     */
     private void genererParticules() {
         particules = new ArrayList<>();
         int nbParticules = Math.min((niveauActuel - 1) * 30, 400);
 
         for (int i = 0; i < nbParticules; i++) {
 
-            // * Nb maisons
-
             //Toute la largeur du niveau inclu la largeur de l'écran mais aussi le nombre de maisons
             double positionX = RANDOM.nextDouble(0, MainJavaFX.WIDTH * NB_MAISONS);
             double positionY = RANDOM.nextDouble(0, MainJavaFX.HEIGHT);
-
-
             particules.add(new Particule(positionX, positionY));
-
         }
-
     }
 
 
+    /**
+     * Passe au niveau suivant en conservant le nombre de journaux
+     */
     public void niveauSuivant() {
         niveauActuel++;
         initialiserNiveau(niveauActuel, nbJournaux);
@@ -293,12 +376,10 @@ public class Partie {
         chargementEnCours = true;
     }
 
-    private boolean journalPeutEtreLance() {
-        double tempsEcoule = (System.nanoTime() - tempsApresLancer) * 1e-9;
-        return tempsEcoule >= DELAI_ENTRE_LANCERS;
-    }
-
-    public void redemarrage() {
+    /**
+     * Redémarre une partie complète (retour au niveau 1, stock remis à zéro)
+     */
+    private void redemarrage() {
         journaux.clear();
         particules.clear();
         initialiserNiveau(1, 0);
@@ -306,11 +387,17 @@ public class Partie {
         chargementEnCours = true;
     }
 
+    /**
+     * Ajoute des journaux au stock et met à jour l'affichage
+     */
     public void ajouterJournaux(int ajout) {
         nbJournaux += ajout;
         barreAffichage.setNbJournaux(nbJournaux);
     }
 
+    /**
+     * Met le stock à zéro et déclenche la fin de partie
+     */
     public void mettreStockJournauxAZero() {
         nbJournaux = 0;
         journaux.clear();

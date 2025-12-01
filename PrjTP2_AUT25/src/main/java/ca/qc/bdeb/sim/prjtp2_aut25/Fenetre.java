@@ -1,6 +1,5 @@
-package ca.qc.bdeb.sim.prjtp2_aut25.Maison;
+package ca.qc.bdeb.sim.prjtp2_aut25;
 
-import ca.qc.bdeb.sim.prjtp2_aut25.*;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
