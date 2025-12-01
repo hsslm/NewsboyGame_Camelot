@@ -28,6 +28,7 @@ public class BarreAffichage {
         this.imgArgent = ImageManager.getImage("icone-dollar.png");
         this.imgMaison = ImageManager.getImage("icone-maison.png");
     }
+
     public void setNbJournaux(int nbJournaux) {
         this.nbJournaux = nbJournaux;
     }
