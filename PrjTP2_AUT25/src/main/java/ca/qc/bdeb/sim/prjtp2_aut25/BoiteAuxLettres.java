@@ -4,6 +4,9 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**
+ * Classe BoiteAuxlettres : représente une boîte aux lettres dans le jeu
+ */
 public class BoiteAuxLettres extends ObjetDuJeu {
 
     private boolean estAbonnee;
@@ -22,15 +25,16 @@ public class BoiteAuxLettres extends ObjetDuJeu {
         this.image = ImageManager.getImage("boite-aux-lettres.png");
     }
 
-
+    /**
+     * Vérifie si un journal entre en collision avec la boîte aux lettres
+     */
     public void enCollisionJournal(Journal journal, BarreAffichage barreAffichage) {
-        if (!aRecuJournal&&testCollision(journal)) {
+        if (!aRecuJournal && testCollision(journal)) {
 
-            //Change l'image selon si abonnée ou non
+
             if (estAbonnee) {
                 image = ImageManager.getImage("boite-aux-lettres-vert.png");
                 barreAffichage.ajouterArgent(1);
-
 
             } else {
                 image = ImageManager.getImage("boite-aux-lettres-rouge.png");

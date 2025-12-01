@@ -2,7 +2,9 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-
+/**
+ * Classe abstraite de base pour tous les objets du jeu.
+ */
 public abstract class ObjetDuJeu {
     protected Point2D position;
     protected Point2D velocite;
@@ -62,15 +64,6 @@ public abstract class ObjetDuJeu {
     public Point2D getVelocite(){ return getVelocite();}
     public double getPositionX(){
         return position.getX();
-    }
-    public Point2D getPosition(){
-        return position;
-    }
-    public double getTailleX(){
-        return taille.getX();
-    }
-    public double getTailleY(){
-        return taille.getY();
     }
 
 }

@@ -8,12 +8,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import java.util.ArrayList;
 import java.util.Random;
-
+/**
+ * Représente une maison avec porte, boîte aux lettres et éventuelles fenêtres.
+ */
 public class Maison extends ObjetDuJeu {
     private int adresse;
     private boolean abonneeAuJournal;
     private Image imagePorte;
-    //position de la porte (coordonnée x de la maison)
     private BoiteAuxLettres boiteAuxLettres;
     private Random random;
     private boolean aDesFenetres;
@@ -98,7 +99,6 @@ public class Maison extends ObjetDuJeu {
         //Dessine l'image de la porte
         context.drawImage(imagePorte, coordoEcran.getX(), coordoEcran.getY());
 
-        //À revoir pcq les adresses semblent pas claires
         //Affiche l'adresse sur la porte
         context.setFill(Color.YELLOW);
         context.setFont(Font.font("Comic Sans MS",24));

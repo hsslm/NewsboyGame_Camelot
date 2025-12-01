@@ -7,6 +7,9 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
+/**
+ * Classe debogage : gère le débogage du jeu et la gestion des touches associées
+ */
 public class Debogage {
 
     private boolean modeDebug;
@@ -29,7 +32,6 @@ public class Debogage {
         this.lDejaAppuyee = false;
         this.fDejaAppuyee = false;
         this.iDejaAppuyee = false;
-
     }
 
 
@@ -160,21 +162,6 @@ public class Debogage {
         }
     }
 
-    /**
-     * Gestion touche F : visualisation
-     * du champ électrique des particules avec des flèches
-     */
-    private void gestionToucheF() {
-        if (Input.isKeyPressed(KeyCode.F)) {
-            if (!fDejaAppuyee) {
-                modeDebugChamp = !modeDebugChamp;
-                fDejaAppuyee = true;
-            }
-
-        } else {
-            fDejaAppuyee = false;
-        }
-    }
 
     /**
      * Gestion touche L : prochain niveau ( écran de chargement du prochain niveau)
@@ -231,4 +218,20 @@ public class Debogage {
             dDejaAppuyee = false;
         }
     }
+    /**
+     * Gestion touche F : visualisation
+     * du champ électrique des particules avec des flèches
+     */
+    private void gestionToucheF() {
+        if (Input.isKeyPressed(KeyCode.F)) {
+            if (!fDejaAppuyee) {
+                modeDebugChamp = !modeDebugChamp;
+                fDejaAppuyee = true;
+            }
+
+        } else {
+            fDejaAppuyee = false;
+        }
+    }
+
 }

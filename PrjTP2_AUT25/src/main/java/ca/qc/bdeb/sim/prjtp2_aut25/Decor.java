@@ -3,7 +3,9 @@ package ca.qc.bdeb.sim.prjtp2_aut25;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
-
+/**
+ * Classe Decor : gère l'affichage du décor de fond (briques)
+ */
 public class Decor extends ObjetDuJeu {
 
     public Decor() {

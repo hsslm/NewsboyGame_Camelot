@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class Journal extends ObjetDuJeu {
 
-
     private final Point2D QUANTITE_MOUVEMENT_HAUT = new Point2D(900, -900);
     private final Point2D QUANTITE_MOUVEMENT_AVANT = new Point2D(150, -1100);
     private final double MULTIPLICATEUR_SHIFT = 1.5;
@@ -46,8 +45,10 @@ public class Journal extends ObjetDuJeu {
         );
 
     }
-
-    //Calcule la vitesse initiale du journal selon sa masse, les touches enfoncées et la vitesse du camelot
+    /**
+     * //Calcule la vitesse initiale du journal selon sa masse,
+     * les touches enfoncées et la vitesse du camelot
+     */
     public void calculerVitesseInitiale(Camelot camelot) {
 
         boolean lancerHaut = Input.isKeyPressed(KeyCode.Z);

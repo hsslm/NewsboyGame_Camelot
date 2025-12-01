@@ -4,7 +4,9 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 
-
+/**
+ * Représente le personnage principal du jeu
+ */
 public class Camelot extends ObjetDuJeu {
 
     //Constantes
@@ -24,6 +26,10 @@ public class Camelot extends ObjetDuJeu {
         );
 
         this.toucheLeSol = true;
+    }
+
+    public Point2D getVelocite() {
+        return velocite;
     }
 
     @Override
@@ -81,7 +87,6 @@ public class Camelot extends ObjetDuJeu {
 
         if (gauche) {
             //Flèche gauche --> ralentir
-
             acceleration = new Point2D(-ACCELERATION_CONTROLE, acceleration.getY());
 
         } else if (droite) {
@@ -123,13 +128,9 @@ public class Camelot extends ObjetDuJeu {
         }
     }
 
-    public Point2D getVelocite(){
-        return velocite;
-    }
-
-    public Point2D getCentre(){
+    public Point2D getCentre() {
         return new Point2D(
-                position.getX()+ taille.getX() / 2,
+                position.getX() + taille.getX() / 2,
                 position.getY() + taille.getY() / 2
         );
     }

@@ -6,7 +6,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 import javafx.scene.paint.Color;
-
+/**
+ * Affiche un écran de chargement temporaire avec un texte
+ */
 public class EcranDeChargement {
     private String texte;
     private long tempsDebut;
@@ -33,8 +35,6 @@ public class EcranDeChargement {
                 MainJavaFX.WIDTH / 2,
                 MainJavaFX.HEIGHT / 2
         );
-
-
     }
 
     public boolean estTermine() {

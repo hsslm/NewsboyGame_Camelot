@@ -27,7 +27,6 @@ public class MainJavaFX extends Application {
         root.getChildren().add(stack);
         stack.setStyle("-fx-background-color: black");
 
-        //Crée partie
         var partie = new Partie();
 
         //Gestion des touches pressées

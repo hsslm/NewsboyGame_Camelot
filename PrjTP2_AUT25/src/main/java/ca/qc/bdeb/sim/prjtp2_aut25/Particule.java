@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-
+/**
+ * Représente une particule chargée affichée à l'écran
+ */
 public class Particule extends ObjetDuJeu {
     private static final double CHARGE = 900;
     private static final Random RANDOM = new Random() ;
